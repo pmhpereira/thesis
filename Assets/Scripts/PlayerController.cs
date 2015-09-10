@@ -14,40 +14,35 @@ public class PlayerController : MonoBehaviour {
     [Range (-10, 10)]
     public float fixedPlayerPositionX;
 
-    [Range(1, 5)]
-    public float gravityMultiplier;
-
     [Range(5, 10)]
     public float maxVerticalVelocity;
 
     [Range(0, 1000)]
     public float jumpForce;
+    public int currentConsecutiveJumps = 0;
     public int maxConsecutiveJumps;
-    private int currentConsecutiveJumps = 0;
 
     private new Rigidbody2D rigidbody;
-    private new BoxCollider2D collider;
 
     public List<Collider2D> colliding;
 
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        collider = GetComponent<BoxCollider2D>();
-
         colliding = new List<Collider2D>();
     }
 
-    void Update () {
-        PlayerMovement();
-	}
-
-    void FixedUpdate()
+    void Update ()
     {
-        rigidbody.AddForce(Physics2D.gravity * (gravityMultiplier - 1));
+        CheckStatus();
+        PlayerMovement();
+    }
 
+    void CheckStatus()
+    {
         isColliding = false;
         isIdling = false;
+        isJumping = Mathf.Abs(rigidbody.velocity.y) > Mathf.Epsilon * 1e3;
 
         foreach (Collider2D collider in colliding)
         {
@@ -61,15 +56,9 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        if(isColliding)
-        {
-            isIdling = false;
-        }
-
-        if (isIdling)
+        if (isIdling && !isJumping)
         {
             currentConsecutiveJumps = 0;
-            isJumping = false;
             isMultipleJumping = false;
         }
     }
@@ -78,11 +67,11 @@ public class PlayerController : MonoBehaviour {
     {
         if (!isColliding)
         {
-            if (Input.GetButtonDown("Fire1") && currentConsecutiveJumps < maxConsecutiveJumps)
+            if (Input.GetButton("Fire1") && !isJumping)
             {
                 Jump();
             }
-            else if (Input.GetButton("Fire1") && !isJumping)
+            else if (Input.GetButtonDown("Fire1") && currentConsecutiveJumps < maxConsecutiveJumps)
             {
                 Jump();
             }
@@ -98,6 +87,18 @@ public class PlayerController : MonoBehaviour {
             newVelocity.y = maxVerticalVelocity;
             rigidbody.velocity = newVelocity;
         }
+    }
+
+    void Jump()
+    {
+        if (isJumping && !isMultipleJumping)
+        {
+            isMultipleJumping = true;
+        }
+
+        rigidbody.AddForce(new Vector2(0, jumpForce));
+        currentConsecutiveJumps++;
+        isJumping = true;
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -118,21 +119,5 @@ public class PlayerController : MonoBehaviour {
     void OnTriggerExit2D(Collider2D other)
     {
         colliding.Remove(other);
-    }
-
-    void Jump()
-    {
-        if (!isJumping)
-        {
-            isJumping = true;
-        }
-        else if (!isMultipleJumping)
-        {
-            isMultipleJumping = true;
-        }
-
-        rigidbody.AddForce(new Vector2(0, jumpForce));
-        currentConsecutiveJumps++;
-        isJumping = true;
     }
 }
