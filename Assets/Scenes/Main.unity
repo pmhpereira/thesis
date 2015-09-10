@@ -85,124 +85,6 @@ NavMeshSettings:
     cellSize: .166666672
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &359738448
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 106026, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
-  m_PrefabInternal: {fileID: 363450708}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 359738454}
-  - 33: {fileID: 359738453}
-  - 65: {fileID: 359738452}
-  - 23: {fileID: 359738451}
-  - 114: {fileID: 359738450}
-  - 54: {fileID: 359738449}
-  m_Layer: 0
-  m_Name: Player
-  m_TagString: Player
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!54 &359738449
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 5433042, guid: 55423295caf43b842ab0a8293ce5df54,
-    type: 2}
-  m_PrefabInternal: {fileID: 363450708}
-  m_GameObject: {fileID: 359738448}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 120
-  m_CollisionDetection: 1
---- !u!114 &359738450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54,
-    type: 2}
-  m_PrefabInternal: {fileID: 363450708}
-  m_GameObject: {fileID: 359738448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 303bba1c8c3519d49961248a71e0ce94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isJumping: 0
-  isMultipleJumping: 0
-  isDashing: 0
-  isSliding: 0
-  isColliding: 0
-  isIdling: 0
-  fixedPlayerPositionX: -6
-  gravityMultiplier: 3
-  maxVerticalVelocity: 6.5
-  jumpForce: 600
-  maxConsecutiveJumps: 2
-  colliding: []
---- !u!23 &359738451
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2399218, guid: 55423295caf43b842ab0a8293ce5df54,
-    type: 2}
-  m_PrefabInternal: {fileID: 363450708}
-  m_GameObject: {fileID: 359738448}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
-  m_ProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!65 &359738452
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 6593218, guid: 55423295caf43b842ab0a8293ce5df54,
-    type: 2}
-  m_PrefabInternal: {fileID: 363450708}
-  m_GameObject: {fileID: 359738448}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: .300000012, z: 1}
-  m_Center: {x: 0, y: -.349999994, z: 0}
---- !u!33 &359738453
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3395226, guid: 55423295caf43b842ab0a8293ce5df54,
-    type: 2}
-  m_PrefabInternal: {fileID: 363450708}
-  m_GameObject: {fileID: 359738448}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &359738454
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 466450, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
-  m_PrefabInternal: {fileID: 363450708}
-  m_GameObject: {fileID: 359738448}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6, y: -2.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
 --- !u!1001 &363450708
 Prefab:
   m_ObjectHideFlags: 0
@@ -244,7 +126,6 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
-  m_RootGameObject: {fileID: 359738448}
   m_IsPrefabParent: 0
 --- !u!1 &713458882
 GameObject:
@@ -255,8 +136,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 713458883}
   - 114: {fileID: 713458884}
-  - 65: {fileID: 713458886}
   - 114: {fileID: 713458885}
+  - 61: {fileID: 713458886}
   m_Layer: 0
   m_Name: Obstacles Manager
   m_TagString: Untagged
@@ -295,6 +176,7 @@ MonoBehaviour:
   minStartingGroundDistance: -15
   maxStartingGroundDistance: 15
   obstacleSpawnInterval: 1.5
+  hideBlocksInHierarchy: 0
 --- !u!114 &713458885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,18 +188,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab0e5402a0754840b362a7d2e9c8c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &713458886
-BoxCollider:
+--- !u!61 &713458886
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 713458882}
+  m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 1, y: 10, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 10}
 --- !u!1 &1080148519
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class ObstacleController: MonoBehaviour {
 
+    public static ObstacleController instance;
+
     public GameObject groundPrefab;
     public GameObject obstaclePrefab;
 
@@ -10,15 +12,15 @@ public class ObstacleController: MonoBehaviour {
     public float moveSpeed;
 
     public float groundHeight;
-
-    public static ObstacleController instance;
-
+    
     public float minStartingGroundDistance;
-    private float groundDistance;
     public float maxStartingGroundDistance;
+    private float groundDistance;
 
     public float obstacleSpawnInterval;
     private float obstacleInterval;
+
+    public bool hideBlocksInHierarchy;
 
     void Awake()
     {
@@ -31,8 +33,8 @@ public class ObstacleController: MonoBehaviour {
         groundDistance = minStartingGroundDistance;
         obstaclesPool = new List<GameObject>();
 
-        BoxCollider boxCollider = GetComponent<BoxCollider>();
-        boxCollider.center = new Vector3(minStartingGroundDistance - 3, groundHeight, 0);
+        BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
+        boxCollider.offset = new Vector2(minStartingGroundDistance - 3, groundHeight);
 
         obstacleInterval = 0;
     }
@@ -41,10 +43,14 @@ public class ObstacleController: MonoBehaviour {
         for (float i = groundDistance; i < maxStartingGroundDistance; i += groundPrefab.transform.localScale.x)
         {
             GameObject ground = (GameObject)Instantiate(groundPrefab);
-            ground.transform.position = new Vector3(groundDistance, groundHeight, 0);
+            ground.transform.position = new Vector2(groundDistance, groundHeight);
             obstaclesPool.Add(ground);
 
-            ground.hideFlags = HideFlags.HideInHierarchy;
+            if(hideBlocksInHierarchy)
+            {
+                ground.hideFlags = HideFlags.HideInHierarchy;
+            }
+
             ground.transform.SetParent(this.transform);
 
             groundDistance += groundPrefab.transform.localScale.x;
@@ -53,11 +59,11 @@ public class ObstacleController: MonoBehaviour {
 
     void Update()
     {
-        Vector3 diffDistance = new Vector3(1, 0, 0) * Time.deltaTime * moveSpeed;
+        Vector2 diffDistance = Vector2.right * Time.deltaTime * moveSpeed;
 
         foreach (GameObject obstacle in obstaclesPool)
         {
-            Rigidbody rigidbody = obstacle.GetComponent<Rigidbody>();
+            Rigidbody2D rigidbody = obstacle.GetComponent<Rigidbody2D>();
             rigidbody.MovePosition(rigidbody.position - diffDistance);
         }
 
@@ -89,11 +95,15 @@ public class ObstacleController: MonoBehaviour {
             for (int y = 1; y <= obstacleHeight; y++)
             {
                 GameObject obstacle = (GameObject)Instantiate(obstaclePrefab);
-                obstacle.transform.position = new Vector3(groundDistance + groundScale.x * x, groundHeight + groundScale.y * y, 0);
+                obstacle.transform.position = new Vector2(groundDistance + groundScale.x * x, groundHeight + groundScale.y * y);
                 obstacle.tag = "Obstacle";
                 obstaclesPool.Add(obstacle);
 
-                // obstacle.hideFlags = HideFlags.HideInHierarchy;
+                if (hideBlocksInHierarchy)
+                {
+                    obstacle.hideFlags = HideFlags.HideInHierarchy;
+                }
+
                 obstacle.transform.SetParent(this.transform);
 
                 if(y != obstacleHeight)
@@ -117,7 +127,7 @@ public class ObstacleController: MonoBehaviour {
 
         if (lastGround != null)
         {
-            Vector3 newPosition = lastGround.transform.position;
+            Vector2 newPosition = lastGround.transform.position;
             newPosition.x += groundPrefab.transform.localScale.x;
             newPosition.y = groundHeight;
 
@@ -170,5 +180,13 @@ public class ObstacleController: MonoBehaviour {
 
         index = -1;
         return null;
+    }
+
+    void OnValidate()
+    {
+        foreach(GameObject block in obstaclesPool)
+        {
+            block.hideFlags = hideBlocksInHierarchy ? HideFlags.HideInHierarchy : HideFlags.None;
+        }
     }
 }

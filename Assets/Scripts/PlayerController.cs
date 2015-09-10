@@ -25,17 +25,17 @@ public class PlayerController : MonoBehaviour {
     public int maxConsecutiveJumps;
     private int currentConsecutiveJumps = 0;
 
-    private new Rigidbody rigidbody;
-    private new BoxCollider collider;
+    private new Rigidbody2D rigidbody;
+    private new BoxCollider2D collider;
 
-    public List<Collider> colliding;
+    public List<Collider2D> colliding;
 
     void Awake()
     {
-        rigidbody = GetComponent<Rigidbody>();
-        collider = GetComponent<BoxCollider>();
+        rigidbody = GetComponent<Rigidbody2D>();
+        collider = GetComponent<BoxCollider2D>();
 
-        colliding = new List<Collider>();
+        colliding = new List<Collider2D>();
     }
 
     void Update () {
@@ -44,12 +44,12 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate()
     {
-        rigidbody.AddForce(Physics.gravity * (gravityMultiplier - 1));
+        rigidbody.AddForce(Physics2D.gravity * (gravityMultiplier - 1));
 
         isColliding = false;
         isIdling = false;
 
-        foreach (Collider collider in colliding)
+        foreach (Collider2D collider in colliding)
         {
             if(collider.tag == "Obstacle")
             {
@@ -94,28 +94,28 @@ public class PlayerController : MonoBehaviour {
 
         if (rigidbody.velocity.y > maxVerticalVelocity)
         {
-            Vector3 newVelocity = rigidbody.velocity;
+            Vector2 newVelocity = rigidbody.velocity;
             newVelocity.y = maxVerticalVelocity;
             rigidbody.velocity = newVelocity;
         }
     }
 
-    void OnCollisionEnter(Collision other)
+    void OnCollisionEnter2D(Collision2D other)
     {
         colliding.Add(other.collider);
     }
 
-    void OnCollisionExit(Collision other)
+    void OnCollisionExit2D(Collision2D other)
     {
         colliding.Remove(other.collider);
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         colliding.Add(other);
     }
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerExit2D(Collider2D other)
     {
         colliding.Remove(other);
     }
@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour {
             isMultipleJumping = true;
         }
 
-        rigidbody.AddForce(new Vector3(0, jumpForce, 0));
+        rigidbody.AddForce(new Vector2(0, jumpForce));
         currentConsecutiveJumps++;
         isJumping = true;
     }
