@@ -22,6 +22,8 @@ public class ObstacleController: MonoBehaviour {
 
     public bool hideBlocksInHierarchy;
 
+    public bool spawnObstacles;
+
     void Awake()
     {
         if (instance != null && instance != this) {
@@ -69,7 +71,7 @@ public class ObstacleController: MonoBehaviour {
 
         obstacleInterval += Time.deltaTime;
 
-        if (obstacleInterval > obstacleSpawnInterval)
+        if (obstacleInterval > obstacleSpawnInterval && spawnObstacles)
         {
             obstacleInterval = 0;
             SpawnObstacle();
@@ -83,8 +85,6 @@ public class ObstacleController: MonoBehaviour {
 
     public void SpawnObstacle()
     {
-        GameObject lastGround = GetLastObstacleWithTag("Ground");
-
         int obstacleHeight = Random.Range(1, 3); 
         int obstacleWidth = Random.Range(1, 5);
 
