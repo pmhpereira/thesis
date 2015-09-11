@@ -19,22 +19,28 @@ public class PlayerController : MonoBehaviour {
 
     [Range(0, 1000)]
     public float jumpForce;
-    public int currentConsecutiveJumps = 0;
+    public int currentConsecutiveJumps;
     public int maxConsecutiveJumps;
 
     private new Rigidbody2D rigidbody;
-
+    private new Renderer renderer;
     public List<Collider2D> colliding;
+
+    public Color idlingColor;
+    public Color collidingColor;
 
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        renderer = GetComponent<Renderer>();
+
         colliding = new List<Collider2D>();
     }
 
     void Update ()
     {
         CheckStatus();
+        UpdateVisuals();
         PlayerMovement();
     }
 
@@ -46,7 +52,12 @@ public class PlayerController : MonoBehaviour {
 
         foreach (Collider2D collider in colliding)
         {
-            if(collider.tag == "Obstacle")
+            if(collider == null)
+            {
+                continue;
+            }
+
+            if (collider.tag == "Obstacle")
             {
                 isColliding = true;
             }
@@ -61,6 +72,11 @@ public class PlayerController : MonoBehaviour {
             currentConsecutiveJumps = 0;
             isMultipleJumping = false;
         }
+    }
+
+    void UpdateVisuals()
+    {
+        renderer.material.color = isColliding ? collidingColor : idlingColor;
     }
 
     void PlayerMovement()

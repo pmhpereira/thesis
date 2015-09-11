@@ -70,7 +70,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 2a9fb65d9de5ecd49aad70492e6a6a40, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -143,6 +143,8 @@ MonoBehaviour:
   currentConsecutiveJumps: 0
   maxConsecutiveJumps: 2
   colliding: []
+  idlingColor: {r: 1, g: 1, b: 1, a: 1}
+  collidingColor: {r: .250980407, g: .250980407, b: .250980407, a: 1}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
