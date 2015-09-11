@@ -24,10 +24,13 @@ public class PlayerController : MonoBehaviour {
 
     private new Rigidbody2D rigidbody;
     private new Renderer renderer;
+
     public List<Collider2D> colliding;
 
     public Color idlingColor;
     public Color collidingColor;
+
+    private float collisionDelta = 0.2f;
 
     void Awake()
     {
@@ -50,12 +53,19 @@ public class PlayerController : MonoBehaviour {
         isIdling = false;
         isJumping = Mathf.Abs(rigidbody.velocity.y) > Mathf.Epsilon * 1e3;
 
-        foreach (Collider2D collider in colliding)
+        colliding.Clear();
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, transform.localScale + new Vector3(collisionDelta, collisionDelta, collisionDelta), 0, Vector2.zero);
+
+        foreach(RaycastHit2D hit in hits)
         {
-            if(collider == null)
+            Collider2D collider = hit.collider;
+
+            if (collider == null || collider.tag == "Untagged")
             {
                 continue;
             }
+
+            colliding.Add(collider);
 
             if (collider.tag == "Obstacle")
             {
@@ -67,7 +77,11 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        if (isIdling && !isJumping)
+        if(isJumping && isColliding)
+        {
+            isIdling = false;
+        }
+        else if (isIdling && !isJumping)
         {
             currentConsecutiveJumps = 0;
             isMultipleJumping = false;
@@ -115,25 +129,5 @@ public class PlayerController : MonoBehaviour {
         rigidbody.AddForce(new Vector2(0, jumpForce));
         currentConsecutiveJumps++;
         isJumping = true;
-    }
-
-    void OnCollisionEnter2D(Collision2D other)
-    {
-        colliding.Add(other.collider);
-    }
-
-    void OnCollisionExit2D(Collision2D other)
-    {
-        colliding.Remove(other.collider);
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        colliding.Add(other);
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        colliding.Remove(other);
     }
 }
