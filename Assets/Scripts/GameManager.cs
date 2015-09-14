@@ -5,9 +5,6 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager instance;
 
-    public GameObject playerPrefab;
-
-
     void Awake() {
         if (instance != null && instance != this) {
             Destroy(gameObject);
@@ -18,8 +15,17 @@ public class GameManager : MonoBehaviour {
         Application.targetFrameRate = 60;
     }
 
-    void Start()
+    void Update()
     {
-        Instantiate(playerPrefab);
+        ProcessInput();
     }
+    
+    void ProcessInput()
+    {
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            Application.LoadLevel(Application.loadedLevel);
+        }
+    }
+
 }
