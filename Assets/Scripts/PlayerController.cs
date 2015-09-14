@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour {
     public Color idlingColor;
     public Color collidingColor;
 
-    private float collisionDelta = 0.2f;
+    private float collisionDelta = 0.05f;
 
     public bool stopOnCollision;
 
@@ -108,6 +108,11 @@ public class PlayerController : MonoBehaviour {
                 Jump();
             }
         }
+
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            stopOnCollision = !stopOnCollision;
+        }
     }
 
     void Jump()
@@ -127,7 +132,6 @@ public class PlayerController : MonoBehaviour {
     {
         renderer.material.color = isColliding ? collidingColor : idlingColor;
 
-        // Freeze on collision
         Time.timeScale = (isColliding && stopOnCollision) ? 0 : defaultTimeScale;
 
         var newPosition = transform.position;
