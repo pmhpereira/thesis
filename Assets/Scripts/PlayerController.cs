@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 
 public class PlayerController : MonoBehaviour {
 
@@ -32,19 +33,25 @@ public class PlayerController : MonoBehaviour {
 
     private float collisionDelta = 0.2f;
 
+    public bool stopOnCollision;
+
+    private float defaultTimeScale;
+
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         renderer = GetComponent<Renderer>();
 
         colliding = new List<Collider2D>();
+
+        defaultTimeScale = Time.timeScale;
     }
 
     void Update ()
     {
         CheckStatus();
-        UpdateVisuals();
-        PlayerMovement();
+        ProcessInput();
+        UpdateGame();
     }
 
     void CheckStatus()
@@ -88,12 +95,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void UpdateVisuals()
-    {
-        renderer.material.color = isColliding ? collidingColor : idlingColor;
-    }
-
-    void PlayerMovement()
+    void ProcessInput()
     {
         if (!isColliding)
         {
@@ -105,17 +107,6 @@ public class PlayerController : MonoBehaviour {
             {
                 Jump();
             }
-        }
-
-        var newPosition = transform.position;
-        newPosition.x = fixedPlayerPositionX;
-        transform.position = newPosition;
-
-        if (rigidbody.velocity.y > maxVerticalVelocity)
-        {
-            Vector2 newVelocity = rigidbody.velocity;
-            newVelocity.y = maxVerticalVelocity;
-            rigidbody.velocity = newVelocity;
         }
     }
 
@@ -129,5 +120,25 @@ public class PlayerController : MonoBehaviour {
         rigidbody.AddForce(new Vector2(0, jumpForce));
         currentConsecutiveJumps++;
         isJumping = true;
+    }
+
+
+    void UpdateGame()
+    {
+        renderer.material.color = isColliding ? collidingColor : idlingColor;
+
+        // Freeze on collision
+        Time.timeScale = (isColliding && stopOnCollision) ? 0 : defaultTimeScale;
+
+        var newPosition = transform.position;
+        newPosition.x = fixedPlayerPositionX;
+        transform.position = newPosition;
+
+        if (rigidbody.velocity.y > maxVerticalVelocity)
+        {
+            Vector2 newVelocity = rigidbody.velocity;
+            newVelocity.y = maxVerticalVelocity;
+            rigidbody.velocity = newVelocity;
+        }
     }
 }
