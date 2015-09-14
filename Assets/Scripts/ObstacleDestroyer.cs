@@ -9,7 +9,7 @@ public class ObstacleDestroyer : MonoBehaviour {
         {
             ObstacleController.instance.RepositionGround();
         }
-        else if (other.tag == "Obstacle")
+        else if (other.tag == "Obstacle" && other.transform.parent.tag != "Ground")
         {
             ObstacleController.instance.RemoveObstacle(other.gameObject);
         }

@@ -17,12 +17,19 @@ public class ObstacleController: MonoBehaviour {
     public float maxStartingGroundDistance;
     private float groundDistance;
 
+    public int minHoleLength;
+    public int maxHoleLength;
+    private int remainingHoleLength;
+
+    public float holeSpawnInterval;
+    private float holeInterval;
+    public bool spawnHoles;
+
     public float obstacleSpawnInterval;
     private float obstacleInterval;
+    public bool spawnObstacles;
 
     public bool hideBlocksInHierarchy;
-
-    public bool spawnObstacles;
 
     void Awake()
     {
@@ -39,6 +46,7 @@ public class ObstacleController: MonoBehaviour {
         boxCollider.offset = new Vector2(minStartingGroundDistance - 3, groundHeight);
 
         obstacleInterval = 0;
+        holeInterval = 0;
     }
 
     void Start () {
@@ -70,11 +78,18 @@ public class ObstacleController: MonoBehaviour {
         }
 
         obstacleInterval += Time.deltaTime;
+        holeInterval += Time.deltaTime;
 
         if (obstacleInterval > obstacleSpawnInterval && spawnObstacles)
         {
             obstacleInterval = 0;
             SpawnObstacle();
+        }
+
+        if (holeInterval > holeSpawnInterval && spawnHoles)
+        {
+            holeInterval = 0;
+            SpawnHole();
         }
     }
 
@@ -114,10 +129,21 @@ public class ObstacleController: MonoBehaviour {
         }
     }
 
+    public void SpawnHole()
+    {
+        SpawnHole(Random.Range(minHoleLength, maxHoleLength + 1));
+    }
+
+    public void SpawnHole(int length)
+    {
+        remainingHoleLength = length;
+    }
+
     public void RepositionGround()
     {
         int i;
         GameObject firstGround = GetFirstObstacleWithTag("Ground", out i);
+
         if (firstGround != null)
         {
             obstaclesPool.RemoveAt(i);
@@ -131,7 +157,17 @@ public class ObstacleController: MonoBehaviour {
             newPosition.x += groundPrefab.transform.localScale.x;
             newPosition.y = groundHeight;
 
+            bool isHole = remainingHoleLength > 0;
+            firstGround.GetComponent<MeshRenderer>().enabled = !isHole;
+            firstGround.GetComponent<BoxCollider2D>().isTrigger = isHole;
+
+            if (remainingHoleLength > 0)
+            {
+                remainingHoleLength--;
+            }
+
             firstGround.transform.position = newPosition;
+
             obstaclesPool.Add(firstGround);
         }
     }
