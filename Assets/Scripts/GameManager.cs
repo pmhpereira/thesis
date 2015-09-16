@@ -5,14 +5,15 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager instance;
 
+    [Range (0, 120)]
+    public int frameRate;
+
     void Awake() {
         if (instance != null && instance != this) {
             Destroy(gameObject);
         }
 
         instance = this;
-
-        Application.targetFrameRate = 60;
     }
 
     void Update()
@@ -24,8 +25,21 @@ public class GameManager : MonoBehaviour {
     {
         if(Input.GetKeyDown(KeyCode.R))
         {
-            Application.LoadLevel(Application.loadedLevel);
+            RestartLevel();
         }
     }
 
+    void OnValidate()
+    {
+
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = frameRate;
+    }
+
+
+    void RestartLevel()
+    {
+        Application.LoadLevel(Application.loadedLevel);
+        Time.timeScale = 1;
+    }
 }
