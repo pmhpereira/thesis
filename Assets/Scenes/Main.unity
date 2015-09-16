@@ -130,7 +130,7 @@ MonoBehaviour:
   groundPrefab: {fileID: 168780, guid: 8bbbe6a7db1aacd4ead5630b53cc7f87, type: 2}
   obstaclePrefab: {fileID: 168780, guid: 915f467bebf1f844f8a67f46ce2bffa9, type: 2}
   obstaclesPool: []
-  moveSpeed: 10
+  moveSpeed: 15
   groundHeight: -3.5
   minStartingGroundDistance: -15
   maxStartingGroundDistance: 25

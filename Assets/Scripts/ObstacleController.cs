@@ -67,16 +67,19 @@ public class ObstacleController: MonoBehaviour {
         }
 	}
 
-    void Update()
+    void FixedUpdate()
     {
-        Vector2 diffDistance = Vector2.right * Time.deltaTime * moveSpeed;
+        Vector2 diffDistance = Vector2.right * Time.fixedDeltaTime * moveSpeed;
 
         foreach (GameObject obstacle in obstaclesPool)
         {
             Rigidbody2D rigidbody = obstacle.GetComponent<Rigidbody2D>();
             rigidbody.MovePosition(rigidbody.position - diffDistance);
         }
+    }
 
+    void Update()
+    {
         obstacleInterval += Time.deltaTime;
         holeInterval += Time.deltaTime;
 
