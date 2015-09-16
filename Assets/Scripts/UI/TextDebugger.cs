@@ -2,11 +2,11 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class CanvasController : MonoBehaviour {
+public class TextDebugger : MonoBehaviour {
 
-    public static CanvasController instance;
+    public static TextDebugger instance;
 
-    public Text textCanvas;
+    private Text textCanvas;
 
     private PlayerController playerController;
 
@@ -20,15 +20,16 @@ public class CanvasController : MonoBehaviour {
         instance = this;
 
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-	}
+        textCanvas = GetComponent<Text>();
+}
 
-    void Update()
+void Update()
     {
         string textToDisplay = "";
 
-        textToDisplay += "stopOnCollision (C): " + playerController.stopOnCollision.ToString();
+        textToDisplay += "(C)ollisions: " + playerController.stopOnCollision.ToString();
         textToDisplay += "\n";
-        textToDisplay += "restart (R)";
+        textToDisplay += "(R)estart";
 
         textCanvas.text = textToDisplay;
     }
