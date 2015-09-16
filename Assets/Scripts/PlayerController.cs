@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
     public bool isSliding;
     public bool isColliding;
     public bool isIdling;
+    public bool isFalling;
 
     [Range (-10, 10)]
     public float fixedPlayerPositionX;
@@ -20,7 +21,7 @@ public class PlayerController : MonoBehaviour {
 
     [Range(0, 1000)]
     public float jumpForce;
-    public int currentConsecutiveJumps;
+    private int currentConsecutiveJumps;
     public int maxConsecutiveJumps;
 
     private new Rigidbody2D rigidbody;
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour {
 
     public Color idlingColor;
     public Color collidingColor;
+    public Color fallingColor;
 
     private float collisionDelta = 0.05f;
 
@@ -130,7 +132,18 @@ public class PlayerController : MonoBehaviour {
 
     void UpdateGame()
     {
-        renderer.material.color = isColliding ? collidingColor : idlingColor;
+        if (isFalling)
+        {
+            renderer.material.color = fallingColor;
+        }
+        else if (isColliding)
+        {
+            renderer.material.color = collidingColor;
+        }
+        else
+        {
+            renderer.material.color = idlingColor;
+        }
 
         Time.timeScale = (isColliding && stopOnCollision) ? 0 : defaultTimeScale;
 
@@ -143,6 +156,14 @@ public class PlayerController : MonoBehaviour {
             Vector2 newVelocity = rigidbody.velocity;
             newVelocity.y = maxVerticalVelocity;
             rigidbody.velocity = newVelocity;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Obstacle" && other.transform.parent.tag == "Ground")
+        {
+            isFalling = true;
         }
     }
 }

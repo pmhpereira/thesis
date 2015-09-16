@@ -140,7 +140,6 @@ MonoBehaviour:
   fixedPlayerPositionX: -6
   maxVerticalVelocity: 6.5
   jumpForce: 600
-  currentConsecutiveJumps: 0
   maxConsecutiveJumps: 2
   colliding: []
   idlingColor: {r: 1, g: 1, b: 1, a: 1}

@@ -388,7 +388,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3e5b439438c264daaa7cfb1eb4072f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textCanvas: {fileID: 0}
 --- !u!114 &1172328798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -467,6 +466,22 @@ Prefab:
     - target: {fileID: 466450, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
+      propertyPath: fallingColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
+      propertyPath: fallingColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
+      propertyPath: fallingColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
+      propertyPath: fallingColor.a
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
@@ -655,7 +670,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c120454d28604648a313c51f15b0f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textCanvas: {fileID: 0}
 --- !u!1 &2142559714
 GameObject:
   m_ObjectHideFlags: 0
