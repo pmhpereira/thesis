@@ -98,6 +98,8 @@ public class ObstacleController: MonoBehaviour {
 
     void Update()
     {
+        ProcessInput();
+
         obstacleInterval += Time.deltaTime;
         holeInterval += Time.deltaTime;
 
@@ -268,6 +270,19 @@ public class ObstacleController: MonoBehaviour {
         foreach(GameObject block in obstaclesPool)
         {
             block.hideFlags = hideBlocksInHierarchy ? HideFlags.HideInHierarchy : HideFlags.None;
+        }
+    }
+
+    void ProcessInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            spawnObstacles = !spawnObstacles;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            spawnHoles = !spawnHoles;
         }
     }
 }

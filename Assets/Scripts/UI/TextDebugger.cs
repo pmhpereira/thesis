@@ -27,9 +27,13 @@ void Update()
     {
         string textToDisplay = "";
 
-        textToDisplay += "(C)ollisions: " + playerController.stopOnCollision.ToString();
+        textToDisplay += "1|Collisions: " + playerController.stopOnCollision.ToString();
         textToDisplay += "\n";
-        textToDisplay += "(R)estart";
+        textToDisplay += "2|Holes: " + ObstacleController.instance.spawnHoles;
+        textToDisplay += "\n";
+        textToDisplay += "3|Obstacles: " + ObstacleController.instance.spawnObstacles;
+        textToDisplay += "\n";
+        textToDisplay += "R|Restart";
 
         textCanvas.text = textToDisplay;
     }

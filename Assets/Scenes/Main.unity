@@ -247,7 +247,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'FPS
+  m_Text: '0 FPS
 
 '
 --- !u!222 &930097357
@@ -470,22 +470,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
-      propertyPath: fallingColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
-      propertyPath: fallingColor.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
-      propertyPath: fallingColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
-      propertyPath: fallingColor.a
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
   m_IsPrefabParent: 0
@@ -622,7 +606,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &2049726488
 MonoBehaviour:

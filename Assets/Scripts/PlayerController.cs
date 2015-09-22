@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.C))
+        if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             stopOnCollision = !stopOnCollision;
         }
