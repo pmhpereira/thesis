@@ -130,15 +130,15 @@ MonoBehaviour:
   groundPrefab: {fileID: 168780, guid: 8bbbe6a7db1aacd4ead5630b53cc7f87, type: 2}
   obstaclePrefab: {fileID: 168780, guid: 915f467bebf1f844f8a67f46ce2bffa9, type: 2}
   obstaclesPool: []
-  moveSpeed: 15
+  moveSpeed: 12.5
   groundHeight: -3.5
   minStartingGroundDistance: -15
   maxStartingGroundDistance: 25
   minHoleLength: 2
   maxHoleLength: 5
-  holeSpawnInterval: 2.5
+  holeSpawnInterval: 2.25
   spawnHoles: 1
-  obstacleSpawnInterval: 1.5
+  obstacleSpawnInterval: 1.25
   spawnObstacles: 1
   hideBlocksInHierarchy: 1
 --- !u!114 &713458885
@@ -420,7 +420,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0:00.00
+  m_Text: 0:00.000
 --- !u!222 &1172328799
 CanvasRenderer:
   m_ObjectHideFlags: 0

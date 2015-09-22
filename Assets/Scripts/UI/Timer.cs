@@ -17,7 +17,7 @@ public class Timer : MonoBehaviour {
         timer += Time.deltaTime;
 
         TimeSpan timeSpan = TimeSpan.FromSeconds(timer);
-        string timeText = string.Format("{0:D1}:{1:D2}.{2:D2}", (int) timeSpan.TotalMinutes, timeSpan.Seconds, timeSpan.Milliseconds);
+        string timeText = string.Format("{0:D1}:{1:D2}.{2:D3}", (int) timeSpan.TotalMinutes, timeSpan.Seconds, timeSpan.Milliseconds);
 
         textCanvas.text = timeText;
     }

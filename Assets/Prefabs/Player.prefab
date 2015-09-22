@@ -137,6 +137,7 @@ MonoBehaviour:
   isSliding: 0
   isColliding: 0
   isIdling: 0
+  isFalling: 0
   fixedPlayerPositionX: -6
   maxVerticalVelocity: 6.5
   jumpForce: 600
@@ -144,6 +145,7 @@ MonoBehaviour:
   colliding: []
   idlingColor: {r: 1, g: 1, b: 1, a: 1}
   collidingColor: {r: .250980407, g: .250980407, b: .250980407, a: 1}
+  fallingColor: {r: 0, g: 0, b: 0, a: 0}
   stopOnCollision: 1
 --- !u!1001 &100100000
 Prefab:
