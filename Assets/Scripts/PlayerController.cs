@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (!isColliding)
         {
-            if (Input.GetButton("Fire1") && !isJumping)
+            if (Input.GetButton("Fire1") && isIdling && !isJumping)
             {
                 Jump();
             }

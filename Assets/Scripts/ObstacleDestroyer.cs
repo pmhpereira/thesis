@@ -9,6 +9,10 @@ public class ObstacleDestroyer : MonoBehaviour {
         {
             ObstacleController.instance.RepositionGround();
         }
+        else if(other.tag == "Ceiling")
+        {
+            ObstacleController.instance.RepositionCeiling();
+        }
         else if (other.tag == "Obstacle" && other.transform.parent.tag != "Ground")
         {
             ObstacleController.instance.RemoveObstacle(other.gameObject);

@@ -7,6 +7,7 @@ public class ObstacleController: MonoBehaviour {
 
     public GameObject groundPrefab;
     public GameObject obstaclePrefab;
+    public GameObject ceilingPrefab;
 
     public List<GameObject> obstaclesPool;
     public float moveSpeed;
@@ -29,6 +30,9 @@ public class ObstacleController: MonoBehaviour {
     private float obstacleInterval;
     public bool spawnObstacles;
 
+    public bool spawnCeiling;
+    public float ceilingHeight;
+
     public bool hideBlocksInHierarchy;
 
     void Awake()
@@ -43,7 +47,7 @@ public class ObstacleController: MonoBehaviour {
         obstaclesPool = new List<GameObject>();
 
         BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
-        boxCollider.offset = new Vector2(minStartingGroundDistance - 3, groundHeight);
+        boxCollider.offset = new Vector2(minStartingGroundDistance - 3, 0);
 
         obstacleInterval = 0;
         holeInterval = 0;
@@ -62,6 +66,20 @@ public class ObstacleController: MonoBehaviour {
             }
 
             ground.transform.SetParent(this.transform);
+
+            if (spawnCeiling)
+            {
+                GameObject ceiling = (GameObject)Instantiate(ceilingPrefab);
+                ceiling.transform.position = new Vector2(groundDistance, ceilingHeight);
+                obstaclesPool.Add(ceiling);
+
+                if (hideBlocksInHierarchy)
+                {
+                    ceiling.hideFlags = HideFlags.HideInHierarchy;
+                }
+
+                ceiling.transform.SetParent(this.transform);
+            }
 
             groundDistance += groundPrefab.transform.localScale.x;
         }
@@ -172,6 +190,30 @@ public class ObstacleController: MonoBehaviour {
             firstGround.transform.position = newPosition;
 
             obstaclesPool.Add(firstGround);
+        }
+    }
+
+    public void RepositionCeiling()
+    {
+        int i;
+        GameObject firstCeiling = GetFirstObstacleWithTag("Ceiling", out i);
+
+        if (firstCeiling != null)
+        {
+            obstaclesPool.RemoveAt(i);
+        }
+
+        GameObject lastCeiling = GetLastObstacleWithTag("Ceiling");
+
+        if (lastCeiling != null)
+        {
+            Vector2 newPosition = lastCeiling.transform.position;
+            newPosition.x += groundPrefab.transform.localScale.x;
+            newPosition.y = ceilingHeight;
+
+            firstCeiling.transform.position = newPosition;
+
+            obstaclesPool.Add(firstCeiling);
         }
     }
 
