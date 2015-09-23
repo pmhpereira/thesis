@@ -5,6 +5,8 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager instance;
 
+    public GameObject dataHolder;
+
     [Range (0, 120)]
     public int frameRate;
 
@@ -31,15 +33,14 @@ public class GameManager : MonoBehaviour {
 
     void OnValidate()
     {
-
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = frameRate;
     }
 
-
     void RestartLevel()
     {
-        Application.LoadLevel(Application.loadedLevel);
         Time.timeScale = 1;
+        Application.LoadLevel(Application.loadedLevel);
+        PlayerPrefs.Save();
     }
 }
