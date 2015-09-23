@@ -132,7 +132,7 @@ MonoBehaviour:
   ceilingPrefab: {fileID: 164470, guid: 469c337c6bf0a2947ba63049623e0919, type: 2}
   obstaclesPool: []
   moveSpeed: 12.5
-  groundHeight: -3.5
+  groundHeight: -4
   minStartingGroundDistance: -15
   maxStartingGroundDistance: 25
   minHoleLength: 2
@@ -142,7 +142,7 @@ MonoBehaviour:
   obstacleSpawnInterval: 1.25
   spawnObstacles: 1
   spawnCeiling: 1
-  ceilingHeight: 2.5
+  ceilingHeight: 2
   hideBlocksInHierarchy: 1
 --- !u!114 &713458885
 MonoBehaviour:
@@ -315,7 +315,7 @@ Camera:
     height: 1
   near clip plane: .300000012
   far clip plane: 1000
-  field of view: 40
+  field of view: 45
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -444,7 +444,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 466450, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -2.5
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 466450, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
       propertyPath: m_LocalPosition.z
@@ -469,6 +469,18 @@ Prefab:
     - target: {fileID: 466450, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5062878, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
+      propertyPath: m_GravityScale
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
+      propertyPath: jumpForce
+      value: 750
+      objectReference: {fileID: 0}
+    - target: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
+      propertyPath: maxVerticalVelocity
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
@@ -629,7 +641,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 12
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 
 public class PlayerController : MonoBehaviour {
 
@@ -37,7 +36,7 @@ public class PlayerController : MonoBehaviour {
 
     public bool stopOnCollision;
 
-    private float defaultTimeScale;
+    private float defaultTimeScale = 1.0f;
 
     void Awake()
     {
@@ -45,8 +44,6 @@ public class PlayerController : MonoBehaviour {
         renderer = GetComponent<Renderer>();
 
         colliding = new List<Collider2D>();
-
-        defaultTimeScale = Time.timeScale;
     }
 
     void Update ()
