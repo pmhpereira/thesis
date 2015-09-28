@@ -92,6 +92,10 @@ public class PlayerController : MonoBehaviour {
             currentConsecutiveJumps = 0;
             isMultipleJumping = false;
         }
+        else if(isJumping && rigidbody.velocity.y < 0 && currentConsecutiveJumps == 0)
+        {
+            currentConsecutiveJumps = 1;
+        }
     }
 
     void ProcessInput()
