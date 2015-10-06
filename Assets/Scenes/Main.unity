@@ -136,9 +136,9 @@ MonoBehaviour:
   maxStartingGroundDistance: 25
   minHoleLength: 2
   maxHoleLength: 5
-  holeSpawnInterval: 2.25
+  holeSpawnInterval: 1.25
   spawnHoles: 1
-  obstacleSpawnInterval: 1.25
+  obstacleSpawnInterval: 1.75
   spawnObstacles: 1
   spawnCeiling: 1
   ceilingHeight: 2
@@ -532,7 +532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68a7d6cf9f266ba41a07fd532b9a828b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataHolder: {fileID: 114348, guid: 8de5133f1c88d0f469fc0152474aaaaf, type: 2}
+  dataHolder: {fileID: 0}
   frameRate: 60
 --- !u!1 &2037386108
 GameObject:
