@@ -10,8 +10,7 @@ public class ObstacleController: MonoBehaviour {
     public GameObject ceilingPrefab;
 
     public List<GameObject> obstaclesPool;
-    public float moveSpeed;
-
+    
     public float groundHeight;
     
     public float minStartingGroundDistance;
@@ -35,22 +34,29 @@ public class ObstacleController: MonoBehaviour {
 
     public bool hideBlocksInHierarchy;
 
+    private BoxCollider2D boxCollider;
+
+    public PlayerController playerController;
+    private float playerMoveSpeed;
+
     void Awake()
     {
         if (instance != null && instance != this) {
             Destroy(gameObject);
         }
-
+            
         instance = this;
 
         groundDistance = minStartingGroundDistance;
         obstaclesPool = new List<GameObject>();
 
-        BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
+        boxCollider = GetComponent<BoxCollider2D>();
         boxCollider.offset = new Vector2(minStartingGroundDistance - 3, 0);
 
         obstacleInterval = 0;
         holeInterval = 0;
+
+        playerMoveSpeed = playerController.moveSpeed;
     }
 
     void Start () {
@@ -85,19 +91,10 @@ public class ObstacleController: MonoBehaviour {
         }
 	}
 
-    void FixedUpdate()
-    {
-        Vector2 diffDistance = Vector2.right * Time.fixedDeltaTime * moveSpeed;
-
-        foreach (GameObject obstacle in obstaclesPool)
-        {
-            Rigidbody2D rigidbody = obstacle.GetComponent<Rigidbody2D>();
-            rigidbody.MovePosition(rigidbody.position - diffDistance);
-        }
-    }
-
     void Update()
     {
+        boxCollider.offset += new Vector2(playerMoveSpeed * Time.deltaTime, 0);
+
         ProcessInput();
 
         obstacleInterval += Time.deltaTime;
@@ -127,6 +124,8 @@ public class ObstacleController: MonoBehaviour {
         int obstacleWidth = Random.Range(1, 5);
 
         Vector3 groundScale = groundPrefab.transform.localScale;
+
+        GameObject lastObstacle = GetLastObstacleWithTag("Obstacle");
 
         for (int x = 1; x <= obstacleWidth; x++)
         {
@@ -190,6 +189,7 @@ public class ObstacleController: MonoBehaviour {
             }
 
             firstGround.transform.position = newPosition;
+            groundDistance = newPosition.x;
 
             obstaclesPool.Add(firstGround);
         }

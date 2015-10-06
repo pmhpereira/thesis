@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour {
     public bool isIdling;
     public bool isFalling;
 
+    public float moveSpeed;
+
     [Range (-10, 10)]
     public float fixedPlayerPositionX;
 
@@ -36,8 +38,6 @@ public class PlayerController : MonoBehaviour {
 
     public bool stopOnCollision;
 
-    private float defaultTimeScale = 1.0f;
-
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour {
         colliding = new List<Collider2D>();
     }
 
-    void Update ()
+    void Update()
     {
         CheckStatus();
         ProcessInput();
@@ -146,11 +146,7 @@ public class PlayerController : MonoBehaviour {
             renderer.material.color = idlingColor;
         }
 
-        Time.timeScale = (isColliding && stopOnCollision) ? 0 : defaultTimeScale;
-
-        var newPosition = transform.position;
-        newPosition.x = fixedPlayerPositionX;
-        transform.position = newPosition;
+        Time.timeScale = (isColliding && stopOnCollision) ? 0 : 1;
 
         if (rigidbody.velocity.y > maxVerticalVelocity)
         {
@@ -158,6 +154,9 @@ public class PlayerController : MonoBehaviour {
             newVelocity.y = maxVerticalVelocity;
             rigidbody.velocity = newVelocity;
         }
+
+        transform.position += new Vector3(Time.deltaTime * moveSpeed, 0, 0);
+
     }
 
     void OnTriggerEnter2D(Collider2D other)

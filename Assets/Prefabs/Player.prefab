@@ -180,6 +180,7 @@ MonoBehaviour:
   isColliding: 0
   isIdling: 0
   isFalling: 0
+  moveSpeed: 12.5
   fixedPlayerPositionX: -6
   maxVerticalVelocity: 6.5
   jumpForce: 600

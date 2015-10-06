@@ -5,7 +5,12 @@ public class CameraController : MonoBehaviour {
 
     public static CameraController instance;
 
+    public PlayerController playerController;
+    private float playerMoveSpeed;
+
     private new Camera camera;
+
+    public bool sceneViewFollow;
 
     void Awake()
     {
@@ -18,12 +23,15 @@ public class CameraController : MonoBehaviour {
 
         camera = GetComponent<Camera>();
 
+        playerMoveSpeed = playerController.moveSpeed;
+
         LoadFromDataHolder();
     }
 
     void Update()
     {
         ProcessInput();
+        UpdateGame();
     }
 
     void ProcessInput()
@@ -71,6 +79,11 @@ public class CameraController : MonoBehaviour {
 
             SaveToPlayerPrefs();
         }
+    }
+
+    void UpdateGame()
+    {
+        camera.transform.position += new Vector3(playerMoveSpeed * Time.deltaTime, 0, 0);
     }
 
     void SaveToPlayerPrefs()

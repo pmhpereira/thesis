@@ -131,7 +131,6 @@ MonoBehaviour:
   obstaclePrefab: {fileID: 168780, guid: 915f467bebf1f844f8a67f46ce2bffa9, type: 2}
   ceilingPrefab: {fileID: 164470, guid: 469c337c6bf0a2947ba63049623e0919, type: 2}
   obstaclesPool: []
-  moveSpeed: 12.5
   groundHeight: -4
   minStartingGroundDistance: -15
   maxStartingGroundDistance: 25
@@ -144,6 +143,7 @@ MonoBehaviour:
   spawnCeiling: 1
   ceilingHeight: 2
   hideBlocksInHierarchy: 1
+  playerController: {fileID: 1738462948}
 --- !u!114 &713458885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,6 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e272b4d45d15547439b6494d35e209c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 1738462948}
 --- !u!1 &1172328795
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,21 +483,15 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 5062878, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
-      propertyPath: m_GravityScale
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
-      propertyPath: jumpForce
-      value: 750
-      objectReference: {fileID: 0}
-    - target: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
-      propertyPath: maxVerticalVelocity
-      value: 7
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55423295caf43b842ab0a8293ce5df54, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1738462948 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11407780, guid: 55423295caf43b842ab0a8293ce5df54,
+    type: 2}
+  m_PrefabInternal: {fileID: 1619689080}
+  m_Script: {fileID: 11500000, guid: 303bba1c8c3519d49961248a71e0ce94, type: 3}
 --- !u!1 &2034207217
 GameObject:
   m_ObjectHideFlags: 0
