@@ -357,6 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 1738462948}
+  sceneViewFollow: 1
 --- !u!1 &1172328795
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEditor;
 
 public class CameraController : MonoBehaviour {
 
@@ -79,11 +80,26 @@ public class CameraController : MonoBehaviour {
 
             SaveToPlayerPrefs();
         }
+
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            sceneViewFollow = !sceneViewFollow;
+        }
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            SceneView.lastActiveSceneView.orthographic = !SceneView.lastActiveSceneView.orthographic;
+        }
     }
 
     void UpdateGame()
     {
         camera.transform.position += new Vector3(playerMoveSpeed * Time.deltaTime, 0, 0);
+
+        if(sceneViewFollow && SceneView.lastActiveSceneView)
+        {
+            SceneView.lastActiveSceneView.pivot = camera.transform.position;
+        }
     }
 
     void SaveToPlayerPrefs()
