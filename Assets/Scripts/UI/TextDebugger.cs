@@ -27,17 +27,15 @@ void Update()
     {
         string textToDisplay = "";
 
-        textToDisplay += "1 | Collisions: " + playerController.stopOnCollision.ToString();
-        textToDisplay += "\n";
-        textToDisplay += "2 | Holes: " + ObstacleController.instance.spawnHoles;
-        textToDisplay += "\n";
-        textToDisplay += "3 | Obstacles: " + ObstacleController.instance.spawnObstacles;
+        textToDisplay += "C | Collisions: " + playerController.stopOnCollision.ToString();
         textToDisplay += "\n";
         textToDisplay += "R | Restart";
         textToDisplay += "\n";
-        textToDisplay += "C | Camera Projection";
+        textToDisplay += "P | Camera Projection";
         textToDisplay += "\n";
         textToDisplay += "N-M | Camera Zoom";
+        textToDisplay += "\n";
+        textToDisplay += "1-9 | Spawn Patterns";
 
         textCanvas.text = textToDisplay;
     }

@@ -65,7 +65,7 @@ public class CameraController : MonoBehaviour {
             SaveToPlayerPrefs();
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             camera.orthographic = !camera.orthographic;
 
