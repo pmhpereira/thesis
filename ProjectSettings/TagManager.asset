@@ -8,6 +8,7 @@ TagManager:
   - Obstacle
   - Ceiling
   - Hole
+  - Pattern
   layers:
   - Default
   - TransparentFX

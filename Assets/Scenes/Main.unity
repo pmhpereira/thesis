@@ -596,6 +596,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c120454d28604648a313c51f15b0f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2076266477
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 2076266481}
+  - 114: {fileID: 2076266480}
+  - 61: {fileID: 2076266479}
+  m_Layer: 0
+  m_Name: Pattern Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!61 &2076266479
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2076266477}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 1, y: 50}
+--- !u!114 &2076266480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2076266477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7393964609b33c140bfa18fc71561cc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundPrefab: {fileID: 168780, guid: 8bbbe6a7db1aacd4ead5630b53cc7f87, type: 2}
+  groundHeight: 0
+  ceilingPrefab: {fileID: 164470, guid: 469c337c6bf0a2947ba63049623e0919, type: 2}
+  ceilingHeight: 0
+  minStartingGroundDistance: -15
+  maxStartingGroundDistance: 25
+  hideBlocksInHierarchy: 1
+  playerController: {fileID: 1738462948}
+--- !u!4 &2076266481
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2076266477}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
 --- !u!1 &2142559714
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,7 +743,7 @@ RectTransform:
   - {fileID: 930097354}
   - {fileID: 1172328796}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
