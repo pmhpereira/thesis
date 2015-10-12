@@ -35,6 +35,8 @@ void Update()
             textToDisplay += "\n";
             textToDisplay += "C | Collisions: " + playerController.stopOnCollision.ToString();
             textToDisplay += "\n";
+            textToDisplay += "H | Hide Blocks in Hierarchy: " + PatternManager.instance.hideBlocksInHierarchy.ToString();
+            textToDisplay += "\n";
             textToDisplay += "P | Camera Projection";
             textToDisplay += "\n";
             textToDisplay += "N-M | Camera Zoom";

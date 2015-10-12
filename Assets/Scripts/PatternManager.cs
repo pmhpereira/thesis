@@ -182,7 +182,7 @@ public class PatternManager : MonoBehaviour
         }
     }
 
-    void OnValidate()
+    void UpdateBlocksVisibilityInHierarchy()
     {
         foreach (Transform pattern in transform)
         {
@@ -206,6 +206,11 @@ public class PatternManager : MonoBehaviour
         for (int i = 0; i < patternsToSpawn; i++)
         {
             SpawnPattern();
+        }
+
+        if (Input.GetKeyDown(KeyCode.H)) {
+            hideBlocksInHierarchy = !hideBlocksInHierarchy;
+            UpdateBlocksVisibilityInHierarchy();
         }
     }
 
