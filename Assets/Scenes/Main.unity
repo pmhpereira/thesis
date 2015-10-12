@@ -165,9 +165,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0 FPS
-
-'
+  m_Text: 
 --- !u!222 &930097357
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -450,8 +448,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68a7d6cf9f266ba41a07fd532b9a828b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataHolder: {fileID: 0}
   frameRate: 60
+  debugMode: 1
 --- !u!1 &2037386108
 GameObject:
   m_ObjectHideFlags: 0

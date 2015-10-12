@@ -33,6 +33,11 @@ namespace UnityStandardAssets.Utility
                 m_FpsNextPeriod += fpsMeasurePeriod;
                 m_Text.text = string.Format(display, m_CurrentFps);
             }
+
+            if(!GameManager.instance.debugMode)
+            {
+                m_Text.text = "";
+            }
         }
     }
 }

@@ -130,7 +130,6 @@ public class PlayerController : MonoBehaviour {
         isJumping = true;
     }
 
-
     void UpdateGame()
     {
         if (isFalling)
@@ -156,7 +155,6 @@ public class PlayerController : MonoBehaviour {
         }
 
         transform.position += new Vector3(Time.deltaTime * moveSpeed, 0, 0);
-
     }
 
     void OnTriggerEnter2D(Collider2D other)

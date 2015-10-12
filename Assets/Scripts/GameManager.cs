@@ -5,10 +5,10 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager instance;
 
-    public GameObject dataHolder;
-
-    [Range (0, 120)]
+    [Range (30, 120)]
     public int frameRate;
+
+    public bool debugMode;
 
     void Awake() {
         if (instance != null && instance != this) {
@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour {
         }
 
         instance = this;
+
+        OnValidate();
     }
 
     void Update()
@@ -25,9 +27,14 @@ public class GameManager : MonoBehaviour {
     
     void ProcessInput()
     {
-        if(Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             RestartLevel();
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            debugMode = !debugMode;
         }
     }
 

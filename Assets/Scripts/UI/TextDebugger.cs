@@ -27,15 +27,20 @@ void Update()
     {
         string textToDisplay = "";
 
-        textToDisplay += "C | Collisions: " + playerController.stopOnCollision.ToString();
-        textToDisplay += "\n";
-        textToDisplay += "R | Restart";
-        textToDisplay += "\n";
-        textToDisplay += "P | Camera Projection";
-        textToDisplay += "\n";
-        textToDisplay += "N-M | Camera Zoom";
-        textToDisplay += "\n";
-        textToDisplay += "1-9 | Spawn Patterns";
+        if(GameManager.instance.debugMode)
+        {
+            textToDisplay += "D | Debug Mode: " + GameManager.instance.debugMode.ToString();
+            textToDisplay += "\n";
+            textToDisplay += "1-9 | Spawn Patterns";
+            textToDisplay += "\n";
+            textToDisplay += "C | Collisions: " + playerController.stopOnCollision.ToString();
+            textToDisplay += "\n";
+            textToDisplay += "P | Camera Projection";
+            textToDisplay += "\n";
+            textToDisplay += "N-M | Camera Zoom";
+            textToDisplay += "\n";
+            textToDisplay += "R | Restart";
+        }
 
         textCanvas.text = textToDisplay;
     }
