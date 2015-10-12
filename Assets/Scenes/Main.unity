@@ -643,6 +643,8 @@ MonoBehaviour:
   maxStartingGroundDistance: 25
   hideBlocksInHierarchy: 1
   playerController: {fileID: 1738462948}
+  savedAttempts: 10
+  attemptsWeights: 01000000010000000200000002000000030000000300000004000000040000000500000005000000
 --- !u!4 &2076266481
 Transform:
   m_ObjectHideFlags: 0

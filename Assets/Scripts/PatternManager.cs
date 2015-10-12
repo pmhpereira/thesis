@@ -26,6 +26,12 @@ public class PatternManager : MonoBehaviour
 
     private GameObject[] patterns;
 
+    public Dictionary<string, PatternInfo> patternsInfo;
+
+    [HideInInspector]
+    public int savedAttempts;
+    public int[] attemptsWeights;
+
     void Awake()
     {
         if (instance != null && instance != this)
@@ -47,6 +53,15 @@ public class PatternManager : MonoBehaviour
         playerMoveSpeed = playerController.moveSpeed;
 
         patterns = Resources.LoadAll<GameObject>("Patterns");
+
+        patternsInfo = new Dictionary<string, PatternInfo>();
+
+        foreach(GameObject pattern in patterns)
+        {
+            patternsInfo[pattern.name] = new PatternInfo(pattern.name);
+        }
+
+        savedAttempts = attemptsWeights.Length;
     }
 
     void Start()
@@ -96,13 +111,16 @@ public class PatternManager : MonoBehaviour
     void SpawnPattern(int index)
     {
         GameObject newPattern = Instantiate(patterns[index]) as GameObject;
+        newPattern.name = patterns[index].name;
+
+        int patternLength = newPattern.GetComponent<PatternController>().length;
 
         newPattern.transform.position += Vector3.right * groundDistance;
         newPattern.transform.SetParent(this.transform);
         newPattern.hideFlags = hideBlocksInHierarchy ? HideFlags.HideInHierarchy : HideFlags.None;
 
-        groundDistance += newPattern.transform.childCount;
-        ceilingDistance += newPattern.transform.childCount;
+        groundDistance += patternLength;
+        ceilingDistance += patternLength;
     }
 
     private GameObject GetFirstObstacleWithTag(string tag)
@@ -228,7 +246,7 @@ public class PatternManager : MonoBehaviour
         }
         else if (parent.tag == "Pattern")
         {
-            if(parent.parent && parent.parent.childCount == 1)
+            if(parent.parent && parent.parent.childCount == 2)
             {
                 Destroy(parent.parent.gameObject);
             }
