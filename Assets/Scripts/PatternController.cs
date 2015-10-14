@@ -4,7 +4,7 @@ using System.Collections;
 public class PatternController : MonoBehaviour {
 
     [HideInInspector]
-    public int length;
+    public float length;
 
     private MeshRenderer debugRenderer;
     private Material debugRendererMaterial;
@@ -14,8 +14,18 @@ public class PatternController : MonoBehaviour {
 
     void Awake()
     {
-        length = transform.childCount;
+        foreach(Transform child in transform)
+        {
+            float childSize = child.position.x + child.localScale.x;
+            if (childSize > length)
+            {
+                length = childSize;
+            }
+        }
+    }
 
+    void Start()
+    {
         SetupDebugMode();
         SetupExitCollider();
     }

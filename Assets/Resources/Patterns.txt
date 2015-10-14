@@ -1,0 +1,19 @@
+1x1
+	Obstacle 
+		Position 0 1
+	Ground
+		Position 0 0
+
+2x2
+	Obstacle
+		Position 0 2
+	Obstacle
+		Position 0 1
+	Ground
+		Position 0 0
+	Obstacle
+		Position 1 2
+	Obstacle
+		Position 1 1
+	Ground
+		Position 1 0

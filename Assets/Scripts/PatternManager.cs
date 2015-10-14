@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class PatternManager : MonoBehaviour
 {
-
     public static PatternManager instance;
 
     public GameObject groundPrefab;
@@ -52,7 +51,7 @@ public class PatternManager : MonoBehaviour
 
         playerMoveSpeed = playerController.moveSpeed;
 
-        patterns = Resources.LoadAll<GameObject>("Patterns");
+        patterns = PatternGenerator.instance.GetGeneratedPatterns();
 
         patternsInfo = new Dictionary<string, PatternInfo>();
 
@@ -113,7 +112,7 @@ public class PatternManager : MonoBehaviour
         GameObject newPattern = Instantiate(patterns[index]) as GameObject;
         newPattern.name = patterns[index].name;
 
-        int patternLength = newPattern.GetComponent<PatternController>().length;
+        float patternLength = newPattern.GetComponent<PatternController>().length;
 
         newPattern.transform.position += Vector3.right * groundDistance;
         newPattern.transform.SetParent(this.transform);
@@ -244,13 +243,17 @@ public class PatternManager : MonoBehaviour
         {
             RepositionCeiling();
         }
-        else if (parent.tag == "Pattern")
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        Transform parent = other.transform.parent;
+
+        if (parent.tag == "Pattern")
         {
-            if(parent.parent && parent.parent.childCount == 2)
-            {
-                Destroy(parent.parent.gameObject);
-            }
-            else
+            float blockLength = other.gameObject.GetComponentInParent<PatternController>().length;
+
+            if (blockLength == other.transform.localPosition.x + other.transform.localScale.x)
             {
                 Destroy(parent.gameObject);
             }
