@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-public class TextDebugger : MonoBehaviour {
-
+public class TextDebugger : MonoBehaviour
+{
     public static TextDebugger instance;
 
     private Text textCanvas;
@@ -40,6 +39,8 @@ void Update()
             textToDisplay += "P | Camera Projection";
             textToDisplay += "\n";
             textToDisplay += "N-M | Camera Zoom";
+            textToDisplay += "\n";
+            textToDisplay += "Space | Pause";
             textToDisplay += "\n";
             textToDisplay += "R | Restart";
         }

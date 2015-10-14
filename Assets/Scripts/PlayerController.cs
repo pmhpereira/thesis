@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerController : MonoBehaviour {
-
+public class PlayerController : MonoBehaviour
+{
     public bool isJumping;
     public bool isMultipleJumping;
     public bool isDashing;
@@ -145,7 +144,10 @@ public class PlayerController : MonoBehaviour {
             renderer.material.color = idlingColor;
         }
 
-        Time.timeScale = (isColliding && stopOnCollision) ? 0 : 1;
+        if(!GameManager.instance.isPaused)
+        {
+            Time.timeScale = (isColliding && stopOnCollision) ? 0 : 1;
+        }
 
         if (rigidbody.velocity.y > maxVerticalVelocity)
         {

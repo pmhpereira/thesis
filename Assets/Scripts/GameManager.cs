@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class GameManager : MonoBehaviour {
-
+public class GameManager : MonoBehaviour
+{
     public static GameManager instance;
 
     [Range (30, 120)]
     public int frameRate;
 
-    public bool debugMode;
+    public bool debugMode, isPaused;
 
-    void Awake() {
+    private float oldTimeScale;
+
+    void Awake()
+    {
         if (instance != null && instance != this) {
             Destroy(gameObject);
         }
@@ -35,6 +37,18 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.D))
         {
             debugMode = !debugMode;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            isPaused = !isPaused;
+
+            if(isPaused)
+            {
+                oldTimeScale = Time.timeScale;
+            }
+
+            Time.timeScale = isPaused ? 0 : oldTimeScale;
         }
     }
 
