@@ -103,4 +103,34 @@ public class PatternController : MonoBehaviour
             Destroy(exitCollider);
         }
     }
+
+    void OnGUI()
+    {
+        if (!GameManager.instance.debugMode)
+        {
+            return;
+        }
+
+        float score = PatternManager.instance.patternsInfo[transform.name].GetScore();
+        string scoretext = "" + Math.Round(score, 3);
+        GUIContent guiContent = new GUIContent(transform.name + "\n" + scoretext);
+
+        GUIStyle guiStyle = GUI.skin.GetStyle("Label");
+        guiStyle.alignment = TextAnchor.LowerCenter;
+        guiStyle.fontSize = 14;
+
+        Vector2 guiSize = guiStyle.CalcSize(guiContent);
+
+        var rect = new Rect();
+        var offset = -transform.localScale / 2;
+        Vector3 lowerLeftPoint = Camera.main.WorldToScreenPoint(transform.position + offset);
+        Vector3 upperRightPoint = Camera.main.WorldToScreenPoint(transform.position + offset + new Vector3(length, 0, 0));
+
+        rect.x = (upperRightPoint.x + lowerLeftPoint.x - guiSize.x) / 2;
+        rect.y = 0;
+        rect.width = guiSize.x;
+        rect.height = Screen.height - lowerLeftPoint.y;
+
+        GUI.Label(rect, guiContent, guiStyle);
+    }
 }
