@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-public class PatternInfo {
-
+public class PatternInfo
+{
     public string name;
 
     public List<int> attempts;
@@ -19,12 +17,18 @@ public class PatternInfo {
         float score = 0;
         int accumulator = 0;
 
-        for(int index = 0; index < attempts.Count; index++)
+        for(int i = 0; i < attempts.Count; i++)
         {
+            int index = i;
+
+            if(attempts.Count < attempts.Capacity)
+            {
+                index = attempts.Capacity - i - 1;
+            }
             int weight = PatternManager.instance.attemptsWeights[index];
 
             accumulator += weight;
-            score += attempts[index] * weight;
+            score += attempts[i] * weight;
         }
 
         for (int index = attempts.Count; index < attempts.Capacity; index++)
