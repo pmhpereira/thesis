@@ -26,8 +26,10 @@ public class PlayerController : MonoBehaviour
 
     private new Rigidbody2D rigidbody;
     private new Renderer renderer;
+    private BoxCollider2D boxCollider;
 
     public List<Collider2D> colliding;
+    private int numCollisions = 0;
 
     public Color idlingColor;
     public Color collidingColor;
@@ -42,6 +44,8 @@ public class PlayerController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         renderer = GetComponent<Renderer>();
 
+        boxCollider = GetComponent<BoxCollider2D>();
+
         colliding = new List<Collider2D>();
     }
 
@@ -54,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
     void CheckStatus()
     {
-        isColliding = false;
+        isColliding = (numCollisions > 0);
         isIdling = false;
         isJumping = Mathf.Abs(rigidbody.velocity.y) > Mathf.Epsilon * 1e3;
 
@@ -72,11 +76,7 @@ public class PlayerController : MonoBehaviour
 
             colliding.Add(collider);
 
-            if (collider.tag == "Obstacle")
-            {
-                isColliding = true;
-            }
-            else if(collider.tag == "Ground")
+            if(collider.tag == "Ground")
             {
                 isIdling = true;
             }
@@ -161,9 +161,28 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Obstacle" && other.transform.parent.tag == "Ground")
+        if (other.tag == "Obstacle")
         {
-            isFalling = true;
+            if (other.transform.parent.tag == "Ground")
+            {
+                isFalling = true;
+            }
+            else if (other.transform.parent.tag == "Pattern")
+            {
+                other.gameObject.GetComponentInParent<PatternController>().OnTriggerEnter2D(this.boxCollider);
+                numCollisions++;
+            }
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.tag == "Obstacle")
+        {
+            if (other.transform.parent.tag == "Pattern")
+            {
+                numCollisions--;
+            }
         }
     }
 }

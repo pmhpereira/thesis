@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using UnityEngine;
 
-public class PatternController : MonoBehaviour {
-
+public class PatternController : MonoBehaviour
+{
     [HideInInspector]
     public float length;
 
@@ -43,6 +43,7 @@ public class PatternController : MonoBehaviour {
         GameObject debugChild = new GameObject();
         debugChild.name = "Debug";
         debugChild.transform.SetParent(this.transform);
+        debugChild.transform.localPosition = Vector3.zero;
 
         debugRendererMaterial = new Material(Shader.Find("Particles/Additive"));
 
@@ -83,18 +84,23 @@ public class PatternController : MonoBehaviour {
 
     void SetupExitCollider()
     {
-        exitCollider = gameObject.AddComponent<BoxCollider2D>();
+        GameObject collider = new GameObject("Exit Collider");
+        collider.AddComponent<PatternCheckpoint>();
+        collider.transform.SetParent(this.transform);
+        collider.transform.localPosition = Vector3.zero;
+
+        exitCollider = collider.AddComponent<BoxCollider2D>();
         exitCollider.isTrigger = true;
         exitCollider.offset = new Vector2(length - 0.5f, 2);
         exitCollider.size = new Vector2(0.1f, 6);
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    public void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.transform.parent.tag == "Player")
+        if (other.transform.tag == "Player")
         {
-            PatternManager.instance.patternsInfo[gameObject.name].AddAttempt(true);
-            Destroy(this.GetComponent<BoxCollider2D>());
+            PatternManager.instance.patternsInfo[gameObject.name].AddAttempt(false);
+            Destroy(exitCollider);
         }
     }
 }
