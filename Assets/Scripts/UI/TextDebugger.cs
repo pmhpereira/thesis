@@ -20,21 +20,21 @@ public class TextDebugger : MonoBehaviour
 
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         textCanvas = GetComponent<Text>();
-}
+    }
 
-void Update()
+    void Update()
     {
         string textToDisplay = "";
 
         if(GameManager.instance.debugMode)
         {
-            textToDisplay += "D | Debug Mode: " + GameManager.instance.debugMode.ToString();
+            textToDisplay += "D | Debug Mode: " + GameManager.instance.debugMode;
             textToDisplay += "\n";
             textToDisplay += "1-9 | Spawn Patterns";
             textToDisplay += "\n";
-            textToDisplay += "C | Collisions: " + playerController.stopOnCollision.ToString();
+            textToDisplay += "C | Collisions: " + playerController.stopOnCollision;
             textToDisplay += "\n";
-            textToDisplay += "H | Hide Blocks in Hierarchy: " + PatternManager.instance.hideBlocksInHierarchy.ToString();
+            textToDisplay += "H | Hide Blocks in Hierarchy: " + PatternManager.instance.hideBlocksInHierarchy;
             textToDisplay += "\n";
             textToDisplay += "P | Camera Projection";
             textToDisplay += "\n";

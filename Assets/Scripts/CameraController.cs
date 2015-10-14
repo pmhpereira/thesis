@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEditor;
 
-public class CameraController : MonoBehaviour {
-
+public class CameraController : MonoBehaviour
+{
     public static CameraController instance;
 
     public PlayerController playerController;
