@@ -40,11 +40,28 @@ public class PatternGenerator : MonoBehaviour
         generated.transform.SetParent(this.transform);
         generated.SetActive(false);
 
+        int lastCommentIndendation = -1;
+
         for(int i = 0; i < lines.Length; i++)
         {
             string line = lines[i];
-            int indentation = line.Split('\t').Length - 1;
+            int indentation = line.Split(new string[] { "\t", "    " }, StringSplitOptions.None).Length - 1;
             string[]  parameters = line.Split(new char[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (parameters[0].StartsWith("//"))
+            {
+                lastCommentIndendation = indentation;
+                continue;
+            }
+            
+            if(lastCommentIndendation >= 0 && indentation > lastCommentIndendation)
+            {
+                continue;
+            }
+            else
+            {
+                lastCommentIndendation = -1;
+            }
 
             if (indentation == 0)
             {
@@ -52,7 +69,6 @@ public class PatternGenerator : MonoBehaviour
                 pattern.AddComponent<PatternController>();
                 pattern.transform.SetParent(generated.transform);
                 pattern.transform.tag = "Pattern";
-
                 patternsMap[pattern.name] = pattern;
             }
             else if(indentation == 1)
