@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PatternController : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PatternController : MonoBehaviour
     private LineRenderer startLineRenderer, endLineRenderer;
 
     private BoxCollider2D exitCollider;
+
+    private Text text;
 
     void Awake()
     {
@@ -36,6 +39,7 @@ public class PatternController : MonoBehaviour
         endLineRenderer.SetVertexCount(0);
 
         DebugPatternLimits();
+        DebugPatternInfo();
     }
 
     void SetupDebugMode()
@@ -64,6 +68,26 @@ public class PatternController : MonoBehaviour
         endLineRenderer.SetColors(Color.red, Color.red);
         endLineRenderer.SetWidth(0.05f, 0.05f);
         endLineRenderer.material = debugRendererMaterial;
+
+        Canvas canvas = debugChild.AddComponent<Canvas>();
+        RectTransform canvasRectTransform = canvas.GetComponent<RectTransform>();
+
+        Vector3 canvasPosition = new Vector3();
+        canvasPosition.x = length / 2 - 0.5f;
+        canvasPosition.z = -1;
+        canvasRectTransform.localPosition = canvasPosition;
+        canvasRectTransform.sizeDelta = new Vector2(length * 100, 100);
+        canvasRectTransform.localScale /= 100;
+
+        canvas.renderMode = RenderMode.WorldSpace;
+        canvas.worldCamera = Camera.main;
+
+        text = debugChild.AddComponent<Text>();
+        text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+        text.fontSize = 40;
+        text.alignment = TextAnchor.MiddleCenter;
+        text.horizontalOverflow = HorizontalWrapMode.Overflow;
+        text.verticalOverflow = VerticalWrapMode.Overflow;
     }
 
     void DebugPatternLimits()
@@ -104,33 +128,16 @@ public class PatternController : MonoBehaviour
         }
     }
 
-    void OnGUI()
+    void DebugPatternInfo()
     {
         if (!GameManager.instance.debugMode)
         {
+            text.text = "";
             return;
         }
 
-        float score = PatternManager.instance.patternsInfo[transform.name].GetScore();
-        string scoretext = "" + Math.Round(score, 3);
-        GUIContent guiContent = new GUIContent(transform.name + "\n" + scoretext);
-
-        GUIStyle guiStyle = GUI.skin.GetStyle("Label");
-        guiStyle.alignment = TextAnchor.LowerCenter;
-        guiStyle.fontSize = 14;
-
-        Vector2 guiSize = guiStyle.CalcSize(guiContent);
-
-        var rect = new Rect();
-        var offset = -transform.localScale / 2;
-        Vector3 lowerLeftPoint = Camera.main.WorldToScreenPoint(transform.position + offset);
-        Vector3 upperRightPoint = Camera.main.WorldToScreenPoint(transform.position + offset + new Vector3(length, 0, 0));
-
-        rect.x = (upperRightPoint.x + lowerLeftPoint.x - guiSize.x) / 2;
-        rect.y = 0;
-        rect.width = guiSize.x;
-        rect.height = Screen.height - lowerLeftPoint.y;
-
-        GUI.Label(rect, guiContent, guiStyle);
+        string patternName = transform.name;
+        float patternScore = PatternManager.instance.patternsInfo[transform.name].GetScore();
+        text.text = patternName + "\n" + Math.Round(patternScore, 3);
     }
 }
