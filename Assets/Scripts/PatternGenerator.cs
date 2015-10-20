@@ -20,7 +20,12 @@ public class PatternGenerator : MonoBehaviour
 
         instance = this;
 
-        GameObject[]  blockPrefabs = Resources.LoadAll<GameObject>("Blocks");
+        LoadPatternsFromFile();
+    }
+
+    void LoadPatternsFromFile()
+    {
+        GameObject[] blockPrefabs = Resources.LoadAll<GameObject>("Blocks");
         blocksMap = new Dictionary<string, GameObject>();
         patternsMap = new Dictionary<string, GameObject>();
 
@@ -42,19 +47,19 @@ public class PatternGenerator : MonoBehaviour
 
         int lastCommentIndendation = -1;
 
-        for(int i = 0; i < lines.Length; i++)
+        for (int i = 0; i < lines.Length; i++)
         {
             string line = lines[i];
-            int indentation = line.Split(new string[] { "\t", "    " }, StringSplitOptions.None).Length - 1;
-            string[]  parameters = line.Split(new char[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            int indentationLevel = line.Split(new string[] { "\t", "    " }, StringSplitOptions.None).Length - 1;
+            string[] parameters = line.Split(new char[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (parameters[0].StartsWith("//"))
             {
-                lastCommentIndendation = indentation;
+                lastCommentIndendation = indentationLevel;
                 continue;
             }
-            
-            if(lastCommentIndendation >= 0 && indentation > lastCommentIndendation)
+
+            if (lastCommentIndendation >= 0 && indentationLevel > lastCommentIndendation)
             {
                 continue;
             }
@@ -63,7 +68,7 @@ public class PatternGenerator : MonoBehaviour
                 lastCommentIndendation = -1;
             }
 
-            if (indentation == 0)
+            if (indentationLevel == 0)
             {
                 pattern = new GameObject(parameters[0]);
                 pattern.AddComponent<PatternController>();
@@ -71,15 +76,15 @@ public class PatternGenerator : MonoBehaviour
                 pattern.transform.tag = "Pattern";
                 patternsMap[pattern.name] = pattern;
             }
-            else if(indentation == 1)
+            else if (indentationLevel == 1)
             {
                 block = Instantiate(blocksMap[parameters[0]]);
                 block.name = parameters[0];
                 block.transform.SetParent(pattern.transform);
             }
-            else if(indentation == 2)
+            else if (indentationLevel == 2)
             {
-                if(parameters[0].Equals("Position"))
+                if (parameters[0]  == "Position")
                 {
                     float x = float.Parse(parameters[1]);
                     float y = float.Parse(parameters[2]);

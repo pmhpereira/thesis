@@ -15,7 +15,7 @@ public class PatternInfo
     public float GetScore()
     {
         float score = 0;
-        int accumulator = 0;
+        float accumulator = 0;
 
         for(int i = 0; i < attempts.Count; i++)
         {
@@ -23,17 +23,12 @@ public class PatternInfo
 
             if(attempts.Count < attempts.Capacity)
             {
-                index = attempts.Capacity - i - 1;
+                index = i;
             }
-            int weight = PatternManager.instance.attemptsWeights[index];
+            float weight = PatternManager.instance.attemptsWeights[index];
 
             accumulator += weight;
             score += attempts[i] * weight;
-        }
-
-        for (int index = attempts.Count; index < attempts.Capacity; index++)
-        {
-            accumulator += PatternManager.instance.attemptsWeights[index];
         }
 
         score /= accumulator;

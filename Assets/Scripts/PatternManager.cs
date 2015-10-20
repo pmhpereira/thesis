@@ -29,7 +29,7 @@ public class PatternManager : MonoBehaviour
 
     [HideInInspector]
     public int savedAttempts;
-    public int[] attemptsWeights;
+    public float[] attemptsWeights;
 
     void Awake()
     {
