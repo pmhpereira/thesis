@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
 
         if(!GameManager.instance.isPaused)
         {
-            Time.timeScale = (isColliding && stopOnCollision) ? 0 : 1;
+            Time.timeScale = ((isColliding || isFalling) && stopOnCollision) ? 0 : 1;
         }
 
         if (rigidbody.velocity.y > maxVerticalVelocity)
@@ -163,8 +163,9 @@ public class PlayerController : MonoBehaviour
     {
         if (other.tag == "Obstacle")
         {
-            if (other.transform.parent.tag == "Ground")
+            if (other.transform.parent.tag == "Hole")
             {
+                other.gameObject.GetComponentInParent<PatternController>().OnTriggerEnter2D(this.boxCollider);
                 isFalling = true;
             }
             else if (other.transform.parent.tag == "Pattern")
