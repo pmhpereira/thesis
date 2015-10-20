@@ -17,3 +17,53 @@
         Position 1 1
     Ground
         Position 1 0
+
+4xHole
+    Hole
+        Position 0 0
+    Hole
+        Position 1 0
+    Hole
+        Position 2 0
+    Hole
+        Position 3 0
+
+12_8xHole_12
+    Obstacle
+        Position 0 1
+    Ground
+        Position 0 0
+    Obstacle
+        Position 1 2
+    Obstacle
+        Position 1 1
+    Ground
+        Position 1 0
+    Hole
+        Position 2 0
+    Hole
+        Position 3 0
+    Hole
+        Position 4 0
+    Hole
+        Position 5 0
+    Hole
+        Position 6 0
+    Hole
+        Position 7 0
+    Hole
+        Position 8 0
+    Hole
+        Position 9 0
+    Obstacle
+        Position 10 1
+    Ground
+        Position 10 0
+    Obstacle
+        Position 11 2
+    Obstacle
+        Position 11 1
+    Ground
+        Position 11 0
+
+

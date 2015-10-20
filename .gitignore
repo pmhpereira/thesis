@@ -19,3 +19,8 @@ obj/
 *.user
 *.unityproj
 *.booproj
+
+======
+Custom
+======
+Snapshots/

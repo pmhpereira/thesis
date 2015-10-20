@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System;
 
 public class PatternManager : MonoBehaviour
 {
@@ -31,6 +34,8 @@ public class PatternManager : MonoBehaviour
     public int savedAttempts;
     public float[] attemptsWeights;
 
+    private string snapshotsPath;
+
     void Awake()
     {
         if (instance != null && instance != this)
@@ -61,6 +66,17 @@ public class PatternManager : MonoBehaviour
         }
 
         savedAttempts = attemptsWeights.Length;
+
+        if(Application.isEditor)
+        {
+            snapshotsPath = Application.dataPath + "/Resources";
+        }
+        else
+        {
+            snapshotsPath = Application.persistentDataPath;
+        }
+
+        snapshotsPath += "/Snapshots";
     }
 
     void Start()
@@ -103,7 +119,7 @@ public class PatternManager : MonoBehaviour
 
     void SpawnPattern()
     {
-        int index = Random.Range(0, patterns.Length);
+        int index = UnityEngine.Random.Range(0, patterns.Length);
         SpawnPattern(index);
     }
 
@@ -228,10 +244,112 @@ public class PatternManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8)) SpawnPattern(7);
         else if (Input.GetKeyDown(KeyCode.Alpha9) || Input.GetKeyDown(KeyCode.Keypad9)) SpawnPattern(8);
 
+        if (Input.GetKeyDown(KeyCode.F1)) SaveSnapshot(1);
+        else if (Input.GetKeyDown(KeyCode.F2)) SaveSnapshot(2);
+        else if (Input.GetKeyDown(KeyCode.F3)) SaveSnapshot(3);
+        else if (Input.GetKeyDown(KeyCode.F4)) SaveSnapshot(4);
+
+        if (Input.GetKeyDown(KeyCode.F5)) LoadSnapshot(1);
+        else if (Input.GetKeyDown(KeyCode.F6)) LoadSnapshot(2);
+        else if (Input.GetKeyDown(KeyCode.F7)) LoadSnapshot(3);
+        else if (Input.GetKeyDown(KeyCode.F8)) LoadSnapshot(4);
+
         if (Input.GetKeyDown(KeyCode.H)) {
             hideBlocksInHierarchy = !hideBlocksInHierarchy;
             UpdateBlocksVisibilityInHierarchy();
         }
+    }
+
+    void SaveSnapshot(int slot)
+    {
+        string data = "";
+        data += "Weights";
+        for(var i = 0; i < attemptsWeights.Length; i++)
+        {
+            data += " " + attemptsWeights[i];
+        }
+        data += "\n";
+
+        foreach(string key in patternsInfo.Keys)
+        {
+            data += "\n";
+            data += key;
+
+            List<int> attemps = patternsInfo[key].attempts;
+
+            foreach (int attempt in attemps) {
+                data += " " + attempt;
+            }
+        }
+        data += "\n";
+
+        string filePath = snapshotsPath + "/Snapshot" + slot + ".txt";
+        FileStream file = File.OpenWrite(filePath);
+        foreach (byte b in Encoding.ASCII.GetBytes(data))
+        {
+            file.WriteByte(b);
+        }
+        file.Close();
+
+        Debug.Log("Saved snapshot " + slot);
+    }
+
+    void LoadSnapshot(int slot)
+    {
+        string filePath = snapshotsPath + "/Snapshot" + slot + ".txt";
+        if(!File.Exists(filePath))
+        {
+            return;
+        }
+
+        FileStream file = File.OpenRead(filePath);
+        byte[] bytes = new byte[file.Length];
+        file.Read(bytes, 0, bytes.Length);
+        file.Close();
+
+        string data = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
+
+        string[] lines = data.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        for (int i = 0; i < lines.Length; i++)
+        {
+            string line = lines[i];
+            int indentationLevel = line.Split(new string[] { "\t", "    " }, StringSplitOptions.None).Length - 1;
+            string[] parameters = line.Split(new char[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (parameters[0].StartsWith("//"))
+            {
+                continue;
+            }
+
+            if (indentationLevel == 0)
+            {
+                if(parameters[0] == "Weights")
+                {
+                    attemptsWeights = new float[parameters.Length - 1];
+
+                    for(var p = 1; p < parameters.Length; p++)
+                    {
+                        attemptsWeights[p - 1] = float.Parse(parameters[p]);
+                    }
+                }
+                else
+                {
+                    string patternName = parameters[0];
+
+                    if (patternsInfo.ContainsKey(patternName))
+                    {
+                        PatternInfo info = new PatternInfo(patternName);
+                        for (var p = 1; p < parameters.Length; p++)
+                        {
+                            info.AddAttempt(int.Parse(parameters[p]) == 1);
+                        }
+                        patternsInfo[patternName] = info;
+                    }
+                }
+            }
+        }
+
+        Debug.Log("Loaded snapshot " + slot);
     }
 
     void OnTriggerEnter2D(Collider2D other)
