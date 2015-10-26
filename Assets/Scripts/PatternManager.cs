@@ -284,7 +284,7 @@ public class PatternManager : MonoBehaviour
         data += "\n";
 
         string filePath = snapshotsPath + "/Snapshot" + slot + ".txt";
-        FileStream file = File.OpenWrite(filePath);
+        FileStream file = File.Open(filePath, FileMode.Create);
         foreach (byte b in Encoding.ASCII.GetBytes(data))
         {
             file.WriteByte(b);
