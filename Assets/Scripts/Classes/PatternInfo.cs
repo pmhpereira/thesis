@@ -3,6 +3,8 @@
 public class PatternInfo
 {
     public string name;
+    public List<List<string>> tags;
+    public List<List<Dependency>> dependencies;
 
     public List<int> attempts;
 
@@ -10,6 +12,8 @@ public class PatternInfo
     {
         this.name = name;
         this.attempts = new List<int>(PatternManager.instance.savedAttempts);
+        this.tags = new List<List<string>>();
+        this.dependencies = new List<List<Dependency>>();
     }
 
     public float GetScore()
@@ -49,5 +53,15 @@ public class PatternInfo
         }
 
         attempts.Add(success ? 1 : 0);
+    }
+
+    public void AddTags(params string[] newTags)
+    {
+        tags.Add(new List<string>(newTags));
+    }
+
+    public void AddDependencies(params Dependency[] newDependencies)
+    {
+        dependencies.Add(new List<Dependency>(newDependencies));
     }
 }

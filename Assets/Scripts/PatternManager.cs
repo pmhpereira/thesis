@@ -27,7 +27,6 @@ public class PatternManager : MonoBehaviour
     private float playerMoveSpeed;
 
     private GameObject[] patterns;
-
     public Dictionary<string, PatternInfo> patternsInfo;
 
     [HideInInspector]
@@ -56,14 +55,7 @@ public class PatternManager : MonoBehaviour
 
         playerMoveSpeed = playerController.moveSpeed;
 
-        patterns = PatternGenerator.instance.GetGeneratedPatterns();
-
-        patternsInfo = new Dictionary<string, PatternInfo>();
-
-        foreach(GameObject pattern in patterns)
-        {
-            patternsInfo[pattern.name] = new PatternInfo(pattern.name);
-        }
+        SetPatterns(new GameObject[] { });
 
         savedAttempts = attemptsWeights.Length;
 
@@ -77,6 +69,22 @@ public class PatternManager : MonoBehaviour
         }
 
         snapshotsPath += "/Snapshots";
+    }
+
+    public void SetPatterns(GameObject[] newPatterns)
+    {
+        patterns = newPatterns;
+        patternsInfo = new Dictionary<string, PatternInfo>();
+
+        foreach (GameObject pattern in patterns)
+        {
+            SetPatternsInfo(pattern.name, new PatternInfo(pattern.name));
+        }
+    }
+
+    public void SetPatternsInfo(string patternName, PatternInfo patternInfo)
+    {
+        patternsInfo[patternName] = patternInfo;
     }
 
     void Start()
