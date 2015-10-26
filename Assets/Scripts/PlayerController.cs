@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
         isJumping = Mathf.Abs(rigidbody.velocity.y) > Mathf.Epsilon * 1e3;
 
         colliding.Clear();
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, transform.localScale + new Vector3(collisionDelta, collisionDelta, collisionDelta), 0, Vector2.zero);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, transform.localScale + Vector3.one * collisionDelta, 0, Vector2.zero);
 
         foreach(RaycastHit2D hit in hits)
         {
