@@ -35,6 +35,8 @@ public class PatternManager : MonoBehaviour
 
     private string snapshotsPath;
 
+    private const string snapshotsFilePrefix = "Snapshot_";
+
     void Awake()
     {
         if (instance != null && instance != this)
@@ -291,7 +293,7 @@ public class PatternManager : MonoBehaviour
         }
         data += "\n";
 
-        string filePath = snapshotsPath + "/Snapshot" + slot + ".txt";
+        string filePath = snapshotsPath + "/" + snapshotsFilePrefix + slot + ".txt";
         FileStream file = File.Open(filePath, FileMode.Create);
         foreach (byte b in Encoding.ASCII.GetBytes(data))
         {
@@ -304,7 +306,7 @@ public class PatternManager : MonoBehaviour
 
     void LoadSnapshot(int slot)
     {
-        string filePath = snapshotsPath + "/Snapshot" + slot + ".txt";
+        string filePath = snapshotsPath + "/" + snapshotsFilePrefix + slot + ".txt";
         if(!File.Exists(filePath))
         {
             return;
