@@ -11,10 +11,13 @@ public class PatternController : MonoBehaviour
     private Material debugRendererMaterial;
     private LineRenderer startLineRenderer, endLineRenderer;
 
-    private BoxCollider2D exitCollider;
+    [HideInInspector]
+    public BoxCollider2D startCollider, endCollider;
 
     private Text text;
 
+    private float lineWidth = 0.05f;
+    private float colliderWidth = 0.1f;
     void Awake()
     {
         foreach(Transform child in transform)
@@ -30,7 +33,7 @@ public class PatternController : MonoBehaviour
     void Start()
     {
         SetupDebugMode();
-        SetupExitCollider();
+        SetupBorderColliders();
     }
 
     void Update()
@@ -61,12 +64,12 @@ public class PatternController : MonoBehaviour
 
         startLineRenderer = leftLineRenderer.AddComponent<LineRenderer>();
         startLineRenderer.SetColors(Color.green, Color.green);
-        startLineRenderer.SetWidth(0.05f, 0.05f);
+        startLineRenderer.SetWidth(lineWidth, lineWidth);
         startLineRenderer.material = debugRendererMaterial;
 
         endLineRenderer = rightLineRenderer.AddComponent<LineRenderer>();
         endLineRenderer.SetColors(Color.red, Color.red);
-        endLineRenderer.SetWidth(0.05f, 0.05f);
+        endLineRenderer.SetWidth(lineWidth, lineWidth);
         endLineRenderer.material = debugRendererMaterial;
 
         Canvas canvas = debugChild.AddComponent<Canvas>();
@@ -98,25 +101,35 @@ public class PatternController : MonoBehaviour
         }
 
         startLineRenderer.SetVertexCount(2);
-        startLineRenderer.SetPosition(0, transform.position + new Vector3(-0.5f, -1, 0));
-        startLineRenderer.SetPosition(1, transform.position + new Vector3(-0.5f, 5, 0));
+        startLineRenderer.SetPosition(0, transform.position + new Vector3(-0.5f - lineWidth / 2, -1, 0));
+        startLineRenderer.SetPosition(1, transform.position + new Vector3(-0.5f - lineWidth / 2, 5, 0));
 
         endLineRenderer.SetVertexCount(2);
-        endLineRenderer.SetPosition(0, transform.position + new Vector3(-0.5f + length, -1, 0));
-        endLineRenderer.SetPosition(1, transform.position + new Vector3(-0.5f + length, 5, 0));
+        endLineRenderer.SetPosition(0, transform.position + new Vector3(length - 0.5f + lineWidth / 2, -1, 0));
+        endLineRenderer.SetPosition(1, transform.position + new Vector3(length - 0.5f + lineWidth / 2, 5, 0));
     }
 
-    void SetupExitCollider()
+    void SetupBorderColliders()
     {
-        GameObject collider = new GameObject("Exit Collider");
-        collider.AddComponent<PatternCheckpoint>();
+        GameObject collider = new GameObject("Start Collider");
         collider.transform.SetParent(this.transform);
         collider.transform.localPosition = Vector3.zero;
+        collider.AddComponent<PatternCheckpoint>();
 
-        exitCollider = collider.AddComponent<BoxCollider2D>();
-        exitCollider.isTrigger = true;
-        exitCollider.offset = new Vector2(length - 0.5f, 2);
-        exitCollider.size = new Vector2(0.1f, 6);
+        startCollider = collider.AddComponent<BoxCollider2D>();
+        startCollider.isTrigger = true;
+        startCollider.size = new Vector2(colliderWidth, 6);
+        startCollider.offset = new Vector2(-0.5f - colliderWidth / 2, 2);
+
+        collider = new GameObject("Exit Collider");
+        collider.transform.SetParent(this.transform);
+        collider.transform.localPosition = Vector3.zero;
+        collider.AddComponent<PatternCheckpoint>();
+
+        endCollider = collider.AddComponent<BoxCollider2D>();
+        endCollider.isTrigger = true;
+        endCollider.size = new Vector2(colliderWidth, 6);
+        endCollider.offset = new Vector2(length - 0.5f + colliderWidth / 2, 2);
     }
 
     public void OnTriggerEnter2D(Collider2D other)
