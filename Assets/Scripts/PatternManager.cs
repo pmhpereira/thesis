@@ -135,8 +135,16 @@ public class PatternManager : MonoBehaviour
             return;
         }
 
-        GameObject newPattern = Instantiate(patterns[index]) as GameObject;
-        newPattern.name = patterns[index].name;
+        GameObject pattern = patterns[index];
+
+        if(!CanSpawn(pattern.name))
+        {
+            Debug.Log("Unresolved dependencies for " + pattern.name);
+            return;
+        }
+
+        GameObject newPattern = Instantiate(pattern) as GameObject;
+        newPattern.name = pattern.name;
 
         float patternLength = newPattern.GetComponent<PatternController>().length;
 
@@ -269,23 +277,30 @@ public class PatternManager : MonoBehaviour
     {
         string data = "";
         data += "Weights";
-        for(var i = 0; i < attemptsWeights.Length; i++)
+        for(int i = 0; i < attemptsWeights.Length; i++)
         {
             data += " " + attemptsWeights[i];
         }
-        data += "\n";
 
         foreach(string key in patternsInfo.Keys)
         {
-            data += "\n";
-            data += key;
+            data += "\n\n";
+            data += "Pattern " + key;
 
-            List<int> attemps = patternsInfo[key].attempts;
+            List<List<int>> attempts = patternsInfo[key].attempts;
 
-            foreach (int attempt in attemps) {
-                data += " " + attempt;
+            for(int tagIndex = 0; tagIndex < attempts.Count; tagIndex++) {
+                List<int> attempt = attempts[tagIndex];
+                data += "\n";
+                data += "    " + "Tag_" + tagIndex;
+
+                foreach(int a in attempt)
+                {
+                    data += " " + a;
+                }
             }
         }
+
         data += "\n";
 
         string filePath = snapshotsPath + "/" + snapshotsFilePrefix + slot + ".txt";
@@ -315,6 +330,9 @@ public class PatternManager : MonoBehaviour
         string data = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
 
         string[] lines = data.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+        string patternName = null;
+
         for (int i = 0; i < lines.Length; i++)
         {
             string line = lines[i];
@@ -328,27 +346,34 @@ public class PatternManager : MonoBehaviour
 
             if (indentationLevel == 0)
             {
-                if(parameters[0] == "Weights")
+                if (parameters[0] == "Weights")
                 {
                     attemptsWeights = new float[parameters.Length - 1];
 
-                    for(var p = 1; p < parameters.Length; p++)
+                    for (int p = 1; p < parameters.Length; p++)
                     {
                         attemptsWeights[p - 1] = float.Parse(parameters[p]);
                     }
-                }
-                else
-                {
-                    string patternName = parameters[0];
 
-                    if (patternsInfo.ContainsKey(patternName))
+                    patternName = null;
+                }
+                else if (parameters[0] == "Pattern")
+                {
+                    patternName = parameters[1];
+                }
+            }
+            else if(indentationLevel == 1)
+            {
+                string tag = parameters[0];
+
+                if(patternsInfo.ContainsKey(patternName) && tag.StartsWith("Tag_"))
+                {
+                    string[] tagArray = tag.Split(new string[] { "Tag_" }, StringSplitOptions.RemoveEmptyEntries);
+                    int tagIndex = int.Parse(tagArray[0]);
+
+                    for (int p = 1; p < parameters.Length; p++)
                     {
-                        PatternInfo info = new PatternInfo(patternName);
-                        for (var p = 1; p < parameters.Length; p++)
-                        {
-                            info.AddAttempt(int.Parse(parameters[p]) == 1);
-                        }
-                        patternsInfo[patternName] = info;
+                        patternsInfo[patternName].AddAttempt(int.Parse(parameters[p]) == 1, tagIndex);
                     }
                 }
             }
@@ -384,5 +409,29 @@ public class PatternManager : MonoBehaviour
                 Destroy(parent.gameObject);
             }
         }
+    }
+
+    bool CanSpawn(string patternName)
+    {
+        bool canSpawn = true;
+
+        PatternInfo patternInfo = patternsInfo[patternName];
+
+        List<List<Dependency>> dependencies = patternInfo.dependencies;
+        
+        foreach(List<Dependency> dependencyList in dependencies)
+        {
+            canSpawn = true;
+
+            foreach(Dependency dependency in dependencyList)
+            {
+                canSpawn &= dependency.IsResolved();
+                if (!canSpawn) break;
+            }
+
+            if (canSpawn) break;
+        }
+
+        return canSpawn;
     }
 }

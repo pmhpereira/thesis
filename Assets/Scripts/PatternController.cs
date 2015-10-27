@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +19,14 @@ public class PatternController : MonoBehaviour
 
     private float lineWidth = 0.05f;
     private float colliderWidth = 0.1f;
+
+    [HideInInspector]
+    public bool isRecordingPlayer;
+    [HideInInspector]
+    public List<PlayerState> playerStates;
+
+    public bool hasPlayerCollided;
+
     void Awake()
     {
         foreach(Transform child in transform)
@@ -28,6 +37,8 @@ public class PatternController : MonoBehaviour
                 length = childSize;
             }
         }
+
+        playerStates = new List<PlayerState>();
     }
 
     void Start()
@@ -43,6 +54,11 @@ public class PatternController : MonoBehaviour
 
         DebugPatternLimits();
         DebugPatternInfo();
+        
+        if(isRecordingPlayer)
+        {
+            RecordPlayer();
+        }
     }
 
     void SetupDebugMode()
@@ -134,10 +150,11 @@ public class PatternController : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.transform.tag == "Player")
+        if (other.transform.tag == "Player" && !hasPlayerCollided)
         {
-            PatternManager.instance.patternsInfo[gameObject.name].AddAttempt(false);
-            Destroy(exitCollider);
+            hasPlayerCollided = true;
+
+            PatternManager.instance.patternsInfo[this.transform.name].AddAttempt(false);
         }
     }
 
@@ -150,7 +167,18 @@ public class PatternController : MonoBehaviour
         }
 
         string patternName = transform.name;
-        float patternScore = PatternManager.instance.patternsInfo[transform.name].GetScore();
-        text.text = patternName + "\n" + Math.Round(patternScore, 3);
+        string patternScores = PatternManager.instance.patternsInfo[transform.name].GetScoresString();
+        text.text = patternName + "\n" + patternScores;
+    }
+
+    void RecordPlayer()
+    {
+        PlayerState currentPlayerState = PlayerController.instance.ResolveState();
+
+        if(playerStates.Count == 0 
+            || playerStates[playerStates.Count - 1] != currentPlayerState)
+        {
+            playerStates.Add(currentPlayerState);
+        }
     }
 }

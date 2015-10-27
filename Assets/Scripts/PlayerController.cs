@@ -195,4 +195,15 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    public PlayerState ResolveState()
+    {
+        if(isColliding) return PlayerState.COLLIDING;
+        if(isFalling) return PlayerState.FALLING;
+        if(isMultipleJumping) return PlayerState.DOUBLE_JUMPING;
+        if(isJumping) return PlayerState.JUMPING;
+        if(isIdling) return PlayerState.IDLING;
+
+        return PlayerState.IDLING;
+    }
 }
