@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
     public bool isJumping;
     public bool isMultipleJumping;
     public bool isDashing;
@@ -41,6 +43,13 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+
+        instance = this;
+
         rigidbody = GetComponent<Rigidbody2D>();
         renderer = GetComponent<Renderer>();
 

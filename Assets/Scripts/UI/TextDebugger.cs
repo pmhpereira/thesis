@@ -7,8 +7,6 @@ public class TextDebugger : MonoBehaviour
 
     private Text textCanvas;
 
-    private PlayerController playerController;
-
     void Awake()
     {
         if (instance != null && instance != this)
@@ -18,7 +16,6 @@ public class TextDebugger : MonoBehaviour
 
         instance = this;
 
-        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         textCanvas = GetComponent<Text>();
     }
 
@@ -32,7 +29,7 @@ public class TextDebugger : MonoBehaviour
             textToDisplay += "\n";
             textToDisplay += "1-9 | Spawn Patterns";
             textToDisplay += "\n";
-            textToDisplay += "C | Collisions: " + playerController.stopOnCollision;
+            textToDisplay += "C | Collisions: " + PlayerController.instance.stopOnCollision;
             textToDisplay += "\n";
             textToDisplay += "H | Hide Blocks in Hierarchy: " + PatternManager.instance.hideBlocksInHierarchy;
             textToDisplay += "\n";

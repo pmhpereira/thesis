@@ -5,9 +5,6 @@ public class CameraController : MonoBehaviour
 {
     public static CameraController instance;
 
-    public PlayerController playerController;
-    private float playerMoveSpeed;
-
     private new Camera camera;
 
     public bool sceneViewFollow;
@@ -22,8 +19,6 @@ public class CameraController : MonoBehaviour
         instance = this;
 
         camera = GetComponent<Camera>();
-
-        playerMoveSpeed = playerController.moveSpeed;
 
         LoadFromDataHolder();
     }
@@ -93,7 +88,7 @@ public class CameraController : MonoBehaviour
 
     void UpdateGame()
     {
-        camera.transform.position += new Vector3(playerMoveSpeed * Time.deltaTime, 0, 0);
+        camera.transform.position += new Vector3(PlayerController.instance.moveSpeed * Time.deltaTime, 0, 0);
 
         if(sceneViewFollow && SceneView.lastActiveSceneView)
         {

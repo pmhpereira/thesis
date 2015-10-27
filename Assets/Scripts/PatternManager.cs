@@ -23,9 +23,6 @@ public class PatternManager : MonoBehaviour
 
     private BoxCollider2D boxCollider;
 
-    public PlayerController playerController;
-    private float playerMoveSpeed;
-
     private GameObject[] patterns;
     public Dictionary<string, PatternInfo> patternsInfo;
 
@@ -54,8 +51,6 @@ public class PatternManager : MonoBehaviour
 
         boxCollider = GetComponent<BoxCollider2D>();
         boxCollider.offset = new Vector2(minStartingGroundDistance - 3, 0);
-
-        playerMoveSpeed = playerController.moveSpeed;
 
         SetPatterns(new GameObject[] { });
 
@@ -122,7 +117,7 @@ public class PatternManager : MonoBehaviour
 
     void Update()
     {
-        boxCollider.offset += new Vector2(playerMoveSpeed * Time.deltaTime, 0);
+        boxCollider.offset += new Vector2(PlayerController.instance.moveSpeed * Time.deltaTime, 0);
 
         ProcessInput();
     }

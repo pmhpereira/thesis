@@ -314,7 +314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e272b4d45d15547439b6494d35e209c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 1738462948}
   sceneViewFollow: 1
 --- !u!1 &1172328795
 GameObject:
@@ -403,12 +402,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1172328795}
---- !u!114 &1738462948 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 11416316, guid: 0eb07fb9194df7841bbb963a56066ff7,
-    type: 2}
-  m_PrefabInternal: {fileID: 15519655}
-  m_Script: {fileID: 11500000, guid: 303bba1c8c3519d49961248a71e0ce94, type: 3}
 --- !u!1 &2034207217
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,7 +648,6 @@ MonoBehaviour:
   minStartingGroundDistance: -15
   maxStartingGroundDistance: 25
   hideBlocksInHierarchy: 1
-  playerController: {fileID: 1738462948}
   savedAttempts: 10
   attemptsWeights: 01000000010000000200000002000000030000000300000004000000040000000500000005000000
 --- !u!4 &2076266481
