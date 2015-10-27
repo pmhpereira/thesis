@@ -649,7 +649,17 @@ MonoBehaviour:
   maxStartingGroundDistance: 25
   hideBlocksInHierarchy: 1
   savedAttempts: 10
-  attemptsWeights: 01000000010000000200000002000000030000000300000004000000040000000500000005000000
+  attemptsWeights:
+  - 1
+  - 1
+  - 2
+  - 2
+  - 3
+  - 3
+  - 4
+  - 4
+  - 5
+  - 5
 --- !u!4 &2076266481
 Transform:
   m_ObjectHideFlags: 0
