@@ -54,7 +54,7 @@ public sealed class Mastery
     public static Mastery FromAttempts(float score, int numAttempts)
     {
         if (score >= 0.9 && numAttempts > 8) return MASTERED;
-        if (score >= 0.5 && numAttempts > 6) return PARTIALLY_MASTERED;
+        //if (score >= 0.5 && numAttempts > 6) return PARTIALLY_MASTERED;
         if (score <= 0.1 && numAttempts > 8) return BURNED_OUT;
         if (numAttempts > 0) return INITIATED;
         if (numAttempts == 0) return UNEXERCISED;

@@ -4,10 +4,10 @@
 
 2x2
     Tags double_jump
-    Dependencies 1x1|0|M
-    Dependencies 1x1|1|I
+    Dependencies 1x1|0|M 1x1|1|I
 
 4xHole
+    Dependencies 1x1|0|M 2x2|0|P
 	Tags jump
 	Tags double_jump
 
