@@ -1,0 +1,561 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e0c2324a9ab1224ebe3edad393e3544, type: 3}
+  m_Name: Calculation Canvas
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 11458916}
+  - {fileID: 11426212}
+  - {fileID: 11431862}
+  - {fileID: 11480600}
+  - {fileID: 11468656}
+  - {fileID: 11402314}
+  - {fileID: 11485650}
+  - {fileID: 11455122}
+  - {fileID: 11462314}
+--- !u!114 &11402314
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3dd50b389073b148b5ec10e419dc073, type: 3}
+  m_Name: Input Node
+  m_EditorClassIdentifier: 
+  rect:
+    x: -371.5
+    y: 45
+    width: 200
+    height: 50
+  Inputs: []
+  Outputs:
+  - {fileID: 11446398}
+  calculated: 1
+  allowRecursion: 0
+  shouldCalculate: 1
+  transitions: []
+  value: 512
+--- !u!114 &11408768
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input 1
+  m_EditorClassIdentifier: 
+  body: {fileID: 11431862}
+  type: 466c6f6174
+  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  side: 4
+  sidePosition: 31
+  sideOffset: 0
+  connection: {fileID: 11458816}
+--- !u!114 &11410892
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6ab6487237ff124ea4c2aa5de9ce3fb, type: 3}
+  m_Name: MainEditorState
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 11400000}
+  drawing: 1
+  focusedNode: {fileID: 0}
+  selectedNode: {fileID: 0}
+  currentNode: {fileID: 0}
+  dragNode: 0
+  makeTransition: {fileID: 0}
+  connectOutput: {fileID: 0}
+  navigate: 0
+  panWindow: 0
+  zoom: 1
+  canvasRect:
+    x: 0
+    y: 0
+    width: 1525
+    height: 1004
+  zoomPanAdjust: {x: 762.5, y: 502}
+  ignoreInput: []
+--- !u!114 &11411816
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input 2
+  m_EditorClassIdentifier: 
+  body: {fileID: 11485650}
+  type: 466c6f6174
+  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  side: 4
+  sidePosition: 49
+  sideOffset: 0
+  connection: {fileID: 11418102}
+--- !u!114 &11418102
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Output 1
+  m_EditorClassIdentifier: 
+  body: {fileID: 11458916}
+  type: 466c6f6174
+  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  side: 2
+  sidePosition: 31
+  sideOffset: 0
+  connections:
+  - {fileID: 11461200}
+  - {fileID: 11411816}
+--- !u!114 &11419438
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 11462314}
+  type: 466c6f6174
+  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  side: 4
+  sidePosition: 31
+  sideOffset: 0
+  connection: {fileID: 11469226}
+--- !u!114 &11419620
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input 2
+  m_EditorClassIdentifier: 
+  body: {fileID: 11431862}
+  type: 466c6f6174
+  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  side: 4
+  sidePosition: 49
+  sideOffset: 0
+  connection: {fileID: 11437016}
+--- !u!114 &11422358
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Output 1
+  m_EditorClassIdentifier: 
+  body: {fileID: 11431862}
+  type: 466c6f6174
+  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  side: 2
+  sidePosition: 31
+  sideOffset: 0
+  connections:
+  - {fileID: 11473118}
+  - {fileID: 11451518}
+--- !u!114 &11426212
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f5df92d12f07d45a4fcfb96e1b36d8, type: 3}
+  m_Name: Display Node
+  m_EditorClassIdentifier: 
+  rect:
+    x: -71.5
+    y: -155
+    width: 150
+    height: 50
+  Inputs:
+  - {fileID: 11451518}
+  Outputs: []
+  calculated: 1
+  allowRecursion: 0
+  shouldCalculate: 1
+  transitions: []
+  assigned: 1
+  value: 768
+--- !u!114 &11430688
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input 1
+  m_EditorClassIdentifier: 
+  body: {fileID: 11485650}
+  type: 466c6f6174
+  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  side: 4
+  sidePosition: 31
+  sideOffset: 0
+  connection: {fileID: 0}
+--- !u!114 &11431862
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a65ad2b155f0d40838ed81292e4df7, type: 3}
+  m_Name: Calc Node
+  m_EditorClassIdentifier: 
+  rect:
+    x: -371.5
+    y: -105
+    width: 200
+    height: 100
+  Inputs:
+  - {fileID: 11408768}
+  - {fileID: 11419620}
+  Outputs:
+  - {fileID: 11422358}
+  calculated: 1
+  allowRecursion: 0
+  shouldCalculate: 1
+  transitions: []
+  type: 2
+  Input1Val: 24
+  Input2Val: 32
+--- !u!114 &11437016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 11468656}
+  type: 466c6f6174
+  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  side: 2
+  sidePosition: 31
+  sideOffset: 0
+  connections:
+  - {fileID: 11419620}
+--- !u!114 &11446398
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 11402314}
+  type: 466c6f6174
+  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  side: 2
+  sidePosition: 31
+  sideOffset: 0
+  connections:
+  - {fileID: 11485894}
+--- !u!114 &11451518
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 11426212}
+  type: 466c6f6174
+  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  side: 4
+  sidePosition: 31
+  sideOffset: 0
+  connection: {fileID: 11422358}
+--- !u!114 &11455122
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f5df92d12f07d45a4fcfb96e1b36d8, type: 3}
+  m_Name: Display Node
+  m_EditorClassIdentifier: 
+  rect:
+    x: 228.5
+    y: -105
+    width: 150
+    height: 50
+  Inputs:
+  - {fileID: 11461200}
+  Outputs: []
+  calculated: 1
+  allowRecursion: 0
+  shouldCalculate: 1
+  transitions: []
+  assigned: 1
+  value: 256
+--- !u!114 &11458816
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 11480600}
+  type: 466c6f6174
+  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  side: 2
+  sidePosition: 31
+  sideOffset: 0
+  connections:
+  - {fileID: 11408768}
+--- !u!114 &11458916
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a65ad2b155f0d40838ed81292e4df7, type: 3}
+  m_Name: Calc Node
+  m_EditorClassIdentifier: 
+  rect:
+    x: -71.5
+    y: -55
+    width: 200
+    height: 100
+  Inputs:
+  - {fileID: 11473118}
+  - {fileID: 11485894}
+  Outputs:
+  - {fileID: 11418102}
+  calculated: 1
+  allowRecursion: 0
+  shouldCalculate: 1
+  transitions: []
+  type: 1
+  Input1Val: 768
+  Input2Val: 512
+--- !u!114 &11461200
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 11455122}
+  type: 466c6f6174
+  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  side: 4
+  sidePosition: 31
+  sideOffset: 0
+  connection: {fileID: 11418102}
+--- !u!114 &11462314
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f5df92d12f07d45a4fcfb96e1b36d8, type: 3}
+  m_Name: Display Node
+  m_EditorClassIdentifier: 
+  rect:
+    x: 528.5
+    y: -5
+    width: 150
+    height: 50
+  Inputs:
+  - {fileID: 11419438}
+  Outputs: []
+  calculated: 1
+  allowRecursion: 0
+  shouldCalculate: 1
+  transitions: []
+  assigned: 1
+  value: .00390625
+--- !u!114 &11468656
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3dd50b389073b148b5ec10e419dc073, type: 3}
+  m_Name: Input Node
+  m_EditorClassIdentifier: 
+  rect:
+    x: -671.5
+    y: -55
+    width: 200
+    height: 50
+  Inputs: []
+  Outputs:
+  - {fileID: 11437016}
+  calculated: 1
+  allowRecursion: 0
+  shouldCalculate: 1
+  transitions: []
+  value: 32
+--- !u!114 &11469226
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Output 1
+  m_EditorClassIdentifier: 
+  body: {fileID: 11485650}
+  type: 466c6f6174
+  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  side: 2
+  sidePosition: 31
+  sideOffset: 0
+  connections:
+  - {fileID: 11419438}
+--- !u!114 &11473118
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input 1
+  m_EditorClassIdentifier: 
+  body: {fileID: 11458916}
+  type: 466c6f6174
+  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  side: 4
+  sidePosition: 31
+  sideOffset: 0
+  connection: {fileID: 11422358}
+--- !u!114 &11480600
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3dd50b389073b148b5ec10e419dc073, type: 3}
+  m_Name: Input Node
+  m_EditorClassIdentifier: 
+  rect:
+    x: -671.5
+    y: -155
+    width: 200
+    height: 50
+  Inputs: []
+  Outputs:
+  - {fileID: 11458816}
+  calculated: 1
+  allowRecursion: 0
+  shouldCalculate: 1
+  transitions: []
+  value: 24
+--- !u!114 &11485650
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a65ad2b155f0d40838ed81292e4df7, type: 3}
+  m_Name: Calc Node
+  m_EditorClassIdentifier: 
+  rect:
+    x: 228.5
+    y: -5
+    width: 200
+    height: 100
+  Inputs:
+  - {fileID: 11430688}
+  - {fileID: 11411816}
+  Outputs:
+  - {fileID: 11469226}
+  calculated: 1
+  allowRecursion: 0
+  shouldCalculate: 1
+  transitions: []
+  type: 3
+  Input1Val: 1
+  Input2Val: 256
+--- !u!114 &11485894
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input 2
+  m_EditorClassIdentifier: 
+  body: {fileID: 11458916}
+  type: 466c6f6174
+  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  side: 4
+  sidePosition: 49
+  sideOffset: 0
+  connection: {fileID: 11446398}

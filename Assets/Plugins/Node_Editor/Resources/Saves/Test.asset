@@ -1,0 +1,538 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5baeb2a20def1e4e90a7de1d68b8bc6, type: 3}
+  m_Name: Test
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 11446244}
+  - {fileID: 11482074}
+  - {fileID: 11476914}
+  - {fileID: 11460018}
+  - {fileID: 11438798}
+--- !u!114 &11401526
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11482074}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 4
+  sidePosition: 36
+  sideOffset: 0
+  connection: {fileID: 11490528}
+--- !u!114 &11402222
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11476914}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 3
+  sidePosition: 20
+  sideOffset: 0
+  connection: {fileID: 0}
+--- !u!114 &11406602
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11476914}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 4
+  sidePosition: 10
+  sideOffset: 0
+  connection: {fileID: 11431438}
+--- !u!114 &11410390
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11460018}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 3
+  sidePosition: 20
+  sideOffset: 0
+  connection: {fileID: 0}
+--- !u!114 &11418886
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1862fa7962a6b294992a1d1aa6810910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11476914}
+  type: Bool
+  texturePath: Textures/Out_Knob.png
+  side: 2
+  sidePosition: 25
+  sideOffset: 0
+  connections:
+  - {fileID: 11426472}
+--- !u!114 &11420524
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11476914}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 3
+  sidePosition: 5
+  sideOffset: 0
+  connection: {fileID: 0}
+--- !u!114 &11423370
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11476914}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 4
+  sidePosition: 40
+  sideOffset: 0
+  connection: {fileID: 0}
+--- !u!114 &11426472
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11460018}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 4
+  sidePosition: 25
+  sideOffset: 0
+  connection: {fileID: 11418886}
+--- !u!114 &11431438
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1862fa7962a6b294992a1d1aa6810910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11438798}
+  type: Bool
+  texturePath: Textures/Out_Knob.png
+  side: 2
+  sidePosition: 10
+  sideOffset: 0
+  connections:
+  - {fileID: 11455674}
+  - {fileID: 11406602}
+  - {fileID: 11485402}
+--- !u!114 &11438798
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15173740b565777478b44ee63a3301d5, type: 3}
+  m_Name: Bool
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: -302
+    y: -312
+    width: 50
+    height: 20
+  Inputs: []
+  Outputs:
+  - {fileID: 11431438}
+  calculated: 1
+  allowRecursion: 0
+  continueCalculation: 1
+  transitions: []
+  value: 0
+--- !u!114 &11440160
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11460018}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 4
+  sidePosition: 40
+  sideOffset: 0
+  connection: {fileID: 0}
+--- !u!114 &11446244
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8936e454c2c5c04fb62d894e3ae7b71, type: 3}
+  m_Name: Not
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: -262
+    y: -136
+    width: 50
+    height: 20
+  Inputs:
+  - {fileID: 11455674}
+  Outputs:
+  - {fileID: 11483374}
+  calculated: 1
+  allowRecursion: 0
+  continueCalculation: 1
+  transitions: []
+  value: 0
+--- !u!114 &11455674
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11446244}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 4
+  sidePosition: 10
+  sideOffset: 0
+  connection: {fileID: 11431438}
+--- !u!114 &11460018
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621a8e55fe9ac4b45a5b3cb932d0f11a, type: 3}
+  m_Name: And
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: 71
+    y: -306
+    width: 55
+    height: 50
+  Inputs:
+  - {fileID: 11466612}
+  - {fileID: 11410390}
+  - {fileID: 11471884}
+  - {fileID: 11485402}
+  - {fileID: 11426472}
+  - {fileID: 11440160}
+  Outputs:
+  - {fileID: 11490528}
+  calculated: 1
+  allowRecursion: 0
+  continueCalculation: 1
+  transitions: []
+  value: 0
+--- !u!114 &11466612
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11460018}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 3
+  sidePosition: 5
+  sideOffset: 0
+  connection: {fileID: 0}
+--- !u!114 &11471884
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11460018}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 3
+  sidePosition: 35
+  sideOffset: 0
+  connection: {fileID: 0}
+--- !u!114 &11476914
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e05ddb40ed2cf04eb948d4a585a71fe, type: 3}
+  m_Name: Or
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: -53
+    y: -73
+    width: 55
+    height: 50
+  Inputs:
+  - {fileID: 11420524}
+  - {fileID: 11402222}
+  - {fileID: 11495308}
+  - {fileID: 11406602}
+  - {fileID: 11494476}
+  - {fileID: 11423370}
+  Outputs:
+  - {fileID: 11418886}
+  calculated: 1
+  allowRecursion: 0
+  continueCalculation: 1
+  transitions: []
+  value: 1
+--- !u!114 &11481500
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7970683a3aa686d419a0c448ce555692, type: 3}
+  m_Name: MainEditorState
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 11400000}
+  drawing: 1
+  focusedNode: {fileID: 0}
+  selectedNode: {fileID: 0}
+  currentNode: {fileID: 0}
+  dragNode: 0
+  makeTransition: {fileID: 0}
+  connectOutput: {fileID: 0}
+  navigate: 0
+  panWindow: 0
+  panOffset: {x: -1, y: 0}
+  zoom: 1
+  canvasRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 946
+    height: 926
+  zoomPanAdjust: {x: 473, y: 463}
+  ignoreInput: []
+--- !u!114 &11482074
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaa61007b8aa10e4db3e3f078b91875a, type: 3}
+  m_Name: Tag
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: 130
+    y: -18
+    width: 150
+    height: 50
+  Inputs:
+  - {fileID: 11401526}
+  Outputs:
+  - {fileID: 11492628}
+  calculated: 1
+  allowRecursion: 0
+  continueCalculation: 1
+  transitions: []
+  value: 0
+  tag: 0
+--- !u!114 &11483374
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1862fa7962a6b294992a1d1aa6810910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11446244}
+  type: Bool
+  texturePath: Textures/Out_Knob.png
+  side: 2
+  sidePosition: 10
+  sideOffset: 0
+  connections:
+  - {fileID: 11494476}
+--- !u!114 &11485402
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11460018}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 4
+  sidePosition: 10
+  sideOffset: 0
+  connection: {fileID: 11431438}
+--- !u!114 &11490528
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1862fa7962a6b294992a1d1aa6810910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11460018}
+  type: Bool
+  texturePath: Textures/Out_Knob.png
+  side: 2
+  sidePosition: 25
+  sideOffset: 0
+  connections:
+  - {fileID: 11401526}
+--- !u!114 &11492628
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1862fa7962a6b294992a1d1aa6810910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11482074}
+  type: Bool
+  texturePath: Textures/Out_Knob.png
+  side: 2
+  sidePosition: 36
+  sideOffset: 0
+  connections: []
+--- !u!114 &11494476
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11476914}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 4
+  sidePosition: 25
+  sideOffset: 0
+  connection: {fileID: 11483374}
+--- !u!114 &11495308
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d069387be4d2b2640af72d46b22d7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11476914}
+  type: Bool
+  texturePath: Textures/In_Knob.png
+  side: 3
+  sidePosition: 35
+  sideOffset: 0
+  connection: {fileID: 0}
