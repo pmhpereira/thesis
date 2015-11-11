@@ -41,27 +41,24 @@ public class PatternController : MonoBehaviour
         playerStates = new List<PlayerState>();
     }
 
-    void Start()
-    {
-        SetupDebugMode();
-        SetupBorderColliders();
-    }
-
     void Update()
     {
-        startLineRenderer.SetVertexCount(0);
-        endLineRenderer.SetVertexCount(0);
+        if(startLineRenderer != null)
+        {
+            startLineRenderer.SetVertexCount(0);
+            endLineRenderer.SetVertexCount(0);
 
-        DebugPatternLimits();
-        DebugPatternInfo();
-        
+            DebugPatternLimits();
+            DebugPatternInfo();
+        }
+
         if(isRecordingPlayer)
         {
             RecordPlayer();
         }
     }
 
-    void SetupDebugMode()
+    public void SetupDebugMode()
     {
         GameObject debugChild = new GameObject();
         debugChild.name = "Debug";
@@ -125,7 +122,7 @@ public class PatternController : MonoBehaviour
         endLineRenderer.SetPosition(1, transform.position + new Vector3(length - 0.5f + lineWidth / 2, 5, 0));
     }
 
-    void SetupBorderColliders()
+    public void SetupBorderColliders()
     {
         GameObject collider = new GameObject("Start Collider");
         collider.transform.SetParent(this.transform);

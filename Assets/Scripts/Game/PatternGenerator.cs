@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEditor;
+using System.IO;
+using System.Text;
 
 public class PatternGenerator : MonoBehaviour
 {
@@ -12,6 +15,8 @@ public class PatternGenerator : MonoBehaviour
     private Dictionary<string, GameObject> patternsMap;
     private Dictionary<string, PatternInfo> patternsInfo;
 
+    private GameObject generated;
+
     void Awake()
     {
         if (instance != null && instance != this)
@@ -20,6 +25,16 @@ public class PatternGenerator : MonoBehaviour
         }
 
         instance = this;
+
+        LoadAll();
+    }
+
+    public void LoadAll()
+    {
+        if (generated != null)
+        {
+            Destroy(generated);
+        }
 
         LoadPatternsFromFile();
         LoadPatternsInfoFromFile();
@@ -45,11 +60,13 @@ public class PatternGenerator : MonoBehaviour
 
         GameObject pattern = null, block = null;
 
-        GameObject generated = new GameObject("Generated");
+        generated = new GameObject("Generated");
         generated.transform.SetParent(this.transform);
-        generated.SetActive(false);
+        generated.transform.position = new Vector3(0, -1000, 0);
+        //generated.SetActive(false);
 
         int lastCommentIndendation = -1;
+        float height = 0;
 
         for (int i = 0; i < lines.Length; i++)
         {
@@ -78,8 +95,11 @@ public class PatternGenerator : MonoBehaviour
                 pattern.AddComponent<PatternController>();
                 pattern.transform.SetParent(generated.transform);
                 pattern.transform.tag = "Pattern";
+                pattern.transform.localPosition = new Vector3(0, height, 0);
                 patternsMap[pattern.name] = pattern;
                 patternsInfo[pattern.name] = new PatternInfo(pattern.name);
+
+                height += 5f;
             }
             else if (indentationLevel == 1)
             {
@@ -89,13 +109,13 @@ public class PatternGenerator : MonoBehaviour
             }
             else if (indentationLevel == 2)
             {
-                if (parameters[0]  == "Position")
+                if (parameters[0] == "Position")
                 {
                     float x = float.Parse(parameters[1]);
                     float y = float.Parse(parameters[2]);
                     float z = 0;
 
-                    block.transform.position = new Vector3(x, y, z);
+                    block.transform.localPosition = new Vector3(x, y, z);
                 }
             }
         }
@@ -148,7 +168,8 @@ public class PatternGenerator : MonoBehaviour
                 {
                     Dependency[] dependencies = new Dependency[parameters.Length - 1];
 
-                    for (int d = 1; d < parameters.Length; d++) {
+                    for (int d = 1; d < parameters.Length; d++)
+                    {
                         string[] dependencyParams = parameters[d].Split('|');
                         string patternName = dependencyParams[0];
                         int tagIndex = int.Parse(dependencyParams[1]);
@@ -156,7 +177,7 @@ public class PatternGenerator : MonoBehaviour
 
                         dependencies[d - 1] = new Dependency(patternName, tagIndex, mastery);
                     }
-                    
+
                     patternsInfo[lastPatternName].AddDependencies(dependencies);
                 }
             }
@@ -167,9 +188,80 @@ public class PatternGenerator : MonoBehaviour
     {
         PatternManager.instance.SetPatterns(new List<GameObject>(patternsMap.Values).ToArray());
 
-        foreach(GameObject pattern in patternsMap.Values)
+        foreach (GameObject pattern in patternsMap.Values)
         {
             PatternManager.instance.SetPatternsInfo(pattern.name, patternsInfo[pattern.name]);
         }
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            CameraController.instance.sceneViewFollow = false;
+            SceneView.lastActiveSceneView.pivot = generated.transform.position;
+        }
+    }
+
+    public void SaveAll()
+    {
+        if (generated == null)
+        {
+            return;
+        }
+
+        string data = "";
+
+        foreach (Transform pattern in generated.transform)
+        {
+            data += pattern.name;
+            data += "\n";
+
+            foreach (Transform block in pattern)
+            {
+                data += "    ";
+                data += block.name.Split(new string[] { " (" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                data += "\n";
+
+                data += "    ";
+                data += "    ";
+                data += "Position " + block.localPosition.x + " " + block.localPosition.y;
+                data += "\n";
+            }
+
+            data += "\n";
+        }
+
+        string filePath = Application.dataPath + "/Resources/Patterns.txt";
+        FileStream file = File.Open(filePath, FileMode.Create);
+        foreach (byte b in Encoding.ASCII.GetBytes(data))
+        {
+            file.WriteByte(b);
+        }
+        file.Close();
+
+        Debug.Log("Saved patterns to file: " + filePath);
+    }
+}
+
+[CustomEditor(typeof(PatternGenerator))]
+public class ObjectBuilderEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        GUI.enabled = Application.isPlaying;
+
+        if (GUILayout.Button("Save to File") || Input.GetKeyDown(KeyCode.S))
+        {
+            PatternGenerator.instance.SaveAll();
+        }
+        else if (GUILayout.Button("Load from File") || Input.GetKeyDown(KeyCode.L))
+        {
+            PatternGenerator.instance.LoadAll();
+        }
+
+        GUI.enabled = true;
     }
 }

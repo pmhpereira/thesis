@@ -146,11 +146,16 @@ public class PatternManager : MonoBehaviour
         GameObject newPattern = Instantiate(pattern) as GameObject;
         newPattern.name = pattern.name;
 
-        float patternLength = newPattern.GetComponent<PatternController>().length;
+        PatternController patternController = newPattern.GetComponent<PatternController>();
+        float patternLength = patternController.length;
 
+        newPattern.transform.localPosition = Vector3.zero;
         newPattern.transform.position += Vector3.right * groundDistance;
         newPattern.transform.SetParent(this.transform);
         newPattern.hideFlags = hideBlocksInHierarchy ? HideFlags.HideInHierarchy : HideFlags.None;
+
+        patternController.SetupDebugMode();
+        patternController.SetupBorderColliders();
 
         groundDistance += patternLength;
         ceilingDistance += patternLength;
