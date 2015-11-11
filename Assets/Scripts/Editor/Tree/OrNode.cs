@@ -11,7 +11,7 @@ public class OrNode : BaseNode
     public override Node Create(Vector2 pos)
     {
         OrNode node = CreateInstance<OrNode>();
-        node.rect = new Rect(pos.x, pos.y, 50, 50);
+        node.rect = new Rect(pos.x, pos.y, 55, 50);
         node.name = "Or";
 
         node.CreateInput("", "Bool");
