@@ -66,7 +66,7 @@ namespace NodeEditorFramework
 		{
 			if (valueType == null)
 				valueType = ConnectionTypes.GetType(type);
-			if (valueType == typeof(T))
+			if (valueType == typeof(T) || typeof(T) == typeof(object))
 				value = Value;
 			else
 				UnityEngine.Debug.LogError("Trying to SetValue<" + typeof(T).FullName + "> for Output Type: " + valueType.FullName);

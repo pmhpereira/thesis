@@ -28,8 +28,8 @@ MonoBehaviour:
   m_Name: Output Bottom
   m_EditorClassIdentifier: 
   body: {fileID: 11435588}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 1
   sidePosition: 10
   sideOffset: 0
@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Name: Output Right
   m_EditorClassIdentifier: 
   body: {fileID: 11488826}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 2
   sidePosition: 20
   sideOffset: 0
@@ -65,8 +65,8 @@ MonoBehaviour:
   m_Name: Output Right
   m_EditorClassIdentifier: 
   body: {fileID: 11435588}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 2
   sidePosition: 20
   sideOffset: 0
@@ -85,8 +85,8 @@ MonoBehaviour:
   m_Name: Input Left
   m_EditorClassIdentifier: 
   body: {fileID: 11465056}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 4
   sidePosition: 40
   sideOffset: 0
@@ -103,8 +103,8 @@ MonoBehaviour:
   m_Name: Input Left
   m_EditorClassIdentifier: 
   body: {fileID: 11426198}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 4
   sidePosition: 40
   sideOffset: 0
@@ -121,8 +121,8 @@ MonoBehaviour:
   m_Name: Output Top
   m_EditorClassIdentifier: 
   body: {fileID: 11435588}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 3
   sidePosition: 10
   sideOffset: 0
@@ -140,8 +140,8 @@ MonoBehaviour:
   m_Name: Input Top
   m_EditorClassIdentifier: 
   body: {fileID: 11465056}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 3
   sidePosition: 30
   sideOffset: 0
@@ -158,8 +158,8 @@ MonoBehaviour:
   m_Name: Input Left
   m_EditorClassIdentifier: 
   body: {fileID: 11435588}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 4
   sidePosition: 40
   sideOffset: 0
@@ -176,8 +176,8 @@ MonoBehaviour:
   m_Name: Input Left
   m_EditorClassIdentifier: 
   body: {fileID: 11488826}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 4
   sidePosition: 40
   sideOffset: 0
@@ -209,9 +209,6 @@ MonoBehaviour:
   - {fileID: 11426692}
   - {fileID: 11433266}
   - {fileID: 11476904}
-  calculated: 1
-  allowRecursion: 1
-  continueCalculation: 1
   transitions: []
 --- !u!114 &11426692
 MonoBehaviour:
@@ -225,8 +222,8 @@ MonoBehaviour:
   m_Name: Output Bottom
   m_EditorClassIdentifier: 
   body: {fileID: 11426198}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 1
   sidePosition: 10
   sideOffset: 0
@@ -243,8 +240,8 @@ MonoBehaviour:
   m_Name: Input Bottom
   m_EditorClassIdentifier: 
   body: {fileID: 11426198}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 1
   sidePosition: 30
   sideOffset: 0
@@ -261,8 +258,8 @@ MonoBehaviour:
   m_Name: Input Bottom
   m_EditorClassIdentifier: 
   body: {fileID: 11465056}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 1
   sidePosition: 30
   sideOffset: 0
@@ -279,8 +276,8 @@ MonoBehaviour:
   m_Name: Output Right
   m_EditorClassIdentifier: 
   body: {fileID: 11426198}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 2
   sidePosition: 20
   sideOffset: 0
@@ -297,8 +294,8 @@ MonoBehaviour:
   m_Name: Input Right
   m_EditorClassIdentifier: 
   body: {fileID: 11488826}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 2
   sidePosition: 40
   sideOffset: 0
@@ -330,9 +327,6 @@ MonoBehaviour:
   - {fileID: 11401896}
   - {fileID: 11413700}
   - {fileID: 11493336}
-  calculated: 1
-  allowRecursion: 1
-  continueCalculation: 1
   transitions: []
 --- !u!114 &11436210
 MonoBehaviour:
@@ -346,8 +340,8 @@ MonoBehaviour:
   m_Name: Input Top
   m_EditorClassIdentifier: 
   body: {fileID: 11488826}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 3
   sidePosition: 30
   sideOffset: 0
@@ -364,8 +358,8 @@ MonoBehaviour:
   m_Name: Input Top
   m_EditorClassIdentifier: 
   body: {fileID: 11426198}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 3
   sidePosition: 30
   sideOffset: 0
@@ -382,8 +376,8 @@ MonoBehaviour:
   m_Name: Output Right
   m_EditorClassIdentifier: 
   body: {fileID: 11465056}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 2
   sidePosition: 20
   sideOffset: 0
@@ -400,8 +394,8 @@ MonoBehaviour:
   m_Name: Input Right
   m_EditorClassIdentifier: 
   body: {fileID: 11435588}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 2
   sidePosition: 40
   sideOffset: 0
@@ -418,8 +412,8 @@ MonoBehaviour:
   m_Name: Input Right
   m_EditorClassIdentifier: 
   body: {fileID: 11426198}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 2
   sidePosition: 40
   sideOffset: 0
@@ -436,8 +430,8 @@ MonoBehaviour:
   m_Name: Output Bottom
   m_EditorClassIdentifier: 
   body: {fileID: 11465056}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 1
   sidePosition: 10
   sideOffset: 0
@@ -455,8 +449,8 @@ MonoBehaviour:
   m_Name: Input Top
   m_EditorClassIdentifier: 
   body: {fileID: 11435588}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 3
   sidePosition: 30
   sideOffset: 0
@@ -473,8 +467,8 @@ MonoBehaviour:
   m_Name: Input Bottom
   m_EditorClassIdentifier: 
   body: {fileID: 11488826}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 1
   sidePosition: 30
   sideOffset: 0
@@ -491,8 +485,8 @@ MonoBehaviour:
   m_Name: Output Left
   m_EditorClassIdentifier: 
   body: {fileID: 11465056}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 4
   sidePosition: 20
   sideOffset: 0
@@ -522,6 +516,7 @@ MonoBehaviour:
   panOffset: {x: 368, y: -86}
   zoom: 1
   canvasRect:
+    serializedVersion: 2
     x: 0
     y: 0
     width: 876
@@ -540,8 +535,8 @@ MonoBehaviour:
   m_Name: Output Left
   m_EditorClassIdentifier: 
   body: {fileID: 11488826}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 4
   sidePosition: 20
   sideOffset: 0
@@ -573,9 +568,6 @@ MonoBehaviour:
   - {fileID: 11454372}
   - {fileID: 11443840}
   - {fileID: 11459248}
-  calculated: 1
-  allowRecursion: 1
-  continueCalculation: 1
   transitions: []
 --- !u!114 &11466770
 MonoBehaviour:
@@ -589,8 +581,8 @@ MonoBehaviour:
   m_Name: Output Top
   m_EditorClassIdentifier: 
   body: {fileID: 11488826}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 3
   sidePosition: 10
   sideOffset: 0
@@ -608,8 +600,8 @@ MonoBehaviour:
   m_Name: Input Bottom
   m_EditorClassIdentifier: 
   body: {fileID: 11435588}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 1
   sidePosition: 30
   sideOffset: 0
@@ -626,8 +618,8 @@ MonoBehaviour:
   m_Name: Output Top
   m_EditorClassIdentifier: 
   body: {fileID: 11465056}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 3
   sidePosition: 10
   sideOffset: 0
@@ -645,8 +637,8 @@ MonoBehaviour:
   m_Name: Output Left
   m_EditorClassIdentifier: 
   body: {fileID: 11426198}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 4
   sidePosition: 20
   sideOffset: 0
@@ -663,8 +655,8 @@ MonoBehaviour:
   m_Name: Output Top
   m_EditorClassIdentifier: 
   body: {fileID: 11426198}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 3
   sidePosition: 10
   sideOffset: 0
@@ -682,8 +674,8 @@ MonoBehaviour:
   m_Name: Input Right
   m_EditorClassIdentifier: 
   body: {fileID: 11465056}
-  type: 466c6f6174
-  texturePath: 54657874757265732f496e5f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/In_Knob.png
   side: 2
   sidePosition: 40
   sideOffset: 0
@@ -715,9 +707,6 @@ MonoBehaviour:
   - {fileID: 11494176}
   - {fileID: 11411490}
   - {fileID: 11464088}
-  calculated: 1
-  allowRecursion: 1
-  continueCalculation: 1
   transitions: []
 --- !u!114 &11493336
 MonoBehaviour:
@@ -731,8 +720,8 @@ MonoBehaviour:
   m_Name: Output Left
   m_EditorClassIdentifier: 
   body: {fileID: 11435588}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 4
   sidePosition: 20
   sideOffset: 0
@@ -749,8 +738,8 @@ MonoBehaviour:
   m_Name: Output Bottom
   m_EditorClassIdentifier: 
   body: {fileID: 11488826}
-  type: 466c6f6174
-  texturePath: 54657874757265732f4f75745f4b6e6f622e706e67
+  type: Float
+  texturePath: Textures/Out_Knob.png
   side: 1
   sidePosition: 10
   sideOffset: 0

@@ -515,7 +515,7 @@ namespace NodeEditorFramework
 					                                                         Mathf.RoundToInt ((curEditorState.selectedNode.rect.position.y - curEditorState.panOffset.y) / 10) * 10 + curEditorState.panOffset.y);
 				if (Repaint != null)
 					Repaint ();
-                				
+				
 				break;
 				
 			case EventType.KeyUp:
@@ -590,7 +590,7 @@ namespace NodeEditorFramework
 
             if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Space)
                 RecalculateAll(curNodeCanvas);
-        }
+		}
 
 		/// <summary>
 		/// Context Click selection. Here you'll need to register your own using a string identifier
@@ -808,7 +808,7 @@ namespace NodeEditorFramework
 				node.calculated = true;
 				calculationCount++;
 				workList.Remove (node);
-				if (node.continueCalculation && calculationCount < 1000) 
+				if (node.ContinueCalculation && calculationCount < 1000) 
 				{
 					for (int outCnt = 0; outCnt < node.Outputs.Count; outCnt++)
 					{
