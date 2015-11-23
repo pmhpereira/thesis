@@ -15,7 +15,7 @@ public class BoolType : ITypeDeclaration
     }
 }
 
-[Node(false, "Patterns Tree/Bool Node", false)]
+[Node(false, "Boole/Input Node", false)]
 public class BoolNode : BaseNode
 {
     public const string ID = "boolNode";

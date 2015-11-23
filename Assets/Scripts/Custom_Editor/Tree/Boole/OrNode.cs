@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 
-[Node(false, "Patterns Tree/And Node", false)]
-public class AndNode : BaseNode
+[Node(false, "Boole/Or Node", false)]
+public class OrNode : BaseNode
 {
-    public const string ID = "andNode";
+    public const string ID = "orNode";
     public override string GetID { get { return ID; } }
     private Color nodeColor;
-
+    
     public override Node Create(Vector2 pos)
     {
-        AndNode node = CreateInstance<AndNode>();
-        node.rect = new Rect(pos.x, pos.y, 55, 50); 
-        node.name = "And";
+        OrNode node = CreateInstance<OrNode>();
+        node.rect = new Rect(pos.x, pos.y, 55, 50);
+        node.name = "Or";
 
         node.CreateInput("", "Bool");
         node.CreateInput("", "Bool");
@@ -53,18 +53,18 @@ public class AndNode : BaseNode
     public override bool Calculate()
     {
         bool hasConnection = false;
-        bool outputValue = true;
+        bool outputValue = false;
 
-        for(int i = 0; i < Inputs.Count; i++)
+        for (int i = 0; i < Inputs.Count; i++)
         {
-            if(Inputs[i].connection)
+            if (Inputs[i].connection)
             {
                 hasConnection = true;
-                outputValue = outputValue && Inputs[i].GetValue<bool>();
+                outputValue = outputValue || Inputs[i].GetValue<bool>();
             }
         }
 
-        if(hasConnection)
+        if (hasConnection)
         {
             value = outputValue;
         }
@@ -73,11 +73,11 @@ public class AndNode : BaseNode
 
         if (value)
         {
-            nodeColor = new Color(0f, 1f, 0f);
+            nodeColor = new Color(1f, 1f, 0f);
         }
         else
         {
-            nodeColor = new Color(0f, .65f, 0f);
+            nodeColor = new Color(.65f, .65f, 0f);
         }
 
         return true;

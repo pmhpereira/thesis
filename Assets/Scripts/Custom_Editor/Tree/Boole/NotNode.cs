@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
-using System;
 
-[Node(false, "Patterns Tree/Not Node", false)]
+[Node(false, "Boole/Not Node", false)]
 public class NotNode : BaseNode
 {
     public const string ID = "notNode";

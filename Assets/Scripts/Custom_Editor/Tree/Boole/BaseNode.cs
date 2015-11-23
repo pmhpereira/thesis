@@ -3,7 +3,7 @@ using System.Collections;
 using NodeEditorFramework;
 using System;
 
-[Node(true, "Patterns Tree/Base Node", false)]
+[Node(true, "", false)]
 
 public class BaseNode : Node
 {
@@ -41,5 +41,10 @@ public class BaseNode : Node
                 }
             }
         }
+    }
+
+    public bool GetValue()
+    {
+        return value;
     }
 }
