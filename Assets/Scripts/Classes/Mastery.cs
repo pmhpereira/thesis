@@ -1,33 +1,22 @@
 ﻿using System.Collections.Generic;
 
-public sealed class Mastery
+public class Mastery
 {
-    private readonly string name;
-    private readonly int value;
+    public static readonly string UNEXERCISED = "Unexercised";
+    public static readonly string INITIATED = "Initiated";
+    public static readonly string BURNED_OUT = "Burned Out";
+    public static readonly string PARTIALLY_MASTERED = "Partially Mastered";
+    public static readonly string MASTERED = "Mastered";
 
-    public static readonly Mastery UNEXERCISED = new Mastery(0, "Unexercised");
-    public static readonly Mastery INITIATED = new Mastery(1, "Initiated");
-    public static readonly Mastery BURNED_OUT = new Mastery(-1, "Burned Out");
-    public static readonly Mastery PARTIALLY_MASTERED = new Mastery(1, "Partially Mastered");
-    public static readonly Mastery MASTERED = new Mastery(2, "Mastered");
+    public static readonly List<string> values = new List<string>(new string[] {
+        Mastery.UNEXERCISED,
+        Mastery.INITIATED,
+        Mastery.BURNED_OUT,
+        Mastery.PARTIALLY_MASTERED,
+        Mastery.MASTERED
+    });
 
-    private Mastery(int value, string name)
-    {
-        this.name = name;
-        this.value = value;
-    }
-
-    public int Value()
-    {
-        return value;
-    }
-
-    public override string ToString()
-    {
-        return name;
-    }
-
-    public static Mastery FromId(string id)
+    public static string FromId(string id)
     {
         switch(id) {
             case "U": return UNEXERCISED;
@@ -40,21 +29,21 @@ public sealed class Mastery
         }
     }
 
-    public string ToId()
+    public static string ToId(string mastery)
     {
-        if (this == UNEXERCISED) return "U";
-        if (this == INITIATED) return "I";
-        if (this == BURNED_OUT) return "B";
-        if (this == PARTIALLY_MASTERED) return "P";
-        if (this == MASTERED) return "M";
+        if (mastery == UNEXERCISED) return "U";
+        if (mastery == INITIATED) return "I";
+        if (mastery == BURNED_OUT) return "B";
+        if (mastery == PARTIALLY_MASTERED) return "P";
+        if (mastery == MASTERED) return "M";
 
         return null;
     }
 
-    public static Mastery FromAttempts(float score, int numAttempts)
+    public static string FromAttempts(float score, int numAttempts)
     {
         if (score >= 0.9 && numAttempts > 8) return MASTERED;
-        //if (score >= 0.5 && numAttempts > 6) return PARTIALLY_MASTERED;
+        if (score >= 0.5 && numAttempts > 6) return PARTIALLY_MASTERED;
         if (score <= 0.1 && numAttempts > 8) return BURNED_OUT;
         if (numAttempts > 0) return INITIATED;
         if (numAttempts == 0) return UNEXERCISED;

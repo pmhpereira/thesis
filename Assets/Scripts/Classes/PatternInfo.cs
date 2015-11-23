@@ -16,7 +16,7 @@ public class PatternInfo
         this.dependencies = new List<List<Dependency>>();
     }
 
-    public float GetScore(int tagIndex)
+    public float GetScore(int tagIndex = 0)
     {
         float score = 0;
         float accumulator = 0;
@@ -51,13 +51,21 @@ public class PatternInfo
     {
         string scores = "";
 
+        #warning disabled tags
+        return Math.Round(GetScore(), 3) + " | " + Mastery.ToId(GetMastery()) + "\n";
+
         for(int i = 0; i < tags.Count; i++)
         {
             float score = GetScore(i);
-            scores += Math.Round(score, 3) + " | " + Mastery.FromAttempts(score, attempts[i].Count).ToId() + "\n";
+            scores += Math.Round(score, 3) + " | " + Mastery.ToId(Mastery.FromAttempts(score, attempts[i].Count)) + "\n";
         }
 
         return scores;
+    }
+
+    public string GetMastery(int tagIndex = 0)
+    {
+        return Mastery.FromAttempts(GetScore(tagIndex), attempts[tagIndex].Count);
     }
 
     public void AddAttempt(bool success, PlayerState[] playerStates)
@@ -76,6 +84,11 @@ public class PatternInfo
 
     public void AddAttempt(bool success, int tagIndex)
     {
+        if(tagIndex < 0 || tagIndex >= attempts.Count)
+        {
+            return;
+        }
+
         List<int> tries = attempts[tagIndex];
 
         if (tries.Count == PatternManager.instance.savedAttempts)
@@ -99,6 +112,9 @@ public class PatternInfo
 
     public int ResolveTagIndex(PlayerState[] playerStates)
     {
+        // WARN: disabled tags
+        return 0;
+
         int tagIndex = 0, bestScore = 0;
 
         for(int t = 0; t < tags.Count; t++)

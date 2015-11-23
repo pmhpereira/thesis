@@ -173,7 +173,7 @@ public class PatternGenerator : MonoBehaviour
                         string[] dependencyParams = parameters[d].Split('|');
                         string patternName = dependencyParams[0];
                         int tagIndex = int.Parse(dependencyParams[1]);
-                        Mastery mastery = Mastery.FromId(dependencyParams[2]);
+                        string mastery = Mastery.FromId(dependencyParams[2]);
 
                         dependencies[d - 1] = new Dependency(patternName, tagIndex, mastery);
                     }
