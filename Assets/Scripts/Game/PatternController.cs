@@ -165,7 +165,7 @@ public class PatternController : MonoBehaviour
 
         string patternName = transform.name;
         string patternScores = PatternManager.instance.patternsInfo[transform.name].GetScoresString();
-        text.text = patternName + "\n" + patternScores;
+        text.text = "\n" + patternName + "\n" + patternScores;
     }
 
     void RecordPlayer()

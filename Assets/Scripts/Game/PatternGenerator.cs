@@ -99,7 +99,7 @@ public class PatternGenerator : MonoBehaviour
                 patternsMap[pattern.name] = pattern;
                 patternsInfo[pattern.name] = new PatternInfo(pattern.name);
 
-                height += 5f;
+                height -= 5f;
             }
             else if (indentationLevel == 1)
             {
@@ -196,7 +196,7 @@ public class PatternGenerator : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && SceneView.lastActiveSceneView)
         {
             CameraController.instance.sceneViewFollow = false;
             SceneView.lastActiveSceneView.pivot = generated.transform.position;
