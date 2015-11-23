@@ -112,11 +112,11 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetButton("Fire1") && isIdling && !isJumping)
             {
-                Jump();
+                SingleJump();
             }
             else if (Input.GetButtonDown("Fire1") && currentConsecutiveJumps < maxConsecutiveJumps)
             {
-                Jump();
+                MultipleJump();
             }
         }
 
@@ -124,6 +124,26 @@ public class PlayerController : MonoBehaviour
         {
             stopOnCollision = !stopOnCollision;
         }
+    }
+
+    void SingleJump()
+    {
+        if(!TreeManager.instance.IsMechanicEnabled(Tag.Jump))
+        {
+            return;
+        }
+
+        Jump();
+    }
+
+    void MultipleJump()
+    {
+        if (!TreeManager.instance.IsMechanicEnabled(Tag.Double_Jump))
+        {
+            return;
+        }
+
+        Jump();
     }
 
     void Jump()

@@ -25,6 +25,7 @@ public class PatternManager : MonoBehaviour
 
     private GameObject[] patterns;
     public Dictionary<string, PatternInfo> patternsInfo;
+    public List<string> patternsName;
 
     [HideInInspector]
     public int savedAttempts;
@@ -72,6 +73,7 @@ public class PatternManager : MonoBehaviour
     {
         patterns = newPatterns;
         patternsInfo = new Dictionary<string, PatternInfo>();
+        patternsName = new List<string>(newPatterns.Length);
 
         foreach (GameObject pattern in patterns)
         {
@@ -82,6 +84,11 @@ public class PatternManager : MonoBehaviour
     public void SetPatternsInfo(string patternName, PatternInfo patternInfo)
     {
         patternsInfo[patternName] = patternInfo;
+
+        if(patternsName.Contains(patternName) == false)
+        {
+            patternsName.Add(patternName);
+        }
     }
 
     void Start()
@@ -139,7 +146,7 @@ public class PatternManager : MonoBehaviour
 
         if(!CanSpawn(pattern.name))
         {
-            Debug.Log("Unresolved dependencies for " + pattern.name);
+            Debug.Log("Unresolved dependencies for pattern: " + pattern.name);
             return;
         }
 
@@ -418,25 +425,6 @@ public class PatternManager : MonoBehaviour
 
     bool CanSpawn(string patternName)
     {
-        bool canSpawn = true;
-
-        PatternInfo patternInfo = patternsInfo[patternName];
-
-        List<List<Dependency>> dependencies = patternInfo.dependencies;
-        
-        foreach(List<Dependency> dependencyList in dependencies)
-        {
-            canSpawn = true;
-
-            foreach(Dependency dependency in dependencyList)
-            {
-                canSpawn &= dependency.IsResolved();
-                if (!canSpawn) break;
-            }
-
-            if (canSpawn) break;
-        }
-
-        return canSpawn;
+        return TreeManager.instance.IsPatternEnabled(patternName);
     }
 }
