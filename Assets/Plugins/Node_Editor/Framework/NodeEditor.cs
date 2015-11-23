@@ -39,19 +39,27 @@ namespace NodeEditorFramework
 		
 		public static void checkInit () 
 		{
-			if (!initiated && !InitiationError) 
-			{
-	#if UNITY_EDITOR
-				Object script = UnityEditor.AssetDatabase.LoadAssetAtPath (editorPath + "Framework/NodeEditor.cs", typeof(Object));
-				if (script == null) 
-				{
-					Debug.LogError ("Node Editor: Not installed in default directory '" + editorPath + "'! Please modify the editorPath variable in the source!");
-					InitiationError = true;
-					return;
-				}
-	#endif
+            #if UNITY_EDITOR
+            {
+                UnityEditor.EditorApplication.playmodeStateChanged += () => { initiated = false; InitiationError = false; };
+            }
+            #endif
 
-				ResourceManager.Init (editorPath + "Resources/");
+            if (!initiated && !InitiationError) 
+			{
+                #if UNITY_EDITOR
+                {
+                    Object script = UnityEditor.AssetDatabase.LoadAssetAtPath (editorPath + "Framework/NodeEditor.cs", typeof(Object));
+				    if (script == null) 
+				    {
+					    Debug.LogError ("Node Editor: Not installed in default directory '" + editorPath + "'! Please modify the editorPath variable in the source!");
+					    InitiationError = true;
+					    return;
+				    }
+                }
+                #endif
+
+                ResourceManager.Init (editorPath + "Resources/");
 				
 				if (!NodeEditorGUI.Init ())
 					InitiationError = true;
@@ -84,9 +92,8 @@ namespace NodeEditorFramework
 			NodeEditorGUI.StartNodeGUI ();
 			
 			OverlayGUI.StartOverlayGUI ();
-			
+
 			DrawSubCanvas (nodeCanvas, editorState);
-			
 			OverlayGUI.EndOverlayGUI ();
 
 			NodeEditorGUI.EndNodeGUI ();
@@ -933,20 +940,16 @@ namespace NodeEditorFramework
 			if (String.IsNullOrEmpty (path))
 				return null;
 			Object[] objects = null;
-	
-			if (!Application.isPlaying) 
-			{
-				#if UNITY_EDITOR
-				objects = UnityEditor.AssetDatabase.LoadAllAssetsAtPath (path);
-				#endif
-			}
-			else 
-			{
-				path = path.Split ('.') [0];
-				objects = UnityEngine.Resources.LoadAll (path);
-			}
 
-			if (objects == null || objects.Length == 0) 
+            if(Application.isEditor)
+                objects = UnityEditor.AssetDatabase.LoadAllAssetsAtPath(path);
+            else
+            {
+                path = path.Split ('.') [0];
+                objects = UnityEngine.Resources.LoadAll (path);
+            }
+
+            if (objects == null || objects.Length == 0) 
 				return null;
 			// We're going to filter out the NodeCanvas out of the objects that build up the save file.
 			NodeCanvas nodeCanvas = null;
@@ -960,11 +963,11 @@ namespace NodeEditorFramework
 
 			nodeCanvas = GetWorkingCopy (nodeCanvas);
 
-	#if UNITY_EDITOR
-			UnityEditor.AssetDatabase.Refresh ();
-	#endif	
-			NodeEditorCallbacks.IssueOnLoadCanvas (nodeCanvas);
-			return nodeCanvas;
+	        #if UNITY_EDITOR
+			    UnityEditor.AssetDatabase.Refresh ();
+	        #endif	
+			    NodeEditorCallbacks.IssueOnLoadCanvas (nodeCanvas);
+			    return nodeCanvas;
 		}
 
 		// <summary>
