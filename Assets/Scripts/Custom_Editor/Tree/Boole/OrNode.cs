@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 
-[Node(false, "Boole/Or Node", false)]
+[Node(false, "Boole Node/Or", false)]
 public class OrNode : BaseNode
 {
     public const string ID = "orNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor;
-    
+    private Color nodeColor = new Color(1f, 1f, 0f);
+
     public override Node Create(Vector2 pos)
     {
         OrNode node = CreateInstance<OrNode>();
@@ -70,15 +70,6 @@ public class OrNode : BaseNode
         }
 
         Outputs[0].SetValue<bool>(value);
-
-        if (value)
-        {
-            nodeColor = new Color(1f, 1f, 0f);
-        }
-        else
-        {
-            nodeColor = new Color(.65f, .65f, 0f);
-        }
 
         return true;
     }

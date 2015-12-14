@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.IO;
 using System.Text;
 
@@ -196,11 +198,13 @@ public class PatternGenerator : MonoBehaviour
 
     void Update()
     {
+        #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.E) && SceneView.lastActiveSceneView)
         {
             CameraController.instance.sceneViewFollow = false;
             SceneView.lastActiveSceneView.pivot = generated.transform.position;
         }
+        #endif
     }
 
     public void SaveAll()
@@ -244,6 +248,7 @@ public class PatternGenerator : MonoBehaviour
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(PatternGenerator))]
 public class ObjectBuilderEditor : Editor
 {
@@ -265,3 +270,4 @@ public class ObjectBuilderEditor : Editor
         GUI.enabled = true;
     }
 }
+#endif

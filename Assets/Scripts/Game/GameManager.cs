@@ -41,21 +41,33 @@ public class GameManager : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            isPaused = !isPaused;
-
-            if(isPaused)
-            {
-                oldTimeScale = Time.timeScale;
-            }
-
-            Time.timeScale = isPaused ? 0 : oldTimeScale;
+            SetPause(!isPaused);
         }
+
+        if(Input.GetKeyDown(KeyCode.F12))
+        {
+            TreeManager.instance.ToogleNodeEditor();
+        }
+    }
+
+    public void SetPause(bool paused)
+    {
+        isPaused = paused;
+
+        if (isPaused)
+        {
+            oldTimeScale = Time.timeScale;
+        }
+
+        Time.timeScale = isPaused ? 0 : oldTimeScale;
     }
 
     void OnValidate()
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = frameRate;
+
+        SetPause(isPaused);
     }
 
     void RestartLevel()

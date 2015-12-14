@@ -939,15 +939,17 @@ namespace NodeEditorFramework
 		{
 			if (String.IsNullOrEmpty (path))
 				return null;
-			Object[] objects = null;
+            Object[] objects = null;
 
-            if(Application.isEditor)
+            #if UNITY_EDITOR
                 objects = UnityEditor.AssetDatabase.LoadAllAssetsAtPath(path);
-            else
+#else
             {
-                path = path.Split ('.') [0];
+                path = path.Split('.')[0];
+                path = path.Split(new string[] { "Resources/" }, StringSplitOptions.None)[1];
                 objects = UnityEngine.Resources.LoadAll (path);
             }
+#endif
 
             if (objects == null || objects.Length == 0) 
 				return null;
@@ -963,9 +965,9 @@ namespace NodeEditorFramework
 
 			nodeCanvas = GetWorkingCopy (nodeCanvas);
 
-	        #if UNITY_EDITOR
+#if UNITY_EDITOR
 			    UnityEditor.AssetDatabase.Refresh ();
-	        #endif	
+#endif
 			    NodeEditorCallbacks.IssueOnLoadCanvas (nodeCanvas);
 			    return nodeCanvas;
 		}
@@ -1067,7 +1069,7 @@ namespace NodeEditorFramework
 			return (T)clonedScriptableObjects[soInd];
 		}
 
-		#endregion
+#endregion
 	}
 }
 

@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
+#if UNITY_EDITOR
 using UnityEditor;
-
-[Node(false, "Patterns Tree/Tag Node", false)]
+#endif
+[Node(false, "Game Node/Mechanic", false)]
 public class TagNode : BaseNode
 {
     public const string ID = "tagNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor;
+    private Color nodeColor = new Color(1f, 0f, 0f);
 
     [HideInInspector]
     public string tag;
@@ -20,7 +21,7 @@ public class TagNode : BaseNode
     {
         TagNode node = CreateInstance<TagNode>();
         node.rect = new Rect(pos.x, pos.y, 150, 50);
-        node.name = "Tag";
+        node.name = "Mechanic";
 
         tagIndex = 0;
 
@@ -47,32 +48,28 @@ public class TagNode : BaseNode
         tag = Tag.values[tagIndex];
 
         GUILayout.FlexibleSpace();
-
         GUILayout.BeginHorizontal();
-        GUILayout.BeginVertical();
 
+        GUILayout.BeginVertical();
         for(int i = 0; i < Inputs.Count; i++)
         {
             Inputs[i].DisplayLayout();
         }
-
         GUILayout.EndVertical();
 
-        GUIStyle guiStyle = new GUIStyle();
-        guiStyle.alignment = TextAnchor.MiddleCenter;
-        guiStyle.fontSize = 16;
-        guiStyle.normal.textColor = Color.white;
-        guiStyle.fontStyle = FontStyle.Bold;
-        GUILayout.Label(tag.ToString(), guiStyle);
+        #if UNITY_EDITOR
+            tagIndex = EditorGUILayout.Popup("", tagIndex, Tag.values.ToArray(), GUILayout.MaxWidth(rect.width * .8f));
+        #else
+            GUILayout.Label(Tag.values[tagIndex]);
+        #endif
 
         GUILayout.BeginVertical();
-
         for (int i = 0; i < Outputs.Count; i++)
         {
             Outputs[i].DisplayLayout();
         }
-
         GUILayout.EndVertical();
+
         GUILayout.EndHorizontal();
         GUILayout.FlexibleSpace();
     }
@@ -86,15 +83,6 @@ public class TagNode : BaseNode
 
         Outputs[0].SetValue<bool>(value);
         
-        if(value)
-        {
-            nodeColor = new Color(1f, .65f, 0f);
-        }
-        else
-        {
-            nodeColor = new Color(1f, 0f, 0f);
-        }
-
         if(value != oldValue)
         {
             oldValue = value;
@@ -110,22 +98,5 @@ public class TagNode : BaseNode
         {
             TreeManager.instance.UpdateTag(this);
         }
-    }
-}
-
-[CustomEditor(typeof(TagNode))]
-public class TagNodeInspector : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-
-        int index = ((TagNode)target).tagIndex;
-
-        EditorGUILayout.BeginVertical();
-        index = EditorGUILayout.Popup("Tag", index, Tag.values.ToArray(), EditorStyles.popup);
-        EditorGUILayout.EndVertical();
-
-        ((TagNode)target).tagIndex = index;
     }
 }

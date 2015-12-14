@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
-
+#endif
 public class CameraController : MonoBehaviour
 {
     public static CameraController instance;
@@ -80,20 +81,24 @@ public class CameraController : MonoBehaviour
             sceneViewFollow = !sceneViewFollow;
         }
 
+        #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.V))
         {
             SceneView.lastActiveSceneView.orthographic = !SceneView.lastActiveSceneView.orthographic;
         }
+        #endif
     }
 
     void UpdateGame()
     {
         camera.transform.position += new Vector3(PlayerController.instance.moveSpeed * Time.deltaTime, 0, 0);
 
-        if(sceneViewFollow && SceneView.lastActiveSceneView)
+        #if UNITY_EDITOR
+        if (sceneViewFollow && SceneView.lastActiveSceneView)
         {
             SceneView.lastActiveSceneView.pivot = camera.transform.position;
         }
+        #endif
     }
 
     void SaveToPlayerPrefs()

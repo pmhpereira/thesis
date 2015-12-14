@@ -5,7 +5,7 @@ using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
 
 [System.Serializable]
-[Node(false, "State Machine/State", true)]
+[Node(true, "State Machine/State", true)]
 public class StateNode : Node
 {
 	public UnityEvent OnEnter;

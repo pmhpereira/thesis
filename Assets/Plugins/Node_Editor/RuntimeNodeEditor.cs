@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using NodeEditorFramework;
+using NodeEditorFramework.Resources;
 
 public class RuntimeNodeEditor : MonoBehaviour 
 {
@@ -68,8 +69,10 @@ public class RuntimeNodeEditor : MonoBehaviour
 
 	public void LoadNodeCanvas (string path) 
 	{
-		// Load the NodeCanvas
-		canvas = NodeEditor.LoadNodeCanvas (path);
+        // Load the NodeCanvas
+        ResourceManager.Init(NodeEditor.editorPath + "Resources/");
+
+        canvas = NodeEditor.LoadNodeCanvas (path);
 		if (canvas == null)
 			canvas = ScriptableObject.CreateInstance<NodeCanvas> ();
 		

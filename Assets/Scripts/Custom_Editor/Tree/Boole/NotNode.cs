@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 
-[Node(false, "Boole/Not Node", false)]
+[Node(false, "Boole Node/Not", false)]
 public class NotNode : BaseNode
 {
     public const string ID = "notNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor;
+    private Color nodeColor = new Color(.7f, .1f, .7f);
 
     public override Node Create(Vector2 pos)
     {
@@ -45,15 +45,6 @@ public class NotNode : BaseNode
         }
 
         Outputs[0].SetValue<bool>(!value);
-
-        if (!value)
-        {
-            nodeColor = new Color(1f, .5f, 1f);
-        }
-        else
-        {
-            nodeColor = new Color(.7f, .1f, .7f);
-        }
 
         return true;
     }

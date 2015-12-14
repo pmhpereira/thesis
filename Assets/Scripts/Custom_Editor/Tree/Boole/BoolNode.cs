@@ -15,12 +15,12 @@ public class BoolType : ITypeDeclaration
     }
 }
 
-[Node(false, "Boole/Input Node", false)]
+[Node(false, "Boole Node/Input", false)]
 public class BoolNode : BaseNode
 {
     public const string ID = "boolNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor;
+    private Color nodeColor = new Color(.1f, .7f, 1f);
 
     public override Node Create(Vector2 pos)
     {
@@ -52,16 +52,7 @@ public class BoolNode : BaseNode
     public override bool Calculate()
     {
         Outputs[0].SetValue<bool>(value);
-
-        if (value)
-        {
-            nodeColor = new Color(.1f, .7f, 1f);
-        }
-        else
-        {
-            nodeColor = new Color(0f, .1f, .7f);
-        }
-
+        
         return true;
     }
 }
