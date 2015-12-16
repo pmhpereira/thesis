@@ -82,7 +82,7 @@ namespace NodeEditorFramework
 			
 			if (tex == null)
 				tex = ResourceManager.GetTintedTexture ("Textures/AALine.png", col);
-			
+
 			int segmentCount = (int)(((startPos-startTan).magnitude + (startTan-endTan).magnitude + (endTan-endPos).magnitude) / 10);
 			Vector2 curPoint = startPos;
 			for (int segCnt = 1; segCnt <= segmentCount; segCnt++) 
@@ -119,13 +119,13 @@ namespace NodeEditorFramework
 			{
 				if (tex == null)
 					tex = ResourceManager.GetTintedTexture ("Textures/AALine.png", col);
-
 				Vector2 perpWidthOffset = new Vector2 ((endPos-startPos).y, -(endPos-startPos).x).normalized * width / 2;
 				
-				Material mat = new Material (Shader.Find ("Unlit/Transparent"));
+                if(mat == null)
+                    mat = new Material (Shader.Find ("Unlit/Transparent"));
+
 				mat.SetTexture ("_MainTex", tex);
 				mat.SetPass (0);
-				
 				GL.Begin (GL.TRIANGLE_STRIP);
 				GL.TexCoord2 (0, 0);
 				GL.Vertex (startPos - perpWidthOffset);
@@ -138,7 +138,7 @@ namespace NodeEditorFramework
 				GL.End ();
 			}
 		}
-
+        static Material mat = null;
 		#endregion
 
 		#region Texture Utilities
