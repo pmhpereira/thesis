@@ -317,7 +317,7 @@ PlayerSettings:
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
   scriptingDefineSymbols: {}
-  metroPackageName: once-upon-a-knight
+  metroPackageName: Thesis
   metroPackageLogo: 
   metroPackageLogo140: 
   metroPackageLogo180: 
@@ -328,7 +328,7 @@ PlayerSettings:
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: once-upon-a-knight
+  metroApplicationDescription: Thesis
   metroStoreTileLogo80: 
   metroStoreTileLogo: 
   metroStoreTileLogo140: 
