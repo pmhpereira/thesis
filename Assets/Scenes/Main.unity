@@ -1591,7 +1591,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameRate: 60
   debugMode: 1
-  isPaused: 0
+  isPaused: 1
 --- !u!1 &2037386108
 GameObject:
   m_ObjectHideFlags: 0
