@@ -95,30 +95,8 @@ public class PatternManager : MonoBehaviour
     {
         for (float i = groundDistance; i < maxStartingGroundDistance; i += groundPrefab.transform.localScale.x)
         {
-            GameObject ground = (GameObject) Instantiate(groundPrefab);
-            ground.transform.position = new Vector2(groundDistance, groundHeight);
-
-            if (hideBlocksInHierarchy)
-            {
-                ground.hideFlags = HideFlags.HideInHierarchy;
-            }
-
-            ground.transform.SetParent(this.transform);
-            ground.transform.SetAsLastSibling();
-
-            GameObject ceiling = (GameObject) Instantiate(ceilingPrefab);
-            ceiling.transform.position = new Vector2(ceilingDistance, ceilingHeight);
-
-            if (hideBlocksInHierarchy)
-            {
-                ceiling.hideFlags = HideFlags.HideInHierarchy;
-            }
-
-            ceiling.transform.SetParent(this.transform);
-            ceiling.transform.SetAsLastSibling();
-
-            groundDistance += groundPrefab.transform.localScale.x;
-            ceilingDistance += ceilingPrefab.transform.localScale.x;
+            SpawnGround();
+            SpawnCeiling();
         }
     }
 
@@ -166,6 +144,117 @@ public class PatternManager : MonoBehaviour
 
         groundDistance += patternLength;
         ceilingDistance += patternLength;
+    }
+    
+    void SpawnPace()
+    {
+        int[] paceArguments = GenerateArguments(TreeManager.instance.GetRandomActivePaceNode());
+
+        if(paceArguments == null)
+        {
+            return;
+        }
+
+        for(int i = 0; i < paceArguments.Length; i++)
+        {
+            if(i % 2 == 0)
+            {
+                SpawnPattern(paceArguments[i]);
+            }
+            else
+            {
+                for(int g = 0; g < paceArguments[i]; g++)
+                {
+                    SpawnGround();
+                    SpawnCeiling();
+                }
+            }
+        }
+    }
+
+    void SpawnGround()
+    {
+        GameObject ground = (GameObject) Instantiate(groundPrefab);
+        ground.transform.position = new Vector2(groundDistance, groundHeight);
+
+        if (hideBlocksInHierarchy)
+        {
+            ground.hideFlags = HideFlags.HideInHierarchy;
+        }
+
+        ground.transform.SetParent(this.transform);
+        ground.transform.SetAsLastSibling();
+        groundDistance += groundPrefab.transform.localScale.x;
+    }
+
+    void SpawnCeiling()
+    {
+        GameObject ceiling = (GameObject) Instantiate(ceilingPrefab);
+        ceiling.transform.position = new Vector2(ceilingDistance, ceilingHeight);
+
+        if (hideBlocksInHierarchy)
+        {
+            ceiling.hideFlags = HideFlags.HideInHierarchy;
+        }
+
+        ceiling.transform.SetParent(this.transform);
+        ceiling.transform.SetAsLastSibling();
+        ceilingDistance += ceilingPrefab.transform.localScale.x;
+    }
+
+    public int[] GenerateArguments(PaceNode node)
+    {
+        if(node == null)
+        {
+            return null;
+        }
+
+        UnityEngine.Random random = new UnityEngine.Random();
+        List<int> args = new List<int>();
+
+        List<int> patternsIndices = node.patternsIndices;
+        if(patternsIndices.Count == 0)
+        {
+            for(int i = 0; i < patternsName.Count; i++)
+            {
+                patternsIndices.Add(i);
+            }
+        }
+
+        List<int> filteredPatternsIndices = new List<int>();
+        foreach(int index in patternsIndices)
+        {
+            if(TreeManager.instance.IsPatternEnabled(patternsName[index]))
+            {
+                filteredPatternsIndices.Add(index);
+            }
+        }
+
+        for(int i = 0; i < node.instancesCount; i++)
+        {
+            int pattern = UnityEngine.Random.Range(0, filteredPatternsIndices.Count);
+            args.Add(filteredPatternsIndices[pattern]);
+
+            int interval = 0;
+            switch(Pace.values[node.paceIndex])
+            {
+                case Pace.SLOW:
+                    interval = UnityEngine.Random.Range(13, 20);
+                    break;
+                case Pace.NORMAL:
+                    interval = UnityEngine.Random.Range(6, 13);
+                    break;
+                case Pace.FAST:
+                    interval = UnityEngine.Random.Range(0, 6);
+                    break;
+                default:
+                    break;
+            }
+
+            args.Add(interval);
+        }
+
+        return args.ToArray();
     }
 
     private GameObject GetFirstObstacleWithTag(string tag)
@@ -218,30 +307,46 @@ public class PatternManager : MonoBehaviour
     public void RepositionGround()
     {
         GameObject firstGround = GetFirstObstacleWithTag("Ground");
+        GameObject lastGround = GetLastObstacleWithTag("Ground");
 
         if (firstGround != null)
         {
-            Vector2 newPosition = new Vector3(groundDistance, groundHeight, 0);
+            if(lastGround.transform.position.x - firstGround.transform.position.x <= maxStartingGroundDistance - minStartingGroundDistance)
+            {
+                Vector2 newPosition = new Vector3(groundDistance, groundHeight, 0);
 
-            firstGround.transform.position = newPosition;
-            firstGround.transform.SetAsLastSibling();
+                firstGround.transform.position = newPosition;
+                firstGround.transform.SetAsLastSibling();
 
-            groundDistance += groundPrefab.transform.localScale.x;
+                groundDistance += groundPrefab.transform.localScale.x;
+            }
+            else
+            {
+                Destroy(firstGround);
+            }
         }
     }
 
     public void RepositionCeiling()
     {
         GameObject firstCeiling = GetFirstObstacleWithTag("Ceiling");
+        GameObject lastCeiling = GetLastObstacleWithTag("Ceiling");
 
         if (firstCeiling != null)
         {
-            Vector2 newPosition = new Vector3(ceilingDistance, ceilingHeight, 0);
+            if(lastCeiling.transform.position.x - firstCeiling.transform.position.x <= maxStartingGroundDistance - minStartingGroundDistance)
+            {
+                Vector2 newPosition = new Vector3(ceilingDistance, ceilingHeight, 0);
 
-            firstCeiling.transform.position = newPosition;
-            firstCeiling.transform.SetAsLastSibling();
+                firstCeiling.transform.position = newPosition;
+                firstCeiling.transform.SetAsLastSibling();
 
-            ceilingDistance += ceilingPrefab.transform.localScale.x;
+                ceilingDistance += ceilingPrefab.transform.localScale.x;
+            }
+            else
+            {
+                Destroy(firstCeiling);
+            }
         }
     }
 
@@ -268,6 +373,7 @@ public class PatternManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7)) SpawnPattern(6);
         else if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8)) SpawnPattern(7);
         else if (Input.GetKeyDown(KeyCode.Alpha9) || Input.GetKeyDown(KeyCode.Keypad9)) SpawnPattern(8);
+        else if (Input.GetKeyDown(KeyCode.Alpha0) || Input.GetKeyDown(KeyCode.Keypad0)) SpawnPace();
 
         if (Input.GetKeyDown(KeyCode.F1)) SaveSnapshot(1);
         else if (Input.GetKeyDown(KeyCode.F2)) SaveSnapshot(2);

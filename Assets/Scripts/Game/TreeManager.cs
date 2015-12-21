@@ -22,15 +22,15 @@ public class TreeManager : MonoBehaviour
     public List<PatternNode> patternNodes;
     [HideInInspector]
     public List<MasteryNode> masteryNodes;
+    [HideInInspector]
+    public List<PaceNode> paceNodes;
 
     private RuntimeNodeEditor nodeEditor;
     private NodeCanvas nodeCanvas;
     private bool canvasStart;
 
     public Dropdown assetBrowser;
-
-    float delay = .5f;
-
+    
     void Awake()
     {
         if (instance != null && instance != this)
@@ -41,7 +41,6 @@ public class TreeManager : MonoBehaviour
         instance = this;
 
         nodeEditor = GetComponent<RuntimeNodeEditor>();
-
         InitializeAssetBrowser();
     }
 
@@ -68,8 +67,6 @@ public class TreeManager : MonoBehaviour
 
     public void OnValueChanged()
     {
-        StopAllCoroutines();
-
         if(assetBrowser.value == 0)
         {
             tags = null;
@@ -84,7 +81,7 @@ public class TreeManager : MonoBehaviour
             InitializeTags();
             InitializePatterns();
             InitializeMasteries();
-            StartCoroutine(ReadTree());
+            InitializePaces();
 
             nodeEditor.CanvasString = rootPath + "/" + assetBrowser.options[assetBrowser.value].text + ".asset";
             nodeEditor.LoadNodeCanvas(nodeEditor.CanvasString);
@@ -143,14 +140,6 @@ public class TreeManager : MonoBehaviour
             tags[node.tag] = node.value;
         }
     }
-
-    public void ReadTagNodes()
-    {
-        foreach (TagNode node in tagNodes)
-        {
-            UpdateTag(node);
-        }
-    }
     #endregion
 
     #region Patterns
@@ -177,14 +166,6 @@ public class TreeManager : MonoBehaviour
     public void UpdatePattern(PatternNode node)
     {
         patterns[node.pattern] = node.value;
-    }
-
-    public void ReadPatternNodes()
-    {
-        foreach (PatternNode node in patternNodes)
-        {
-            UpdatePattern(node);
-        }
     }
     #endregion
 
@@ -230,14 +211,45 @@ public class TreeManager : MonoBehaviour
     }
     #endregion
 
-    IEnumerator ReadTree()
+    #region Pace
+    private void InitializePaces()
     {
-        ReadTagNodes();
-        ReadPatternNodes();
-
-        yield return new WaitForSeconds(delay);
-        yield return StartCoroutine(ReadTree());
+        paceNodes = new List<PaceNode>();
     }
+
+    public void UpdatePaceNode(PaceNode paceNode)
+    {
+        int index = paceNodes.IndexOf(paceNode);
+
+        if(index < 0)
+        {
+            paceNodes.Add(paceNode);
+        }
+        else
+        {
+            paceNodes[index] = paceNode;
+        }
+    }
+
+    public PaceNode GetRandomActivePaceNode()
+    {
+        List<PaceNode> nodes = new List<PaceNode>();
+        foreach(PaceNode paceNode in paceNodes)
+        {
+            if(paceNode.value)
+            {
+                nodes.Add(paceNode);
+            }
+        }
+
+        if(nodes.Count == 0)
+        {
+            return null;
+        }
+
+        return nodes[UnityEngine.Random.Range(0, nodes.Count)];
+    }
+    #endregion
 
     public void ToogleNodeEditor()
     {
