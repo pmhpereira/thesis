@@ -360,6 +360,11 @@ public class PatternManager : MonoBehaviour
 
     void ProcessInput()
     {
+        if(GameManager.instance.isPaused)
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Return)) {
             SpawnPattern();
         }

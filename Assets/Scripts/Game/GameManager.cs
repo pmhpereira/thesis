@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -73,7 +74,7 @@ public class GameManager : MonoBehaviour
     void RestartLevel()
     {
         Time.timeScale = 1;
-        Application.LoadLevel(Application.loadedLevel);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         PlayerPrefs.Save();
     }
 }

@@ -258,11 +258,11 @@ public class ObjectBuilderEditor : Editor
 
         GUI.enabled = Application.isPlaying;
 
-        if (GUILayout.Button("Save to File") || Input.GetKeyDown(KeyCode.S))
+        if (GUILayout.Button("Save to File"))
         {
             PatternGenerator.instance.SaveAll();
         }
-        else if (GUILayout.Button("Load from File") || Input.GetKeyDown(KeyCode.L))
+        else if (GUILayout.Button("Load from File"))
         {
             PatternGenerator.instance.LoadAll();
         }

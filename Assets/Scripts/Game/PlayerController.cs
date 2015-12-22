@@ -108,6 +108,11 @@ public class PlayerController : MonoBehaviour
 
     void ProcessInput()
     {
+        if(GameManager.instance.isPaused)
+        {
+            return;
+        }
+
         if (!isColliding)
         {
             if (Input.GetButton("Fire1") && isIdling && !isJumping)

@@ -32,6 +32,11 @@ public class CameraController : MonoBehaviour
 
     void ProcessInput()
     {
+        if(GameManager.instance.isPaused)
+        {
+            return;
+        }
+
         if (Input.GetKey(KeyCode.N))
         {
             if (camera.orthographic)
