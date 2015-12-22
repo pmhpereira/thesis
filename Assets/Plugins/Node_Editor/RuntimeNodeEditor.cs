@@ -65,7 +65,11 @@ public class RuntimeNodeEditor : MonoBehaviour
 
         rect.x = Screen.width - rect.width;
         rect.y = Screen.height - rect.height;
-		state.canvasRect = rect;
+
+        if(state != null)
+        {
+		    state.canvasRect = rect;
+        }
     }
 
 	public void OnGUI ()
