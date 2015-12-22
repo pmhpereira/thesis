@@ -212,7 +212,7 @@ public class PatternManager : MonoBehaviour
         UnityEngine.Random random = new UnityEngine.Random();
         List<int> args = new List<int>();
 
-        List<int> patternsIndices = node.patternsIndices;
+        List<int> patternsIndices = new List<int>(node.patternsIndices);
         if(patternsIndices.Count == 0)
         {
             for(int i = 0; i < patternsName.Count; i++)
