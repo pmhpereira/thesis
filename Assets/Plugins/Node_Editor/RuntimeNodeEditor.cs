@@ -10,15 +10,8 @@ public class RuntimeNodeEditor : MonoBehaviour
 	public NodeCanvas canvas;
 	public NodeEditorState state;
 
-	public Rect rootRect;
-	public Rect subRootRect;
-	public Rect canvasRect;
-
 	public void Start () 
 	{
-		//rootRect = new Rect (0, 0, Screen.width, Screen.height);
-		//canvasRect = new Rect (0, 0, Screen.width, Screen.height);
-
 		if ((canvas == null || state == null))
 		{
 			if (!string.IsNullOrEmpty (CanvasString))
@@ -31,6 +24,49 @@ public class RuntimeNodeEditor : MonoBehaviour
 
 		NodeEditor.initiated = false;
 	}
+
+    public enum Splitscreen
+    {
+        None,
+        Vertical,
+    }
+
+    public Splitscreen splitscreen = Splitscreen.None;
+
+    public void ToogleSplitscreen()
+    {
+        switch(splitscreen)
+        {
+            case Splitscreen.None:
+                splitscreen = Splitscreen.Vertical;
+                break;
+            case Splitscreen.Vertical:
+                splitscreen = Splitscreen.None;
+                break;
+        }
+
+        UpdateSplitscreen();
+    }
+
+    void UpdateSplitscreen()
+    {
+        Rect rect = new Rect();
+
+        if(splitscreen == Splitscreen.None)
+        {
+            rect.width = 0;
+            rect.height = 0;
+        }
+        else if(splitscreen == Splitscreen.Vertical)
+        {
+            rect.width = Screen.width;
+            rect.height = Screen.height / 2;
+        }
+
+        rect.x = Screen.width - rect.width;
+        rect.y = Screen.height - rect.height;
+		state.canvasRect = rect;
+    }
 
 	public void OnGUI ()
 	{
@@ -50,8 +86,7 @@ public class RuntimeNodeEditor : MonoBehaviour
 				//GUILayout.FlexibleSpace ();
 
 				//GUI.BeginGroup (subRootRect, NodeEditorGUI.nodeSkin.box);
-
-				state.canvasRect = new Rect (0, 0, Screen.width, Screen.height);
+                UpdateSplitscreen();
 				NodeEditor.DrawCanvas (canvas, state);
 
 				//GUI.EndGroup ();

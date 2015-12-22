@@ -14,8 +14,6 @@ public class TreeManager : MonoBehaviour
     public Dictionary<string, bool> tags;
     public Dictionary<string, bool> patterns;
 
-    public bool showNodeEditor;
-
     [HideInInspector]
     public List<TagNode> tagNodes;
     [HideInInspector]
@@ -105,6 +103,7 @@ public class TreeManager : MonoBehaviour
         }
 
         assetBrowser.gameObject.SetActive(GameManager.instance.debugMode);
+        UpdateSplitscreen();
     }
 
     #region Tags
@@ -253,19 +252,22 @@ public class TreeManager : MonoBehaviour
 
     public void ToogleNodeEditor()
     {
-        showNodeEditor = !showNodeEditor;
-
-        if (showNodeEditor)
-        {
-            GameManager.instance.SetPause(true);
-        }
+        nodeEditor.ToogleSplitscreen();
+        UpdateSplitscreen();
     }
 
-    void OnGUI()
+    void UpdateSplitscreen()
     {
-        if (nodeEditor != null)
+        Vector3 dropdownPosition = assetBrowser.transform.position;
+        switch(nodeEditor.splitscreen)
         {
-            nodeEditor.enabled = showNodeEditor;
+            case RuntimeNodeEditor.Splitscreen.Vertical:
+                dropdownPosition.y = 20 + Screen.height / 2;
+                break;
+            default:
+                dropdownPosition.y = 20;
+                break;
         }
+        assetBrowser.transform.position = dropdownPosition;
     }
 }

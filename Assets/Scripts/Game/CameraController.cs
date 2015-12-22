@@ -10,6 +10,14 @@ public class CameraController : MonoBehaviour
 
     public bool sceneViewFollow;
 
+    public enum Splitscreen
+    {
+        None,
+        Vertical,
+    }
+
+    Splitscreen splitscreen;
+
     void Awake()
     {
         if (instance != null && instance != this)
@@ -22,6 +30,8 @@ public class CameraController : MonoBehaviour
         camera = GetComponent<Camera>();
 
         LoadFromDataHolder();
+        
+        splitscreen = Splitscreen.None;
     }
 
     void Update()
@@ -92,6 +102,41 @@ public class CameraController : MonoBehaviour
             SceneView.lastActiveSceneView.orthographic = !SceneView.lastActiveSceneView.orthographic;
         }
         #endif
+    }
+
+    public void ToogleSplitscreen()
+    {
+        switch(splitscreen)
+        {
+            case Splitscreen.None:
+                splitscreen = Splitscreen.Vertical;
+                break;
+            case Splitscreen.Vertical:
+                splitscreen = Splitscreen.None;
+                break;
+        }
+
+        UpdateSplitscreen();
+    }
+
+    void UpdateSplitscreen()
+    {
+        Rect rect = new Rect();
+
+        if(splitscreen == Splitscreen.None)
+        {
+            rect.width = 1;
+            rect.height = 1;
+        }
+        else if(splitscreen == Splitscreen.Vertical)
+        {
+            rect.width = 1;
+            rect.height = 0.5f;
+        }
+
+        rect.x = 0;
+        rect.y = 1 - rect.height;
+		camera.rect = rect;
     }
 
     void UpdateGame()

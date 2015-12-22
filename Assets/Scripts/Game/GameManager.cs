@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.F12))
         {
+            CameraController.instance.ToogleSplitscreen();
             TreeManager.instance.ToogleNodeEditor();
         }
     }
