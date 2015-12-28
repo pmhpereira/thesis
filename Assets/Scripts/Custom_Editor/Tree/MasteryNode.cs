@@ -18,6 +18,8 @@ public class MasteryNode : BaseNode
     [HideInInspector]
     public int masteryIndex;
     [HideInInspector]
+    public int masteryComparisonIndex;
+    [HideInInspector]
     public PatternNode patternNode;
     [HideInInspector]
     public string mastery;
@@ -25,7 +27,7 @@ public class MasteryNode : BaseNode
     public override Node Create(Vector2 pos)
     {
         MasteryNode node = CreateInstance<MasteryNode>();
-        node.rect = new Rect(pos.x, pos.y, 150, 50);
+        node.rect = new Rect(pos.x, pos.y, 180, 50);
         node.name = "Mastery";
 
         node.CreateInput("", "Bool");
@@ -38,6 +40,12 @@ public class MasteryNode : BaseNode
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = nodeColor;
+
+        if(rect.width != 180)
+        {
+            rect.width = 180;
+            rect.height = 50;
+        }
 
         base.DrawNode();
 
@@ -62,7 +70,8 @@ public class MasteryNode : BaseNode
         {
             patternNode = null;
             tagNode = null;
-            masteryIndex = 0;
+            masteryIndex = Mastery.values.IndexOf(Mastery.INITIATED);
+            masteryComparisonIndex = MasteryComparison.values.IndexOf(MasteryComparison.EQUAL);
             mastery = null;
             GUILayout.Label("Game node missing");
         }
@@ -80,9 +89,11 @@ public class MasteryNode : BaseNode
             }
 
             #if UNITY_EDITOR
-                masteryIndex = EditorGUILayout.Popup("", masteryIndex, Mastery.values.ToArray(), GUILayout.MaxWidth(rect.width * .8f));
+                masteryComparisonIndex = EditorGUILayout.Popup("", masteryComparisonIndex, MasteryComparison.values.ToArray(), GUILayout.MaxWidth(rect.width * .175f));
+                masteryIndex = EditorGUILayout.Popup("", masteryIndex, Mastery.values.ToArray(), GUILayout.MaxWidth(rect.width * .66f));
                 mastery = Mastery.values[masteryIndex];
             #else
+                GUILayout.Label(MasteryComparison.values[masteryComparisonIndex]);
                 GUILayout.Label(Mastery.values[masteryIndex]);
             #endif
         }

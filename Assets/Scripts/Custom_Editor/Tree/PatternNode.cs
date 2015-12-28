@@ -20,7 +20,7 @@ public class PatternNode : BaseNode
     public override Node Create(Vector2 pos)
     {
         PatternNode node = CreateInstance<PatternNode>();
-        node.rect = new Rect(pos.x, pos.y, 150, 50);
+        node.rect = new Rect(pos.x, pos.y, 175, 50);
         node.name = "Challenge";
 
         patternIndex = 0;
@@ -35,6 +35,12 @@ public class PatternNode : BaseNode
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = nodeColor;
+
+        if(rect.width != 175)
+        {
+            rect.width = 175;
+            rect.height = 50;
+        }
 
         base.DrawNode();
 
@@ -60,8 +66,9 @@ public class PatternNode : BaseNode
         #if UNITY_EDITOR
             patternIndex = EditorGUILayout.Popup("", patternIndex, PatternManager.instance.patternsName.ToArray(), GUILayout.MaxWidth(rect.width * .8f));
         #else
-            GUILayout.Label(PatternManager.instance.patternsName[patternIndex]);
+            GUILayout.Label(pattern);
         #endif
+        GUILayout.Label(Mastery.ToId(TreeManager.instance.GetPatternMastery(pattern)));
 
         GUILayout.BeginVertical();
         for (int i = 0; i < Outputs.Count; i++)
@@ -79,6 +86,10 @@ public class PatternNode : BaseNode
         if (Inputs[0].connection != null)
         {
             value = Inputs[0].GetValue<bool>();
+        }
+        else
+        {
+            value = true;
         }
 
         Outputs[0].SetValue<bool>(value);

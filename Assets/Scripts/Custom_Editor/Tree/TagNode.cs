@@ -20,7 +20,7 @@ public class TagNode : BaseNode
     public override Node Create(Vector2 pos)
     {
         TagNode node = CreateInstance<TagNode>();
-        node.rect = new Rect(pos.x, pos.y, 150, 50);
+        node.rect = new Rect(pos.x, pos.y, 175, 50);
         node.name = "Mechanic";
 
         tagIndex = 0;
@@ -35,6 +35,12 @@ public class TagNode : BaseNode
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = nodeColor;
+
+        if(rect.width != 175)
+        {
+            rect.width = 175;
+            rect.height = 50;
+        }
 
         base.DrawNode();
 
@@ -60,8 +66,9 @@ public class TagNode : BaseNode
         #if UNITY_EDITOR
             tagIndex = EditorGUILayout.Popup("", tagIndex, Tag.values.ToArray(), GUILayout.MaxWidth(rect.width * .8f));
         #else
-            GUILayout.Label(Tag.values[tagIndex]);
+            GUILayout.Label(tag);
         #endif
+        GUILayout.Label(Mastery.ToId(TreeManager.instance.GetTagMastery(tag)));
 
         GUILayout.BeginVertical();
         for (int i = 0; i < Outputs.Count; i++)
@@ -79,6 +86,10 @@ public class TagNode : BaseNode
         if(Inputs[0].connection != null)
         {
             value = Inputs[0].GetValue<bool>();
+        }
+        else
+        {
+            value = true;
         }
 
         Outputs[0].SetValue<bool>(value);

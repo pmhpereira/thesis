@@ -1,5 +1,44 @@
 ﻿using System.Collections.Generic;
 
+public class MasteryComparison
+{
+    public const string LESS = "<";
+    public const string LESS_OR_EQUAL = "<=";
+    public const string EQUAL = "=";
+    public const string GREATER_OR_EQUAL = ">=";
+    public const string GREATER = ">";
+
+    public static readonly List<string> values = new List<string>(new string[] {
+        MasteryComparison.LESS,
+        MasteryComparison.LESS_OR_EQUAL,
+        MasteryComparison.EQUAL,
+        MasteryComparison.GREATER_OR_EQUAL,
+        MasteryComparison.GREATER
+    });
+
+    public static bool Compare(string comparator, string masteryA, string masteryB)
+    {
+        int masteryAindex = Mastery.values.IndexOf(masteryA);
+        int masteryBindex = Mastery.values.IndexOf(masteryB);
+
+        switch(comparator)
+        {
+            case LESS:
+                return masteryAindex < masteryBindex;
+            case LESS_OR_EQUAL:
+                return masteryAindex <= masteryBindex;
+            case EQUAL:
+                return masteryAindex == masteryBindex;
+            case GREATER_OR_EQUAL:
+                return masteryAindex >= masteryBindex;
+            case GREATER:
+                return masteryAindex > masteryBindex;
+            default:
+                return false;
+        }
+    }
+}
+
 public class Mastery
 {
     public static readonly string UNEXERCISED = "Unexercised";
@@ -9,9 +48,9 @@ public class Mastery
     public static readonly string MASTERED = "Mastered";
 
     public static readonly List<string> values = new List<string>(new string[] {
+        Mastery.BURNED_OUT,
         Mastery.UNEXERCISED,
         Mastery.INITIATED,
-        Mastery.BURNED_OUT,
         Mastery.PARTIALLY_MASTERED,
         Mastery.MASTERED
     });

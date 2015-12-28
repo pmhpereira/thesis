@@ -138,6 +138,11 @@ public class TreeManager : MonoBehaviour
             tags[node.tag] = node.value;
         }
     }
+
+    public string GetTagMastery(string pattern)
+    {
+        return Mastery.MASTERED;
+    }
     #endregion
 
     #region Patterns
@@ -163,7 +168,15 @@ public class TreeManager : MonoBehaviour
 
     public void UpdatePattern(PatternNode node)
     {
-        patterns[node.pattern] = node.value;
+        if(patterns != null)
+        {
+            patterns[node.pattern] = node.value;
+        }
+    }
+
+    public string GetPatternMastery(string pattern)
+    {
+        return PatternManager.instance.patternsInfo[pattern].GetMastery();
     }
     #endregion
 
@@ -200,11 +213,12 @@ public class TreeManager : MonoBehaviour
 
     public bool IsMasteryResolved(MasteryNode masteryNode, PatternNode patternNode)
     {
-        return PatternManager.instance.patternsInfo[patternNode.pattern].GetMastery() == masteryNode.mastery;
+        return MasteryComparison.Compare(MasteryComparison.values[masteryNode.masteryComparisonIndex], PatternManager.instance.patternsInfo[patternNode.pattern].GetMastery(), masteryNode.mastery);
     }
 
     public bool IsMasteryResolved(MasteryNode masteryNode, TagNode tagNode)
     {
+        // TODO: implement IsMasteryResolved
         return true;
     }
     #endregion
