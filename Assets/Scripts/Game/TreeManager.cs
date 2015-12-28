@@ -103,7 +103,6 @@ public class TreeManager : MonoBehaviour
         }
 
         assetBrowser.gameObject.SetActive(GameManager.instance.debugMode);
-        UpdateSplitscreen();
     }
 
     #region Tags
@@ -253,21 +252,5 @@ public class TreeManager : MonoBehaviour
     public void ToogleNodeEditor()
     {
         nodeEditor.ToogleSplitscreen();
-        UpdateSplitscreen();
-    }
-
-    void UpdateSplitscreen()
-    {
-        Vector3 dropdownPosition = assetBrowser.transform.position;
-        switch(nodeEditor.splitscreen)
-        {
-            case RuntimeNodeEditor.Splitscreen.Vertical:
-                dropdownPosition.y = 20 + Screen.height / 2;
-                break;
-            default:
-                dropdownPosition.y = 20;
-                break;
-        }
-        assetBrowser.transform.position = dropdownPosition;
     }
 }
