@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System;
+using System.Collections;
 
 public class PatternManager : MonoBehaviour
 {
@@ -98,6 +99,29 @@ public class PatternManager : MonoBehaviour
             SpawnGround();
             SpawnCeiling();
         }
+
+        StartCoroutine(CheckPatterns());
+    }
+
+    IEnumerator CheckPatterns()
+    {
+        GameObject lastGround = GetLastObstacleWithTag("Ground");
+        GameObject lastPattern = GetLastObstacleWithTag("Pattern");
+        
+        if(lastGround != null && lastPattern != null)
+        {
+            if(lastPattern.transform.position.x < lastGround.transform.position.x)
+            {
+                SpawnPace();
+            }
+        }
+        else
+        {
+            SpawnPace();
+        }
+
+        yield return new WaitForSeconds(0.1f);
+        yield return StartCoroutine(CheckPatterns());
     }
 
     void Update()
@@ -157,7 +181,7 @@ public class PatternManager : MonoBehaviour
 
         for(int i = 0; i < paceArguments.Length; i++)
         {
-            if(i % 2 == 0)
+            if(i % 2 == 1)
             {
                 SpawnPattern(paceArguments[i]);
             }
@@ -232,9 +256,6 @@ public class PatternManager : MonoBehaviour
 
         for(int i = 0; i < node.instancesCount; i++)
         {
-            int pattern = UnityEngine.Random.Range(0, filteredPatternsIndices.Count);
-            args.Add(filteredPatternsIndices[pattern]);
-
             int interval = 0;
             switch(Pace.values[node.paceIndex])
             {
@@ -251,7 +272,15 @@ public class PatternManager : MonoBehaviour
                     break;
             }
 
+            if(i == 0)
+            {
+                interval /= 2;
+            }
+
             args.Add(interval);
+            
+            int pattern = UnityEngine.Random.Range(0, filteredPatternsIndices.Count);
+            args.Add(filteredPatternsIndices[pattern]);
         }
 
         return args.ToArray();
