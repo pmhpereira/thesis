@@ -44,7 +44,7 @@ public class PaceNode : BaseNode
         }
         rect.height = rectDefaultHeight + patternsIndices.Count * 20;
 
-        base.DrawNode();
+        base.DrawOutlinedNode();
 
         GUI.backgroundColor = oldColor;
     }

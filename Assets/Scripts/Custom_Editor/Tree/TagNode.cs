@@ -42,7 +42,7 @@ public class TagNode : BaseNode
             rect.height = 50;
         }
 
-        base.DrawNode();
+        base.DrawOutlinedNode();
 
         GUI.backgroundColor = oldColor;
     }

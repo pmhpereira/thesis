@@ -47,7 +47,7 @@ public class MasteryNode : BaseNode
             rect.height = 50;
         }
 
-        base.DrawNode();
+        base.DrawOutlinedNode();
 
         GUI.backgroundColor = oldColor;
     }
@@ -120,8 +120,8 @@ public class MasteryNode : BaseNode
             value = Inputs[0].GetValue<bool>();
         }
 
-        bool realValue = value && CalculateMastery();
-        Outputs[0].SetValue<bool>(realValue);
+        value = value && CalculateMastery();
+        Outputs[0].SetValue<bool>(value);
 
         return true;
     }

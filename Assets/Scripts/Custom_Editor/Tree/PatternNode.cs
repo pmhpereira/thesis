@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
+using NodeEditorFramework.Resources;
+using NodeEditorFramework.Utilities;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -42,7 +44,7 @@ public class PatternNode : BaseNode
             rect.height = 50;
         }
 
-        base.DrawNode();
+        base.DrawOutlinedNode();
 
         GUI.backgroundColor = oldColor;
     }
