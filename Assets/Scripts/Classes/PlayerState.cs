@@ -1,6 +1,6 @@
 ﻿public sealed class PlayerState
 {
-    private readonly string name;
+    public readonly string name;
     private readonly int value;
 
     public static readonly PlayerState IDLING = new PlayerState(0, "Idling");

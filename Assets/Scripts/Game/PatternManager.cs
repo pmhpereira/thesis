@@ -233,7 +233,6 @@ public class PatternManager : MonoBehaviour
             return null;
         }
 
-        UnityEngine.Random random = new UnityEngine.Random();
         List<int> args = new List<int>();
 
         List<int> patternsIndices = new List<int>(node.patternsIndices);

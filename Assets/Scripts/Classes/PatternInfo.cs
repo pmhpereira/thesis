@@ -49,10 +49,11 @@ public class PatternInfo
 
     public string GetScoresString()
     {
-        string scores = "";
-
         #warning disabled tags
         return Math.Round(GetScore(), 3) + " | " + Mastery.ToId(GetMastery()) + "\n";
+
+        /* UNUSED * /
+        string scores = "";
 
         for(int i = 0; i < tags.Count; i++)
         {
@@ -61,6 +62,7 @@ public class PatternInfo
         }
 
         return scores;
+        /**/
     }
 
     public string GetMastery(int tagIndex = 0)
@@ -68,11 +70,13 @@ public class PatternInfo
         return Mastery.FromAttempts(GetScore(tagIndex), attempts[tagIndex].Count);
     }
 
+    /* UNUSED * /
     public void AddAttempt(bool success, PlayerState[] playerStates)
     {
         int tagIndex = ResolveTagIndex(playerStates);
         AddAttempt(success, tagIndex);
     }
+    /**/
 
     public void AddAttempt(bool success)
     {
@@ -110,6 +114,7 @@ public class PatternInfo
         dependencies.Add(new List<Dependency>(newDependencies));
     }
 
+    /* UNUSED * /
     public int ResolveTagIndex(PlayerState[] playerStates)
     {
         // WARN: disabled tags
@@ -141,23 +146,5 @@ public class PatternInfo
 
         return tagIndex;
     }
-
-    private List<string> PlayerStateToTags(PlayerState[] playerStates)
-    {
-        List<string> tags = new List<string>();
-
-        foreach(PlayerState state in playerStates)
-        {
-            if(state == PlayerState.JUMPING)
-            {
-                tags.Add("jump");
-            }
-            else if (state == PlayerState.DOUBLE_JUMPING)
-            {
-                tags.Add("double_jump");
-            }
-        }
-
-        return tags;
-    }
+    /**/
 }

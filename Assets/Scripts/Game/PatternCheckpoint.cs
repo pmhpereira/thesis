@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PatternCheckpoint : MonoBehaviour
 {
@@ -29,7 +30,13 @@ public class PatternCheckpoint : MonoBehaviour
         {
             Destroy(this.GetComponent<BoxCollider2D>());
             patternController.isRecordingPlayer = false;
-            PatternManager.instance.patternsInfo[this.transform.parent.name].AddAttempt(true, patternController.playerStates.ToArray());
+            PatternManager.instance.patternsInfo[this.transform.parent.name].AddAttempt(true);
+
+            List<string> tags = TagsManager.instance.PlayerStateToTags(patternController.playerStates.ToArray());
+            foreach(string tag in tags)
+            {
+                TagsManager.instance.tagsInfo[tag].AddAttempt(true);
+            }
         }
     }
 }

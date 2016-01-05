@@ -5,15 +5,17 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
 
-    public bool isJumping;
-    public bool isMultipleJumping;
-    public bool isDashing;
-    public bool isSliding;
-    public bool isColliding;
-    public bool isIdling;
-    public bool isFalling;
+    private bool isJumping;
+    private bool isMultipleJumping;
+    private bool isDashing;
+    private bool isSliding;
+    private bool isColliding;
+    private bool isIdling;
+    private bool isFalling;
 
     public float moveSpeed;
+
+    public string state;
 
     [Range (-10, 10)]
     public float fixedPlayerPositionX;
@@ -191,6 +193,8 @@ public class PlayerController : MonoBehaviour
         }
 
         transform.position += new Vector3(Time.deltaTime * moveSpeed, 0, 0);
+
+        state = ResolveState().name;
     }
 
     void OnTriggerEnter2D(Collider2D other)

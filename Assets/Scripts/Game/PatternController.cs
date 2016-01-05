@@ -152,6 +152,12 @@ public class PatternController : MonoBehaviour
             hasPlayerCollided = true;
 
             PatternManager.instance.patternsInfo[this.transform.name].AddAttempt(false);
+
+            List<string> tags = TagsManager.instance.PlayerStateToTags(playerStates.ToArray());
+            foreach(string tag in tags)
+            {
+                TagsManager.instance.tagsInfo[tag].AddAttempt(false);
+            }
         }
     }
 
@@ -172,10 +178,14 @@ public class PatternController : MonoBehaviour
     {
         PlayerState currentPlayerState = PlayerController.instance.ResolveState();
 
-        if(playerStates.Count == 0 
-            || playerStates[playerStates.Count - 1] != currentPlayerState)
+        if(!playerStates.Contains(currentPlayerState))
         {
             playerStates.Add(currentPlayerState);
         }
+    }
+
+    void SavePlayerStates(bool attempt)
+    {
+
     }
 }

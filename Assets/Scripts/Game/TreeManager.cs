@@ -139,9 +139,9 @@ public class TreeManager : MonoBehaviour
         }
     }
 
-    public string GetTagMastery(string pattern)
+    public string GetTagMastery(string tag)
     {
-        return Mastery.MASTERED;
+        return TagsManager.instance.tagsInfo[tag].GetMastery();
     }
     #endregion
 
