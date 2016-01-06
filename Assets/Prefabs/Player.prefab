@@ -50,8 +50,10 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -70,6 +72,7 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 114454}
+  m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
@@ -86,6 +89,7 @@ BoxCollider2D:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 114454}
   m_Enabled: 1
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
@@ -103,23 +107,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 303bba1c8c3519d49961248a71e0ce94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isJumping: 0
-  isMultipleJumping: 0
-  isDashing: 0
-  isSliding: 0
-  isColliding: 0
-  isIdling: 0
-  isFalling: 0
   moveSpeed: 12.5
+  state: 
   fixedPlayerPositionX: -6
   maxVerticalVelocity: 7
   jumpForce: 750
   maxConsecutiveJumps: 2
   colliding: []
   idlingColor: {r: 1, g: 1, b: 1, a: 1}
-  collidingColor: {r: .250980407, g: .250980407, b: .250980407, a: 1}
+  collidingColor: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}
   fallingColor: {r: 1, g: 0, b: 0, a: 1}
   stopOnCollision: 1
+  slideMaxDuration: 3
+  slideScalingDuration: 0.25
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

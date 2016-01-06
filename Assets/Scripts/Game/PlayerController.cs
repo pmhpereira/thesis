@@ -43,6 +43,12 @@ public class PlayerController : MonoBehaviour
 
     public bool stopOnCollision;
 
+    private float slideTime;
+    [Range(0.1f, 3f)]
+    public float slideMaxDuration;
+    [Range(0f, 1f)]
+    public float slideScalingDuration;
+
     void Awake()
     {
         if (instance != null && instance != this)
@@ -71,7 +77,8 @@ public class PlayerController : MonoBehaviour
     {
         isColliding = (numCollisions > 0);
         isIdling = false;
-        isJumping = Mathf.Abs(rigidbody.velocity.y) > Mathf.Epsilon * 1e3;
+        isJumping = Mathf.Abs(rigidbody.velocity.y) > 1e-3;
+        isJumping = isJumping && !(slideTime < slideScalingDuration); // when sliding (scale down), the player has negative vertical velocity
 
         colliding.Clear();
         RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, transform.localScale + Vector3.one * collisionDelta, 0, Vector2.zero);
@@ -115,7 +122,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (!isColliding)
+        if (!isColliding && !isFalling)
         {
             if (Input.GetButton("Fire1") && isIdling && !isJumping)
             {
@@ -124,6 +131,10 @@ public class PlayerController : MonoBehaviour
             else if (Input.GetButtonDown("Fire1") && currentConsecutiveJumps < maxConsecutiveJumps)
             {
                 MultipleJump();
+            }
+            else if(Input.GetButton("Fire2") && isIdling && !isSliding)
+            {
+                SlideSetup();
             }
         }
 
@@ -152,6 +163,45 @@ public class PlayerController : MonoBehaviour
 
         Jump();
     }
+    
+    void SlideSetup()
+    {
+        if (!TreeManager.instance.IsMechanicEnabled(Tag.Slide))
+        {
+            return;
+        }
+
+        isSliding = true;
+        slideTime = 0;
+    }
+
+    void Slide()
+    {
+        if(slideTime > slideMaxDuration)
+        {
+            isSliding = false;
+        }
+        else
+        {
+            Vector3 newScale = transform.localScale;
+            float newHeight = transform.localScale.y;
+
+            if(slideTime < slideScalingDuration) // scaling down
+            {
+                newHeight = Mathf.Lerp(1, 0.5f, slideTime / slideScalingDuration);
+            }
+            else if(slideTime > slideMaxDuration - slideScalingDuration) // scaling up
+            {
+                newHeight = Mathf.Lerp(0.5f, 1, (slideTime - slideMaxDuration + slideScalingDuration) / slideScalingDuration);
+            }
+
+            newScale.x = 1 / newHeight;
+            newScale.y = newHeight;
+            transform.localScale = newScale;
+        }
+
+        slideTime += Time.deltaTime;
+    }
 
     void Jump()
     {
@@ -178,6 +228,11 @@ public class PlayerController : MonoBehaviour
         else
         {
             renderer.material.color = idlingColor;
+        }
+
+        if(isSliding)
+        {
+            Slide();
         }
 
         if(!GameManager.instance.isPaused)
@@ -231,6 +286,7 @@ public class PlayerController : MonoBehaviour
         if(isFalling) return PlayerState.FALLING;
         if(isMultipleJumping) return PlayerState.DOUBLE_JUMPING;
         if(isJumping) return PlayerState.JUMPING;
+        if(isSliding) return PlayerState.SLIDING;
         if(isIdling) return PlayerState.IDLING;
 
         return PlayerState.IDLING;

@@ -196,6 +196,10 @@ public class TagsManager : MonoBehaviour
         {
             return Tag.Double_Jump;
         }
+        else if (state == PlayerState.SLIDING)
+        {
+            return Tag.Slide;
+        }
 
         return null;
     }
