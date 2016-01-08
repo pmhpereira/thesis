@@ -48,7 +48,7 @@ public class TagInfo
 
     public void AddAttempt(bool success)
     {
-        if (attempts.Count == TagsManager.instance.savedAttempts)
+        if (attempts.Count == TagsManager.instance.attemptsCount)
         {
             attempts.RemoveAt(0);
         }

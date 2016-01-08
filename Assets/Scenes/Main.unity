@@ -125,6 +125,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 11416316, guid: 0eb07fb9194df7841bbb963a56066ff7, type: 2}
+      propertyPath: slideMaxDuration
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0eb07fb9194df7841bbb963a56066ff7, type: 2}
   m_IsPrefabParent: 0
@@ -253,7 +257,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
 --- !u!114 &332682787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1561,18 +1565,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tagsName: []
-  savedAttempts: 0
+  attemptsCount: 10
   attemptsWeights:
   - 1
   - 1
-  - 2
-  - 2
-  - 3
-  - 3
-  - 4
-  - 4
-  - 5
-  - 5
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  linearRepetition: 2
+  quadraticStart: 1.003
+  logarithmicBase: 3
 --- !u!4 &1930296112
 Transform:
   m_ObjectHideFlags: 0
@@ -1584,7 +1591,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
 --- !u!1 &2034207217
 GameObject:
   m_ObjectHideFlags: 0
@@ -1835,18 +1842,21 @@ MonoBehaviour:
   maxStartingGroundDistance: 25
   hideBlocksInHierarchy: 1
   patternsName: []
-  savedAttempts: 10
+  attemptsCount: 10
   attemptsWeights:
+  - 0
+  - 0.63092977
   - 1
-  - 1
+  - 1.2618595
+  - 1.4649736
+  - 1.6309297
+  - 1.7712437
+  - 1.8927892
   - 2
-  - 2
-  - 3
-  - 3
-  - 4
-  - 4
-  - 5
-  - 5
+  - 2.0959032
+  linearRepetition: 2
+  quadraticStart: 1.003
+  logarithmicBase: 3
 --- !u!4 &2076266481
 Transform:
   m_ObjectHideFlags: 0

@@ -95,7 +95,7 @@ public class PatternInfo
 
         List<int> tries = attempts[tagIndex];
 
-        if (tries.Count == PatternManager.instance.savedAttempts)
+        if (tries.Count == PatternManager.instance.attemptsCount)
         {
             tries.RemoveAt(0);
         }
@@ -106,7 +106,7 @@ public class PatternInfo
     public void AddTags(params string[] newTags)
     {
         tags.Add(new List<string>(newTags));
-        attempts.Add(new List<int>(PatternManager.instance.savedAttempts));
+        attempts.Add(new List<int>(PatternManager.instance.attemptsCount));
     }
 
     public void AddDependencies(params Dependency[] newDependencies)

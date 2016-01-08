@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class TagsManager : MonoBehaviour
 {
@@ -11,13 +14,19 @@ public class TagsManager : MonoBehaviour
     public Dictionary<string, TagInfo> tagsInfo;
     public List<string> tagsName;
 
-    [HideInInspector]
-    public int savedAttempts;
+    public int attemptsCount;
     public float[] attemptsWeights;
 
     private string snapshotsPath;
 
     private const string snapshotsFilePrefix = "TagsSnapshot_";
+
+    [HideInInspector]
+    public int linearRepetition;
+    [HideInInspector]
+    public float quadraticStart;
+    [HideInInspector]
+    public float logarithmicBase;
 
     void Awake()
     {
@@ -30,7 +39,7 @@ public class TagsManager : MonoBehaviour
 
         SetTags(Tag.values.ToArray());
 
-        savedAttempts = attemptsWeights.Length;
+        attemptsCount = attemptsWeights.Length;
 
         if(Application.isEditor)
         {
@@ -221,3 +230,64 @@ public class TagsManager : MonoBehaviour
         return tags;
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(TagsManager))]
+public class TagsManagerEditor : Editor
+{
+    TagsManager controller;
+
+    public override void OnInspectorGUI()
+    {
+        if(controller == null)
+        {
+            controller = (TagsManager)target;
+        }
+
+        DrawDefaultInspector();
+        
+        EditorGUILayout.BeginHorizontal();
+        {
+            GUILayout.FlexibleSpace();
+            if(GUILayout.Button(" % ", GUILayout.ExpandWidth(false)))
+            {
+                controller.attemptsWeights = WeightGenerator.Percentage(controller.attemptsCount);
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+        
+        EditorGUILayout.BeginHorizontal();
+        {
+            controller.linearRepetition = EditorGUILayout.IntField("Repetition", controller.linearRepetition);
+            controller.linearRepetition = Math.Max(1, controller.linearRepetition);
+            if(GUILayout.Button("Lin", GUILayout.ExpandWidth(false)))
+            {
+                controller.attemptsWeights = WeightGenerator.Linear(controller.attemptsCount, controller.linearRepetition);
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+        
+        EditorGUILayout.BeginHorizontal();
+        {
+            controller.quadraticStart = EditorGUILayout.FloatField("Start", controller.quadraticStart);
+            controller.quadraticStart = Math.Max(0.1f, controller.quadraticStart);
+            if(GUILayout.Button("Qua", GUILayout.ExpandWidth(false)))
+            {
+                controller.attemptsWeights = WeightGenerator.Quadratic(controller.attemptsCount, controller.quadraticStart);
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+        
+        EditorGUILayout.BeginHorizontal();
+        {
+            controller.logarithmicBase = EditorGUILayout.FloatField("Base", controller.logarithmicBase);
+            controller.logarithmicBase = Math.Max(2, controller.logarithmicBase);
+            if(GUILayout.Button("Log", GUILayout.ExpandWidth(false)))
+            {
+                controller.attemptsWeights = WeightGenerator.Logarithmic(controller.attemptsCount, controller.logarithmicBase);
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+    }
+}
+#endif
