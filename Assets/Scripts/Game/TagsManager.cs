@@ -209,6 +209,10 @@ public class TagsManager : MonoBehaviour
         {
             return Tag.Slide;
         }
+        else if (state == PlayerState.DASHING)
+        {
+            return Tag.Dash;
+        }
 
         return null;
     }

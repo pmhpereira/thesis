@@ -176,11 +176,14 @@ public class PatternController : MonoBehaviour
 
     void RecordPlayer()
     {
-        PlayerState currentPlayerState = PlayerController.instance.ResolveState();
+        PlayerState[] currentPlayerStates = PlayerController.instance.ResolveState();
 
-        if(!playerStates.Contains(currentPlayerState))
+        foreach(PlayerState state in currentPlayerStates)
         {
-            playerStates.Add(currentPlayerState);
+            if(!playerStates.Contains(state))
+            {
+                playerStates.Add(state);
+            }
         }
     }
 

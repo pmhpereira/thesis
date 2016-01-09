@@ -42,12 +42,23 @@ public class PlayerController : MonoBehaviour
     private float collisionDelta = 0.05f;
 
     public bool stopOnCollision;
-
+    
     private float slideTime;
     [Range(0.1f, 3f)]
     public float slideMaxDuration;
     [Range(0f, 1f)]
     public float slideScalingDuration;
+
+    private float dashTime;
+    private float dashDeltaDistance;
+    [Range(0.1f, 3f)]
+    public float dashMaxDuration;
+    [Range(0f, 1f)]
+    public float dashingDuration;
+    [Range(0, 12)]
+    public float dashingMaxDistance;
+    private float dashingCurrentDistance;
+    private float oldGravityScale;
 
     void Awake()
     {
@@ -78,7 +89,11 @@ public class PlayerController : MonoBehaviour
         isColliding = (numCollisions > 0);
         isIdling = false;
         isJumping = Mathf.Abs(rigidbody.velocity.y) > 1e-3;
-        isJumping = isJumping && !(slideTime < slideScalingDuration); // when sliding (scale down), the player has negative vertical velocity
+
+        if(isSliding && slideTime < slideScalingDuration) // when sliding (scale down), the player has negative vertical velocity
+        {
+            isJumping = false;
+        }
 
         colliding.Clear();
         RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, transform.localScale + Vector3.one * collisionDelta, 0, Vector2.zero);
@@ -100,7 +115,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(isJumping && isColliding)
+        if(isJumping || isSliding || isDashing)
         {
             isIdling = false;
         }
@@ -124,7 +139,7 @@ public class PlayerController : MonoBehaviour
 
         if (!isColliding && !isFalling)
         {
-            if (Input.GetButton("Fire1") && isIdling && !isJumping)
+            if (Input.GetButton("Fire1") && isIdling)
             {
                 SingleJump();
             }
@@ -132,7 +147,11 @@ public class PlayerController : MonoBehaviour
             {
                 MultipleJump();
             }
-            else if(Input.GetButton("Fire2") && isIdling && !isSliding)
+            else if(Input.GetButton("Fire2") && !isJumping && !isDashing)
+            {
+                DashSetup();
+            }
+            else if(Input.GetButton("Fire3") && !isJumping && !isSliding)
             {
                 SlideSetup();
             }
@@ -175,11 +194,26 @@ public class PlayerController : MonoBehaviour
         slideTime = 0;
     }
 
+    void DashSetup()
+    {
+        if (!TreeManager.instance.IsMechanicEnabled(Tag.Dash))
+        {
+            return;
+        }
+
+        isDashing = true;
+        dashTime = 0;
+        dashDeltaDistance = 0;
+        dashingCurrentDistance = 0;
+        oldGravityScale = rigidbody.gravityScale;
+    }
+
     void Slide()
     {
         if(slideTime > slideMaxDuration)
         {
             isSliding = false;
+            slideTime = 0;
         }
         else
         {
@@ -201,6 +235,54 @@ public class PlayerController : MonoBehaviour
         }
 
         slideTime += Time.deltaTime;
+    }
+
+    void Dash()
+    {
+        boxCollider.enabled = true;
+        rigidbody.gravityScale = oldGravityScale;
+
+        if(dashTime >= dashMaxDuration)
+        {
+            isDashing = false;
+            dashDeltaDistance = -dashingCurrentDistance;
+            transform.position -= Vector3.left * dashDeltaDistance;
+            dashTime = 0;
+            dashingCurrentDistance = 0;
+        }
+        else
+        {
+            Vector3 newPosition = transform.position;
+
+            if(dashTime < dashingDuration) // dashing forward
+            {
+                dashDeltaDistance = (dashingMaxDistance / dashingDuration);
+                boxCollider.enabled = false;
+                rigidbody.gravityScale = 0;
+            }
+            else if(dashTime > dashMaxDuration - dashingDuration) // dashing backward
+            {
+                dashDeltaDistance = -(dashingMaxDistance / dashingDuration);
+            }
+            else
+            {
+                if(dashingCurrentDistance > dashingMaxDistance)
+                {
+                    dashDeltaDistance = dashingMaxDistance - dashingCurrentDistance;
+                    dashDeltaDistance /= (dashTime - dashingDuration) / (dashMaxDuration - 2*dashingDuration);
+                }
+                else
+                {
+                    dashDeltaDistance = dashingMaxDistance - dashingCurrentDistance;
+                    dashDeltaDistance /= (dashTime - dashingDuration) / (dashMaxDuration - 2*dashingDuration);
+                }
+            }
+
+            dashDeltaDistance *= Time.deltaTime;
+            dashingCurrentDistance += dashDeltaDistance;
+        }
+
+        dashTime += Time.deltaTime;
     }
 
     void Jump()
@@ -229,15 +311,25 @@ public class PlayerController : MonoBehaviour
         {
             renderer.material.color = idlingColor;
         }
-
+        
         if(isSliding)
         {
             Slide();
         }
 
+        if (isDashing)
+        {
+            Dash();
+        }
+
         if(!GameManager.instance.isPaused)
         {
             Time.timeScale = ((isColliding || isFalling) && stopOnCollision) ? 0 : 1;
+
+            if(isDashing)
+            {
+                transform.position += Vector3.right * dashDeltaDistance;
+            }
         }
 
         if (rigidbody.velocity.y > maxVerticalVelocity)
@@ -249,7 +341,8 @@ public class PlayerController : MonoBehaviour
 
         transform.position += new Vector3(Time.deltaTime * moveSpeed, 0, 0);
 
-        state = ResolveState().name;
+        PlayerState[] states = ResolveState();
+        state = states[states.Length - 1].name;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -280,15 +373,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public PlayerState ResolveState()
+    public PlayerState[] ResolveState()
     {
-        if(isColliding) return PlayerState.COLLIDING;
-        if(isFalling) return PlayerState.FALLING;
-        if(isMultipleJumping) return PlayerState.DOUBLE_JUMPING;
-        if(isJumping) return PlayerState.JUMPING;
-        if(isSliding) return PlayerState.SLIDING;
-        if(isIdling) return PlayerState.IDLING;
+        List<PlayerState> states = new List<PlayerState>();
 
-        return PlayerState.IDLING;
+        if(isColliding) states.Add(PlayerState.COLLIDING);
+        else if(isFalling) states.Add(PlayerState.FALLING);
+        else
+        {
+            if(isMultipleJumping) states.Add(PlayerState.DOUBLE_JUMPING);
+            else if(isJumping) states.Add(PlayerState.JUMPING);
+
+            if(isSliding) states.Add(PlayerState.SLIDING);
+            if(isDashing)  states.Add(PlayerState.DASHING);
+        }
+
+        if(states.Count == 0 || isIdling) states.Add(PlayerState.IDLING);
+
+        return states.ToArray();
     }
 }

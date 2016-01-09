@@ -7,6 +7,7 @@
     public static readonly PlayerState JUMPING = new PlayerState(1, "Jumping");
     public static readonly PlayerState DOUBLE_JUMPING = new PlayerState(2, "Double Jumping");
     public static readonly PlayerState SLIDING = new PlayerState(3, "Sliding");
+    public static readonly PlayerState DASHING = new PlayerState(4, "Dashing");
     public static readonly PlayerState COLLIDING = new PlayerState(-1, "Colliding");
     public static readonly PlayerState FALLING = new PlayerState(-2, "Falling");
 
@@ -34,6 +35,7 @@
             case "J": return JUMPING;
             case "DJ": return DOUBLE_JUMPING;
             case "S": return SLIDING;
+            case "D": return DASHING;
             case "C": return COLLIDING;
             case "F": return FALLING;
 
