@@ -119,7 +119,7 @@ MonoBehaviour:
   collidingColor: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}
   fallingColor: {r: 1, g: 0, b: 0, a: 1}
   stopOnCollision: 1
-  slideMaxDuration: 2
+  slideMaxDuration: 0.8
   slideScalingDuration: 0.25
   dashMaxDuration: 0.8
   dashingDuration: 0.2
