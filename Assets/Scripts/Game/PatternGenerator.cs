@@ -39,7 +39,6 @@ public class PatternGenerator : MonoBehaviour
         }
 
         LoadPatternsFromFile();
-        LoadPatternsInfoFromFile();
         UpdatePatternManager();
     }
 
@@ -65,7 +64,6 @@ public class PatternGenerator : MonoBehaviour
         generated = new GameObject("Generated");
         generated.transform.SetParent(this.transform);
         generated.transform.position = new Vector3(0, -1000, 0);
-        //generated.SetActive(false);
 
         int lastCommentIndendation = -1;
         float height = 0;
@@ -101,7 +99,7 @@ public class PatternGenerator : MonoBehaviour
                 patternsMap[pattern.name] = pattern;
                 patternsInfo[pattern.name] = new PatternInfo(pattern.name);
 
-                height -= 5f;
+                height -= 10f;
             }
             else if (indentationLevel == 1)
             {
@@ -118,69 +116,6 @@ public class PatternGenerator : MonoBehaviour
                     float z = 0;
 
                     block.transform.localPosition = new Vector3(x, y, z);
-                }
-            }
-        }
-    }
-
-    void LoadPatternsInfoFromFile()
-    {
-        string patternsInfoText = Resources.Load<TextAsset>("Patterns_Info").text;
-        patternsInfoText = patternsInfoText.Replace("\r", "");
-
-        string[] lines = patternsInfoText.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-        int lastCommentIndendation = -1;
-        string lastPatternName = null;
-
-        for (int i = 0; i < lines.Length; i++)
-        {
-            string line = lines[i];
-            int indentationLevel = line.Split(new string[] { "\t", "    " }, StringSplitOptions.None).Length - 1;
-            string[] parameters = line.Split(new char[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (parameters[0].StartsWith("//"))
-            {
-                lastCommentIndendation = indentationLevel;
-                continue;
-            }
-
-            if (lastCommentIndendation >= 0 && indentationLevel > lastCommentIndendation)
-            {
-                continue;
-            }
-            else
-            {
-                lastCommentIndendation = -1;
-            }
-
-            if (indentationLevel == 0)
-            {
-                lastPatternName = parameters[0];
-            }
-            else if (indentationLevel == 1)
-            {
-                if (parameters[0] == "Tags")
-                {
-                    string[] tags = new string[parameters.Length - 1];
-                    Array.Copy(parameters, 1, tags, 0, tags.Length);
-                    patternsInfo[lastPatternName].AddTags(tags);
-                }
-                else if (parameters[0] == "Dependencies")
-                {
-                    Dependency[] dependencies = new Dependency[parameters.Length - 1];
-
-                    for (int d = 1; d < parameters.Length; d++)
-                    {
-                        string[] dependencyParams = parameters[d].Split('|');
-                        string patternName = dependencyParams[0];
-                        int tagIndex = int.Parse(dependencyParams[1]);
-                        string mastery = Mastery.FromId(dependencyParams[2]);
-
-                        dependencies[d - 1] = new Dependency(patternName, tagIndex, mastery);
-                    }
-
-                    patternsInfo[lastPatternName].AddDependencies(dependencies);
                 }
             }
         }
@@ -208,6 +143,11 @@ public class PatternGenerator : MonoBehaviour
     }
 
     public void SaveAll()
+    {
+        SavePatternsToFile();
+    }
+
+    private void SavePatternsToFile()
     {
         if (generated == null)
         {
