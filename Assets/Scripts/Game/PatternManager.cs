@@ -114,12 +114,13 @@ public class PatternManager : MonoBehaviour
 
     IEnumerator CheckPatterns()
     {
-        GameObject lastGround = GetLastObstacleWithTag("Ground");
+        GameObject firstGround = GetFirstObstacleWithTag("Ground");
         GameObject lastPattern = GetLastObstacleWithTag("Pattern");
+        GameObject lastObstacle = GetLastObstacleWithTag("Obstacle", lastPattern);
         
-        if(lastGround != null && lastPattern != null)
+        if(firstGround != null && lastPattern != null && lastObstacle != null)
         {
-            if(lastPattern.transform.position.x < lastGround.transform.position.x)
+            if(lastObstacle.transform.position.x < firstGround.transform.position.x + (maxStartingGroundDistance - minStartingGroundDistance))
             {
                 SpawnPace();
             }
@@ -294,17 +295,17 @@ public class PatternManager : MonoBehaviour
         return args.ToArray();
     }
 
-    private GameObject GetFirstObstacleWithTag(string tag)
+    private GameObject GetFirstObstacleWithTag(string tag, GameObject parent = null)
     {
         int index;
-        return GetFirstObstacleWithTag(tag, out index);
+        return GetFirstObstacleWithTag(tag, out index, parent == null ? this.gameObject : parent);
     }
 
-    private GameObject GetFirstObstacleWithTag(string tag, out int index)
+    private GameObject GetFirstObstacleWithTag(string tag, out int index, GameObject parent)
     {
         index = -1;
 
-        foreach(Transform obstacle in transform)
+        foreach(Transform obstacle in parent.transform)
         {
             index++;
 
@@ -317,19 +318,19 @@ public class PatternManager : MonoBehaviour
         return null;
     }
 
-    private GameObject GetLastObstacleWithTag(string tag)
+    private GameObject GetLastObstacleWithTag(string tag, GameObject parent = null)
     {
         int index;
-        return GetLastObstacleWithTag(tag, out index);
+        return GetLastObstacleWithTag(tag, out index, parent == null ? this.gameObject : parent);
     }
 
-    private GameObject GetLastObstacleWithTag(string tag, out int index)
+    private GameObject GetLastObstacleWithTag(string tag, out int index, GameObject parent)
     {
         index = -1;
 
-        for (int i = transform.childCount - 1; i >= 0; i--)
+        for (int i = parent.transform.childCount - 1; i >= 0; i--)
         {
-            Transform obstacle = transform.GetChild(i);
+            Transform obstacle = parent.transform.GetChild(i);
             index = i;
 
             if (obstacle.tag == tag)
@@ -348,7 +349,14 @@ public class PatternManager : MonoBehaviour
 
         if (firstGround != null)
         {
-            if(lastGround.transform.position.x - firstGround.transform.position.x <= maxStartingGroundDistance - minStartingGroundDistance)
+            float minimumGround = maxStartingGroundDistance - minStartingGroundDistance;
+
+            for(float i = lastGround.transform.position.x - firstGround.transform.position.x; i < minimumGround; i++)
+            {
+                SpawnGround();
+            }
+
+            if (lastGround.transform.position.x - firstGround.transform.position.x <= minimumGround)
             {
                 Vector2 newPosition = new Vector3(groundDistance, groundHeight, 0);
 
@@ -371,7 +379,14 @@ public class PatternManager : MonoBehaviour
 
         if (firstCeiling != null)
         {
-            if(lastCeiling.transform.position.x - firstCeiling.transform.position.x <= maxStartingGroundDistance - minStartingGroundDistance)
+            float minimumGround = maxStartingGroundDistance - minStartingGroundDistance;
+
+            for(float i = lastCeiling.transform.position.x - firstCeiling.transform.position.x; i < minimumGround; i++)
+            {
+                SpawnCeiling();
+            }
+
+            if (lastCeiling.transform.position.x - firstCeiling.transform.position.x <= minimumGround)
             {
                 Vector2 newPosition = new Vector3(ceilingDistance, ceilingHeight, 0);
 
@@ -397,6 +412,12 @@ public class PatternManager : MonoBehaviour
 
     void ProcessInput()
     {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            hideBlocksInHierarchy = !hideBlocksInHierarchy;
+            UpdateBlocksVisibilityInHierarchy();
+        }
+
         if(GameManager.instance.isPaused)
         {
             return;
@@ -426,11 +447,6 @@ public class PatternManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.F6)) LoadSnapshot(2);
         else if (Input.GetKeyDown(KeyCode.F7)) LoadSnapshot(3);
         else if (Input.GetKeyDown(KeyCode.F8)) LoadSnapshot(4);
-
-        if (Input.GetKeyDown(KeyCode.H)) {
-            hideBlocksInHierarchy = !hideBlocksInHierarchy;
-            UpdateBlocksVisibilityInHierarchy();
-        }
     }
 
     void SaveSnapshot(int slot)
@@ -447,17 +463,13 @@ public class PatternManager : MonoBehaviour
             data += "\n\n";
             data += "Pattern " + key;
 
-            List<List<int>> attempts = patternsInfo[key].attempts;
+            List<int> attempts = patternsInfo[key].attempts;
+            data += "\n";
+            data += "    " + "Attempts";
 
-            for(int tagIndex = 0; tagIndex < attempts.Count; tagIndex++) {
-                List<int> attempt = attempts[tagIndex];
-                data += "\n";
-                data += "    " + "Tag_" + tagIndex;
-
-                foreach(int a in attempt)
-                {
-                    data += " " + a;
-                }
+            foreach(int a in patternsInfo[key].attempts)
+            {
+                data += " " + a;
             }
         }
 
@@ -524,16 +536,14 @@ public class PatternManager : MonoBehaviour
             }
             else if(indentationLevel == 1)
             {
-                string tag = parameters[0];
-
-                if(patternsInfo.ContainsKey(patternName) && tag.StartsWith("Tag_"))
+                if(patternsInfo.ContainsKey(patternName) && parameters[0] == "Attempts")
                 {
                     string[] tagArray = tag.Split(new string[] { "Tag_" }, StringSplitOptions.RemoveEmptyEntries);
                     int tagIndex = int.Parse(tagArray[0]);
 
                     for (int p = 1; p < parameters.Length; p++)
                     {
-                        patternsInfo[patternName].AddAttempt(int.Parse(parameters[p]) == 1, tagIndex);
+                        patternsInfo[patternName].AddAttempt(int.Parse(parameters[p]) == 1);
                     }
                 }
             }
