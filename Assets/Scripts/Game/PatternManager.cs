@@ -418,6 +418,16 @@ public class PatternManager : MonoBehaviour
             UpdateBlocksVisibilityInHierarchy();
         }
 
+        if (Input.GetKeyDown(KeyCode.F1)) SaveSnapshot(1);
+        else if (Input.GetKeyDown(KeyCode.F2)) SaveSnapshot(2);
+        else if (Input.GetKeyDown(KeyCode.F3)) SaveSnapshot(3);
+        else if (Input.GetKeyDown(KeyCode.F4)) SaveSnapshot(4);
+
+        if (Input.GetKeyDown(KeyCode.F5)) LoadSnapshot(1);
+        else if (Input.GetKeyDown(KeyCode.F6)) LoadSnapshot(2);
+        else if (Input.GetKeyDown(KeyCode.F7)) LoadSnapshot(3);
+        else if (Input.GetKeyDown(KeyCode.F8)) LoadSnapshot(4);
+
         if(GameManager.instance.isPaused)
         {
             return;
@@ -437,16 +447,6 @@ public class PatternManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8)) SpawnPattern(7);
         else if (Input.GetKeyDown(KeyCode.Alpha9) || Input.GetKeyDown(KeyCode.Keypad9)) SpawnPattern(8);
         else if (Input.GetKeyDown(KeyCode.Alpha0) || Input.GetKeyDown(KeyCode.Keypad0)) SpawnPace();
-
-        if (Input.GetKeyDown(KeyCode.F1)) SaveSnapshot(1);
-        else if (Input.GetKeyDown(KeyCode.F2)) SaveSnapshot(2);
-        else if (Input.GetKeyDown(KeyCode.F3)) SaveSnapshot(3);
-        else if (Input.GetKeyDown(KeyCode.F4)) SaveSnapshot(4);
-
-        if (Input.GetKeyDown(KeyCode.F5)) LoadSnapshot(1);
-        else if (Input.GetKeyDown(KeyCode.F6)) LoadSnapshot(2);
-        else if (Input.GetKeyDown(KeyCode.F7)) LoadSnapshot(3);
-        else if (Input.GetKeyDown(KeyCode.F8)) LoadSnapshot(4);
     }
 
     void SaveSnapshot(int slot)
@@ -538,9 +538,6 @@ public class PatternManager : MonoBehaviour
             {
                 if(patternsInfo.ContainsKey(patternName) && parameters[0] == "Attempts")
                 {
-                    string[] tagArray = tag.Split(new string[] { "Tag_" }, StringSplitOptions.RemoveEmptyEntries);
-                    int tagIndex = int.Parse(tagArray[0]);
-
                     for (int p = 1; p < parameters.Length; p++)
                     {
                         patternsInfo[patternName].AddAttempt(int.Parse(parameters[p]) == 1);
