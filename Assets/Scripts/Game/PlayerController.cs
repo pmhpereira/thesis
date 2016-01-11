@@ -13,6 +13,16 @@ public class PlayerController : MonoBehaviour
     private bool isIdling;
     private bool isFalling;
 
+    public enum Dashing
+    {
+        IDLE,
+        BACKWARD,
+        FORWARD,
+    }
+
+    [HideInInspector]
+    public Dashing dashingState = Dashing.IDLE;
+
     public float moveSpeed;
 
     public string state;
@@ -239,7 +249,6 @@ public class PlayerController : MonoBehaviour
 
     void Dash()
     {
-        boxCollider.enabled = true;
         rigidbody.gravityScale = oldGravityScale;
 
         if(dashTime >= dashMaxDuration)
@@ -249,6 +258,7 @@ public class PlayerController : MonoBehaviour
             transform.position -= Vector3.left * dashDeltaDistance;
             dashTime = 0;
             dashingCurrentDistance = 0;
+            dashingState = Dashing.IDLE;
         }
         else
         {
@@ -257,15 +267,18 @@ public class PlayerController : MonoBehaviour
             if(dashTime < dashingDuration) // dashing forward
             {
                 dashDeltaDistance = (dashingMaxDistance / dashingDuration);
-                boxCollider.enabled = false;
                 rigidbody.gravityScale = 0;
+                dashingState = Dashing.BACKWARD;
             }
             else if(dashTime > dashMaxDuration - dashingDuration) // dashing backward
             {
                 dashDeltaDistance = -(dashingMaxDistance / dashingDuration);
+                dashingState = Dashing.FORWARD;
             }
             else
             {
+                dashingState = Dashing.IDLE;
+
                 if(dashingCurrentDistance > dashingMaxDistance)
                 {
                     dashDeltaDistance = dashingMaxDistance - dashingCurrentDistance;
@@ -303,7 +316,7 @@ public class PlayerController : MonoBehaviour
         {
             renderer.material.color = fallingColor;
         }
-        else if (isColliding)
+        else if (isColliding && dashingState == Dashing.IDLE)
         {
             renderer.material.color = collidingColor;
         }
@@ -324,7 +337,7 @@ public class PlayerController : MonoBehaviour
 
         if(!GameManager.instance.isPaused)
         {
-            Time.timeScale = ((isColliding || isFalling) && stopOnCollision) ? 0 : 1;
+            Time.timeScale = (((isColliding && dashingState == Dashing.IDLE) || isFalling) && stopOnCollision) ? 0 : 1;
 
             if(isDashing)
             {

@@ -107,7 +107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 303bba1c8c3519d49961248a71e0ce94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 12.5
+  dashingState: 0
+  moveSpeed: 11.5
   state: 
   fixedPlayerPositionX: -6
   maxVerticalVelocity: 7
@@ -120,9 +121,9 @@ MonoBehaviour:
   stopOnCollision: 1
   slideMaxDuration: 2
   slideScalingDuration: 0.25
-  dashMaxDuration: 1.5
-  dashingDuration: 0.125
-  dashingMaxDistance: 6
+  dashMaxDuration: 0.8
+  dashingDuration: 0.2
+  dashingMaxDistance: 5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

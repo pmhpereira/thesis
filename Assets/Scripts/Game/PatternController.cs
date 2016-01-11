@@ -147,7 +147,7 @@ public class PatternController : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.transform.tag == "Player" && !hasPlayerCollided)
+        if (other.transform.tag == "Player" && !hasPlayerCollided && PlayerController.instance.dashingState == PlayerController.Dashing.IDLE)
         {
             hasPlayerCollided = true;
 
