@@ -114,6 +114,10 @@ public class PaceNode : BaseNode
         {
             value = Inputs[0].GetValue<bool>();
         }
+        else
+        {
+            value = true;
+        }
 
         if(TreeManager.instance != null)
         {
