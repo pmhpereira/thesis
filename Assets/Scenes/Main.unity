@@ -1563,16 +1563,16 @@ MonoBehaviour:
   tagsName: []
   attemptsCount: 10
   attemptsWeights:
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
+  - 1.003
+  - 1.006009
+  - 1.0120541
+  - 1.0242535
+  - 1.0490952
+  - 1.1006006
+  - 1.2113217
+  - 1.4673003
+  - 2.15297
+  - 4.63528
   linearRepetition: 2
   quadraticStart: 1.003
   logarithmicBase: 3
@@ -1840,7 +1840,7 @@ MonoBehaviour:
   patternsName: []
   attemptsCount: 10
   attemptsWeights:
-  - 0
+  - 0.01
   - 0.63092977
   - 1
   - 1.2618595

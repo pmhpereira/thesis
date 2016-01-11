@@ -22,7 +22,7 @@ public static class WeightGenerator
 
         for(int i = 0; i < size; i++)
         {
-            weights[i] = Mathf.Log(i+1, b);
+            weights[i] = Mathf.Max(Mathf.Log(i+1, b), 0.01f);
         }
 
         return weights;
