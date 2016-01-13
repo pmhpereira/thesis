@@ -145,6 +145,7 @@ public class PatternGenerator : MonoBehaviour
     public void SaveAll()
     {
         SavePatternsToFile();
+        AssetDatabase.Refresh();
     }
 
     private void SavePatternsToFile()

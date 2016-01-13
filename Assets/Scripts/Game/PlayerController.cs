@@ -70,6 +70,9 @@ public class PlayerController : MonoBehaviour
     private float dashingCurrentDistance;
     private float oldGravityScale;
 
+    private int defaultLayerMask;
+    private int dashLayerMask;
+
     void Awake()
     {
         if (instance != null && instance != this)
@@ -85,6 +88,9 @@ public class PlayerController : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
 
         colliding = new List<Collider2D>();
+
+        defaultLayerMask = LayerMask.NameToLayer("Default");
+        dashLayerMask = LayerMask.NameToLayer("Dash");
     }
 
     void Update()
@@ -251,6 +257,8 @@ public class PlayerController : MonoBehaviour
     {
         rigidbody.gravityScale = oldGravityScale;
 
+        Physics2D.IgnoreLayerCollision(defaultLayerMask, dashLayerMask, false);
+
         if(dashTime >= dashMaxDuration)
         {
             isDashing = false;
@@ -269,11 +277,13 @@ public class PlayerController : MonoBehaviour
                 dashDeltaDistance = (dashingMaxDistance / dashingDuration);
                 rigidbody.gravityScale = 0;
                 dashingState = Dashing.BACKWARD;
+                Physics2D.IgnoreLayerCollision(defaultLayerMask, dashLayerMask, true);
             }
             else if(dashTime > dashMaxDuration - dashingDuration) // dashing backward
             {
                 dashDeltaDistance = -(dashingMaxDistance / dashingDuration);
                 dashingState = Dashing.FORWARD;
+                Physics2D.IgnoreLayerCollision(defaultLayerMask, dashLayerMask, true);
             }
             else
             {
@@ -316,7 +326,7 @@ public class PlayerController : MonoBehaviour
         {
             renderer.material.color = fallingColor;
         }
-        else if (isColliding && dashingState == Dashing.IDLE)
+        else if (isColliding)
         {
             renderer.material.color = collidingColor;
         }
@@ -337,7 +347,7 @@ public class PlayerController : MonoBehaviour
 
         if(!GameManager.instance.isPaused)
         {
-            Time.timeScale = (((isColliding && dashingState == Dashing.IDLE) || isFalling) && stopOnCollision) ? 0 : 1;
+            Time.timeScale = ((isColliding || isFalling) && stopOnCollision) ? 0 : 1;
 
             if(isDashing)
             {

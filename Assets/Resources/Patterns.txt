@@ -45,15 +45,15 @@ Medium-Hole
 Thin-Wall
     Ceiling
         Position 0 6
-    Obstacle
+    Dasher
         Position 0 5
-    Obstacle
+    Dasher
         Position 0 4
-    Obstacle
+    Dasher
         Position 0 3
-    Obstacle
+    Dasher
         Position 0 2
-    Obstacle
+    Dasher
         Position 0 1
     Ground
         Position 0 0
