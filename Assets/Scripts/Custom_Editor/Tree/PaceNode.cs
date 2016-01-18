@@ -16,15 +16,13 @@ public class PaceNode : BaseNode
     public int paceIndex;
     [HideInInspector]
     public int instancesCount;
-    [SerializeField][HideInInspector]
-    public List<int> patternsIndices;
-
-    private int rectDefaultHeight = 100;
+    [HideInInspector]
+    public string paceName;
 
     public override Node Create(Vector2 pos)
     {
         PaceNode node = CreateInstance<PaceNode>();
-        node.rect = new Rect(pos.x, pos.y, 150, rectDefaultHeight);
+        node.rect = new Rect(pos.x, pos.y, 150, 80);
         node.name = "Pace";
 
         node.CreateInput("", "Bool");
@@ -37,12 +35,6 @@ public class PaceNode : BaseNode
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = nodeColor;
-
-        if(patternsIndices == null)
-        {
-            patternsIndices = new List<int>();
-        }
-        rect.height = rectDefaultHeight + patternsIndices.Count * 20;
 
         base.DrawOutlinedNode();
 
@@ -66,34 +58,17 @@ public class PaceNode : BaseNode
         GUILayout.BeginVertical();
         #if UNITY_EDITOR
             float oldLabelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = 70;
+            EditorGUIUtility.labelWidth = 40;
+            paceName = EditorGUILayout.TextField("Name", paceName, GUILayout.MaxWidth(rect.width - 20));
             paceIndex = EditorGUILayout.Popup("", paceIndex, Pace.values.ToArray(), GUILayout.MaxWidth(rect.width - 20));
+            EditorGUIUtility.labelWidth = 70;
             instancesCount = EditorGUILayout.IntField("Instances", instancesCount);
             instancesCount = Mathf.Max(1, instancesCount);
-            EditorGUIUtility.labelWidth = 25;
-            for(int i = 0; i < patternsIndices.Count; i++)
-            {
-                GUILayout.BeginHorizontal();
-                if(GUILayout.Button("" + i, GUILayout.MaxWidth(25)))
-                {
-                    patternsIndices.RemoveAt(i);
-                }
-                patternsIndices[i] = EditorGUILayout.Popup("", patternsIndices[i], PatternManager.instance.patternsName.ToArray(), GUILayout.MaxWidth(rect.width - 20));
-                GUILayout.EndHorizontal();
-            }
-
-            if (GUILayout.Button("Add Pattern"))
-            {
-                patternsIndices.Add(0);
-            }
             EditorGUIUtility.labelWidth = oldLabelWidth;
         #else
+            GUILayout.Label(paceName);
             GUILayout.Label(Pace.values[paceIndex]);
             GUILayout.Label("Instances: " + instancesCount);
-            for(int i = 0; i < patternsIndices.Count; i++)
-            {
-                GUILayout.Label(i + ": " + PatternManager.instance.patternsName[patternsIndices[i]]);
-            }
         #endif
         GUILayout.EndVertical();
 
@@ -121,7 +96,7 @@ public class PaceNode : BaseNode
 
         if(TreeManager.instance != null)
         {
-            TreeManager.instance.UpdatePaceNode(this);
+            TreeManager.instance.UpdateNode(this);
         }
 
         Outputs[0].SetValue<bool>(value);

@@ -107,7 +107,7 @@ public class TagNode : BaseNode
     {
         if(Application.isPlaying)
         {
-            TreeManager.instance.UpdateTag(this);
+            TreeManager.instance.UpdateNode(this);
         }
     }
 }

@@ -22,6 +22,8 @@ public class TreeManager : MonoBehaviour
     public List<MasteryNode> masteryNodes;
     [HideInInspector]
     public List<PaceNode> paceNodes;
+    [HideInInspector]
+    public List<PaceSpawnerNode> paceSpawnerNodes;
 
     private RuntimeNodeEditor nodeEditor;
     private NodeCanvas nodeCanvas;
@@ -131,7 +133,7 @@ public class TreeManager : MonoBehaviour
         return tags[tag];
     }
 
-    public void UpdateTag(TagNode node)
+    public void UpdateNode(TagNode node)
     {
         if (tags != null && node.tag != Tag.None)
         {
@@ -166,12 +168,23 @@ public class TreeManager : MonoBehaviour
         return patterns[pattern];
     }
 
-    public void UpdatePattern(PatternNode node)
+    public void UpdateNode(PatternNode node)
     {
         if(patterns != null)
         {
             patterns[node.pattern] = node.value;
         }
+    }
+
+    public void UpdateNode(PatternSpawnerNode node)
+    {
+        // TODO
+    }
+
+    public PatternSpawnerNode GetRandomPatternSpawnerNode()
+    {
+        // TODO
+        return null;
     }
 
     public string GetPatternMastery(string pattern)
@@ -186,7 +199,7 @@ public class TreeManager : MonoBehaviour
         masteryNodes = new List<MasteryNode>();
     }
 
-    public void UpdateMastery(MasteryNode node)
+    public void UpdateNode(MasteryNode node)
     {
         if(node.tagNode == null && node.patternNode == null)
         {
@@ -195,11 +208,11 @@ public class TreeManager : MonoBehaviour
 
         if(node.tagNode != null)
         {
-            UpdateTag(node.tagNode);
+            UpdateNode(node.tagNode);
         }
         else if(node.patternNode != null)
         {
-            UpdatePattern(node.patternNode);
+            UpdateNode(node.patternNode);
         }
     }
 
@@ -227,9 +240,10 @@ public class TreeManager : MonoBehaviour
     private void InitializePaces()
     {
         paceNodes = new List<PaceNode>();
+        paceSpawnerNodes = new List<PaceSpawnerNode>();
     }
-
-    public void UpdatePaceNode(PaceNode paceNode)
+    
+    public void UpdateNode(PaceNode paceNode)
     {
         int index = paceNodes.IndexOf(paceNode);
 
@@ -243,24 +257,26 @@ public class TreeManager : MonoBehaviour
         }
     }
 
-    public PaceNode GetRandomActivePaceNode()
+    public void UpdateNode(PaceSpawnerNode paceSpawnerNode)
     {
-        List<PaceNode> nodes = new List<PaceNode>();
-        foreach(PaceNode paceNode in paceNodes)
-        {
-            if(paceNode.value)
-            {
-                nodes.Add(paceNode);
-            }
-        }
+        int index = paceSpawnerNodes.IndexOf(paceSpawnerNode);
 
-        if(nodes.Count == 0)
+        if(index < 0)
         {
-            return null;
+            paceSpawnerNodes.Add(paceSpawnerNode);
         }
-
-        return nodes[UnityEngine.Random.Range(0, nodes.Count)];
+        else
+        {
+            paceSpawnerNodes[index] = paceSpawnerNode;
+        }
     }
+
+    public PaceSpawnerNode GetRandomPaceSpawnerNode()
+    {
+        // TODO
+        return null;
+    }
+
     #endregion
 
     public void ToogleNodeEditor()

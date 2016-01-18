@@ -182,7 +182,7 @@ public class PatternManager : MonoBehaviour
     
     void SpawnPace()
     {
-        int[] paceArguments = GenerateArguments(TreeManager.instance.GetRandomActivePaceNode());
+        int[] paceArguments = GenerateArguments(TreeManager.instance.GetRandomPaceSpawnerNode(), TreeManager.instance.GetRandomPatternSpawnerNode());
 
         if(paceArguments == null)
         {
@@ -236,16 +236,16 @@ public class PatternManager : MonoBehaviour
         ceilingDistance += ceilingPrefab.transform.localScale.x;
     }
 
-    public int[] GenerateArguments(PaceNode node)
+    public int[] GenerateArguments(PaceSpawnerNode paceSpawner, PatternSpawnerNode patternSpawner)
     {
-        if(node == null)
+        if(paceSpawner == null)
         {
             return null;
         }
 
         List<int> args = new List<int>();
 
-        List<int> patternsIndices = new List<int>(node.patternsIndices);
+        List<int> patternsIndices = new List<int>(patternSpawner.patternsIndices);
         if(patternsIndices.Count == 0)
         {
             for(int i = 0; i < patternsName.Count; i++)
@@ -263,10 +263,13 @@ public class PatternManager : MonoBehaviour
             }
         }
 
-        for(int i = 0; i < node.instancesCount; i++)
+        PaceNode pace = null;
+        // TODO
+
+        for(int i = 0; i < pace.instancesCount; i++)
         {
             int interval = 0;
-            switch(Pace.values[node.paceIndex])
+            switch(Pace.values[pace.paceIndex])
             {
                 case Pace.SLOW:
                     interval = UnityEngine.Random.Range(13, 20);

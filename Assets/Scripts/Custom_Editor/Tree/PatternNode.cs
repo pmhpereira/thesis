@@ -109,7 +109,7 @@ public class PatternNode : BaseNode
     {
         if (Application.isPlaying)
         {
-            TreeManager.instance.UpdatePattern(this);
+            TreeManager.instance.UpdateNode(this);
         }
     }
 }
