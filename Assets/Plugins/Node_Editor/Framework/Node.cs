@@ -206,6 +206,7 @@ namespace NodeEditorFramework
 			}
 
 			NodeEditorCallbacks.IssueOnDeleteNode (this);
+			this.OnDelete ();
 
 			DestroyImmediate (this, true);
 		}

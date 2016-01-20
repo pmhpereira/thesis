@@ -103,4 +103,9 @@ public class PaceNode : BaseNode
 
         return true;
     }
+
+    public override void OnDelete()
+    {
+        TreeManager.instance.RemoveNode(this);
+    }
 }

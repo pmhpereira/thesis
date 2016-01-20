@@ -71,18 +71,21 @@ public class PaceSpawnerNode : BaseNode
 
         #if UNITY_EDITOR
         {
-            for(int i = 0; i < pacesIndices.Count; i++)
+            float oldLabelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 25;
+            for (int i = 0; i < pacesIndices.Count; i++)
             {
                 GUILayout.BeginHorizontal();
                 if(GUILayout.Button("" + i, GUILayout.MaxWidth(25)))
                 {
                     pacesIndices.RemoveAt(i);
+                    pacesWeights.RemoveAt(i);
                 }
 
                 if(paceNodes.Length > 0)
                 {
                     pacesIndices[i] = EditorGUILayout.Popup("", pacesIndices[i], paceNames, GUILayout.MaxWidth(rect.width - 40));
-                    pacesWeights[i] = EditorGUILayout.FloatField("", pacesWeights[i], GUILayout.MaxWidth(25));
+                    pacesWeights[i] = EditorGUILayout.FloatField("", pacesWeights[i], GUILayout.MaxWidth(40));
                 }
                 GUILayout.EndHorizontal();
             }
@@ -90,7 +93,10 @@ public class PaceSpawnerNode : BaseNode
             if (GUILayout.Button("Add Pace"))
             {
                 pacesIndices.Add(0);
+                pacesWeights.Add(1);
             }
+
+            EditorGUIUtility.labelWidth = oldLabelWidth;
         }
         #else
         {

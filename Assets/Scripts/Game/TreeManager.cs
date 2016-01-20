@@ -106,6 +106,62 @@ public class TreeManager : MonoBehaviour
 
         assetBrowser.gameObject.SetActive(GameManager.instance.debugMode);
     }
+    
+    public void UpdateNode(BaseNode node)
+    {
+        if(node is PatternNode)
+        {
+            UpdateNode((PatternNode)node);
+        }
+        else if(node is TagNode)
+        {
+            UpdateNode((TagNode)node);
+        }
+        else if(node is PaceNode)
+        {
+            UpdateNode((PaceNode)node);
+        }
+        else if(node is MasteryNode)
+        {
+            UpdateNode((MasteryNode)node);
+        }
+        else if(node is PatternSpawnerNode)
+        {
+            UpdateNode((PatternSpawnerNode)node);
+        }
+        else if(node is PaceSpawnerNode)
+        {
+            UpdateNode((PaceSpawnerNode)node);
+        }
+    }
+
+    public void RemoveNode(BaseNode node)
+    {
+        if(node is PatternNode)
+        {
+            throw new NotImplementedException();
+        }
+        else if(node is TagNode)
+        {
+            throw new NotImplementedException();
+        }
+        else if(node is PaceNode)
+        {
+            RemoveNode((PaceNode) node);
+        }
+        else if(node is MasteryNode)
+        {
+            throw new NotImplementedException();
+        }
+        else if(node is PatternSpawnerNode)
+        {
+            throw new NotImplementedException();
+        }
+        else if(node is PaceSpawnerNode)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     #region Tags
     private void InitializeTags()
@@ -133,7 +189,7 @@ public class TreeManager : MonoBehaviour
         return tags[tag];
     }
 
-    public void UpdateNode(TagNode node)
+    private void UpdateNode(TagNode node)
     {
         if (tags != null && node.tag != Tag.None)
         {
@@ -168,7 +224,7 @@ public class TreeManager : MonoBehaviour
         return patterns[pattern];
     }
 
-    public void UpdateNode(PatternNode node)
+    private void UpdateNode(PatternNode node)
     {
         if(patterns != null)
         {
@@ -176,15 +232,17 @@ public class TreeManager : MonoBehaviour
         }
     }
 
-    public void UpdateNode(PatternSpawnerNode node)
+    private void UpdateNode(PatternSpawnerNode node)
     {
         // TODO
+        throw new NotImplementedException();
     }
 
     public PatternSpawnerNode GetRandomPatternSpawnerNode()
     {
         // TODO
         return null;
+        throw new NotImplementedException();
     }
 
     public string GetPatternMastery(string pattern)
@@ -199,7 +257,7 @@ public class TreeManager : MonoBehaviour
         masteryNodes = new List<MasteryNode>();
     }
 
-    public void UpdateNode(MasteryNode node)
+    private void UpdateNode(MasteryNode node)
     {
         if(node.tagNode == null && node.patternNode == null)
         {
@@ -232,7 +290,7 @@ public class TreeManager : MonoBehaviour
     public bool IsMasteryResolved(MasteryNode masteryNode, TagNode tagNode)
     {
         // TODO: implement IsMasteryResolved
-        return true;
+        throw new NotImplementedException();
     }
     #endregion
 
@@ -243,7 +301,7 @@ public class TreeManager : MonoBehaviour
         paceSpawnerNodes = new List<PaceSpawnerNode>();
     }
     
-    public void UpdateNode(PaceNode paceNode)
+    private void UpdateNode(PaceNode paceNode)
     {
         int index = paceNodes.IndexOf(paceNode);
 
@@ -257,7 +315,31 @@ public class TreeManager : MonoBehaviour
         }
     }
 
-    public void UpdateNode(PaceSpawnerNode paceSpawnerNode)
+    private void RemoveNode(PaceNode paceNode)
+    {
+        int paceIndex = paceNodes.IndexOf(paceNode);
+
+        foreach (PaceSpawnerNode paceSpawner in paceSpawnerNodes)
+        {
+            for(int i = 0; i < paceSpawner.pacesIndices.Count; i++)
+            {
+                if(paceSpawner.pacesIndices[i] == paceIndex)
+                {
+                    paceSpawner.pacesIndices.RemoveAt(i);
+                    paceSpawner.pacesWeights.RemoveAt(i);
+                    i--;
+                }
+                else if(paceSpawner.pacesIndices[i] > paceIndex)
+                {
+                    paceSpawner.pacesIndices[i] = paceSpawner.pacesIndices[i] - 1;
+                }
+            }
+        }
+
+        paceNodes.RemoveAt(paceIndex);
+    }
+
+    private void UpdateNode(PaceSpawnerNode paceSpawnerNode)
     {
         int index = paceSpawnerNodes.IndexOf(paceSpawnerNode);
 
@@ -275,6 +357,7 @@ public class TreeManager : MonoBehaviour
     {
         // TODO
         return null;
+        throw new NotImplementedException();
     }
 
     #endregion
