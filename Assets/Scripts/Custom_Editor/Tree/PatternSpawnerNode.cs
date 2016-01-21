@@ -21,6 +21,7 @@ public class PatternSpawnerNode : BaseNode
     public override Node Create(Vector2 pos)
     {
         PatternSpawnerNode node = CreateInstance<PatternSpawnerNode>();
+        node.creationId = GetNextId();
         node.rect = new Rect(pos.x, pos.y, 180, rectDefaultHeight);
         node.name = "Challenge Spawner";
 
@@ -79,6 +80,7 @@ public class PatternSpawnerNode : BaseNode
                 {
                     patternsIndices[i] = EditorGUILayout.Popup("", patternsIndices[i], PatternManager.instance.patternsName.ToArray(), GUILayout.MaxWidth(rect.width - 40));
                     patternsWeights[i] = EditorGUILayout.FloatField("", patternsWeights[i], GUILayout.MaxWidth(40));
+                    patternsWeights[i] = Mathf.Max(0, patternsWeights[i]);
                 }
                 GUILayout.EndHorizontal();
             }

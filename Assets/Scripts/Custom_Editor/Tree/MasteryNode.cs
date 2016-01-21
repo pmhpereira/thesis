@@ -27,6 +27,7 @@ public class MasteryNode : BaseNode
     public override Node Create(Vector2 pos)
     {
         MasteryNode node = CreateInstance<MasteryNode>();
+        node.creationId = GetNextId();
         node.rect = new Rect(pos.x, pos.y, 180, 50);
         node.name = "Mastery";
 

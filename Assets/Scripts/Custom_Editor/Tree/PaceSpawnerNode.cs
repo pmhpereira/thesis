@@ -21,6 +21,7 @@ public class PaceSpawnerNode : BaseNode
     public override Node Create(Vector2 pos)
     {
         PaceSpawnerNode node = CreateInstance<PaceSpawnerNode>();
+        node.creationId = GetNextId();
         node.rect = new Rect(pos.x, pos.y, 180, rectDefaultHeight);
         node.name = "Pace Spawner";
 
@@ -62,11 +63,11 @@ public class PaceSpawnerNode : BaseNode
         GUILayout.EndVertical();
 
         GUILayout.BeginVertical();
-        PaceNode[] paceNodes = TreeManager.instance.paceNodes.ToArray();
+        BaseNode[] paceNodes = TreeManager.instance.paceNodes.ToArray();
         string[] paceNames = new string[paceNodes.Length];
         for(int p = 0; p < paceNodes.Length; p++)
         {
-            paceNames[p] = paceNodes[p].paceName;
+            paceNames[p] = ((PaceNode) paceNodes[p]).paceName;
         }
 
         #if UNITY_EDITOR
@@ -86,6 +87,7 @@ public class PaceSpawnerNode : BaseNode
                 {
                     pacesIndices[i] = EditorGUILayout.Popup("", pacesIndices[i], paceNames, GUILayout.MaxWidth(rect.width - 40));
                     pacesWeights[i] = EditorGUILayout.FloatField("", pacesWeights[i], GUILayout.MaxWidth(40));
+                    pacesWeights[i] = Mathf.Max(0, pacesWeights[i]);
                 }
                 GUILayout.EndHorizontal();
             }

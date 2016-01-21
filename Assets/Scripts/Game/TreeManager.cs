@@ -1,11 +1,9 @@
-﻿using NodeEditorFramework;
+﻿using BaseNodeExtensions;
+using NodeEditorFramework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Events;
 
 public class TreeManager : MonoBehaviour
 {
@@ -15,15 +13,17 @@ public class TreeManager : MonoBehaviour
     public Dictionary<string, bool> patterns;
 
     [HideInInspector]
-    public List<TagNode> tagNodes;
+    public List<BaseNode> tagNodes;
     [HideInInspector]
-    public List<PatternNode> patternNodes;
+    public List<BaseNode> patternNodes;
     [HideInInspector]
-    public List<MasteryNode> masteryNodes;
+    public List<BaseNode> masteryNodes;
     [HideInInspector]
-    public List<PaceNode> paceNodes;
+    public List<BaseNode> paceNodes;
     [HideInInspector]
-    public List<PaceSpawnerNode> paceSpawnerNodes;
+    public List<BaseNode> paceSpawnerNodes;
+    [HideInInspector]
+    public List<BaseNode> patternSpawnerNodes;
 
     private RuntimeNodeEditor nodeEditor;
     private NodeCanvas nodeCanvas;
@@ -70,9 +70,9 @@ public class TreeManager : MonoBehaviour
         if(assetBrowser.value == 0)
         {
             tags = null;
-            tagNodes = new List<TagNode>(); ;
+            tagNodes = new List<BaseNode>(); ;
             patterns = null;
-            patternNodes = new List<PatternNode>();
+            patternNodes = new List<BaseNode>();
             masteryNodes = null;
             nodeEditor.canvas = null;
         }
@@ -207,6 +207,7 @@ public class TreeManager : MonoBehaviour
     private void InitializePatterns()
     {
         patterns = new Dictionary<string, bool>();
+        patternSpawnerNodes = new List<BaseNode>();
 
         foreach (string pattern in PatternManager.instance.patternsName)
         {
@@ -230,19 +231,81 @@ public class TreeManager : MonoBehaviour
         {
             patterns[node.pattern] = node.value;
         }
+
+        int index = patternNodes.IndexOf(node);
+
+        if(index < 0)
+        {
+            patternNodes.Add(node);
+            patternNodes.SortByCreation();
+        }
+        else
+        {
+            patternNodes[index] = node;
+        }
     }
 
     private void UpdateNode(PatternSpawnerNode node)
     {
-        // TODO
-        throw new NotImplementedException();
+        int index = patternSpawnerNodes.IndexOf(node);
+
+        if(index < 0)
+        {
+            patternSpawnerNodes.Add(node);
+            patternSpawnerNodes.SortByCreation();
+        }
+        else
+        {
+            patternSpawnerNodes[index] = node;
+        }
     }
 
     public PatternSpawnerNode GetRandomPatternSpawnerNode()
     {
-        // TODO
-        return null;
-        throw new NotImplementedException();
+        List<PatternSpawnerNode> activePatternSpawners = new List<PatternSpawnerNode>();
+        foreach(PatternSpawnerNode patternSpawner in patternSpawnerNodes)
+        {
+            if(patternSpawner.value)
+            {
+                activePatternSpawners.Add(patternSpawner);
+            }
+        }
+
+        if(activePatternSpawners.Count == 0)
+        {
+            return null;
+        }
+
+        return activePatternSpawners[UnityEngine.Random.Range(0, activePatternSpawners.Count)];
+    }
+
+    public PatternNode GetRandomPatternNode(PatternSpawnerNode patternSpawner)
+    {
+        List<PatternNode> activePatternNodes = new List<PatternNode>();
+        List<float> weights = new List<float>();
+        float totalWeights = 0;
+
+        for(int i = 0; i < patternSpawner.patternsIndices.Count; i++)
+        {
+            PatternNode currentPatternNode = (PatternNode) patternNodes[patternSpawner.patternsIndices[i]];
+            if(currentPatternNode.value)
+            {
+                activePatternNodes.Add(currentPatternNode);
+                weights.Add(patternSpawner.patternsWeights[i]);
+                totalWeights += patternSpawner.patternsWeights[i];
+            }
+        }
+
+        float randomWeight = UnityEngine.Random.Range(0, totalWeights);
+
+        int index = 0;
+        float cumulativeWeight = 0;
+        for(index = 0; cumulativeWeight < randomWeight ; index++)
+        {
+            cumulativeWeight += weights[index];
+        }
+
+        return activePatternNodes[index - 1];
     }
 
     public string GetPatternMastery(string pattern)
@@ -254,7 +317,7 @@ public class TreeManager : MonoBehaviour
     #region Mastery
     private void InitializeMasteries()
     {
-        masteryNodes = new List<MasteryNode>();
+        masteryNodes = new List<BaseNode>();
     }
 
     private void UpdateNode(MasteryNode node)
@@ -279,6 +342,7 @@ public class TreeManager : MonoBehaviour
         if (!masteryNodes.Contains(node))
         {
             masteryNodes.Add(node);
+            masteryNodes.SortByCreation();
         }
     }
 
@@ -297,21 +361,22 @@ public class TreeManager : MonoBehaviour
     #region Pace
     private void InitializePaces()
     {
-        paceNodes = new List<PaceNode>();
-        paceSpawnerNodes = new List<PaceSpawnerNode>();
+        paceNodes = new List<BaseNode>();
+        paceSpawnerNodes = new List<BaseNode>();
     }
     
-    private void UpdateNode(PaceNode paceNode)
+    private void UpdateNode(PaceNode node)
     {
-        int index = paceNodes.IndexOf(paceNode);
+        int index = paceNodes.IndexOf(node);
 
         if(index < 0)
         {
-            paceNodes.Add(paceNode);
+            paceNodes.Add(node);
+            paceNodes.SortByCreation();
         }
         else
         {
-            paceNodes[index] = paceNode;
+            paceNodes[index] = node;
         }
     }
 
@@ -339,27 +404,68 @@ public class TreeManager : MonoBehaviour
         paceNodes.RemoveAt(paceIndex);
     }
 
-    private void UpdateNode(PaceSpawnerNode paceSpawnerNode)
+    private void UpdateNode(PaceSpawnerNode node)
     {
-        int index = paceSpawnerNodes.IndexOf(paceSpawnerNode);
+        int index = paceSpawnerNodes.IndexOf(node);
 
         if(index < 0)
         {
-            paceSpawnerNodes.Add(paceSpawnerNode);
+            paceSpawnerNodes.Add(node);
+            paceSpawnerNodes.SortByCreation();
         }
         else
         {
-            paceSpawnerNodes[index] = paceSpawnerNode;
+            paceSpawnerNodes[index] = node;
         }
     }
 
     public PaceSpawnerNode GetRandomPaceSpawnerNode()
     {
-        // TODO
-        return null;
-        throw new NotImplementedException();
+        List<PaceSpawnerNode> activePaceSpawners = new List<PaceSpawnerNode>();
+        foreach(PaceSpawnerNode paceSpawner in paceSpawnerNodes)
+        {
+            if(paceSpawner.value)
+            {
+                activePaceSpawners.Add(paceSpawner);
+            }
+        }
+
+        if(activePaceSpawners.Count == 0)
+        {
+            return null;
+        }
+
+        return activePaceSpawners[UnityEngine.Random.Range(0, activePaceSpawners.Count)];
     }
 
+    public PaceNode GetRandomPaceNode(PaceSpawnerNode paceSpawner)
+    {
+        List<PaceNode> activePaceNodes = new List<PaceNode>();
+        List<float> weights = new List<float>();
+        float totalWeights = 0;
+
+        for(int i = 0; i < paceSpawner.pacesIndices.Count; i++)
+        {
+            PaceNode currentPaceNode = (PaceNode) paceNodes[paceSpawner.pacesIndices[i]];
+            if(currentPaceNode.value)
+            {
+                activePaceNodes.Add(currentPaceNode);
+                weights.Add(paceSpawner.pacesWeights[i]);
+                totalWeights += paceSpawner.pacesWeights[i];
+            }
+        }
+
+        float randomWeight = UnityEngine.Random.Range(0, totalWeights);
+
+        int index = 0;
+        float cumulativeWeight = 0;
+        for(index = 0; cumulativeWeight < randomWeight ; index++)
+        {
+            cumulativeWeight += weights[index];
+        }
+
+        return activePaceNodes[index - 1];
+    }
     #endregion
 
     public void ToogleNodeEditor()

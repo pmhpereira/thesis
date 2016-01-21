@@ -270,8 +270,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Vector3 newPosition = transform.position;
-
             if(dashTime < dashingDuration) // dashing forward
             {
                 dashDeltaDistance = (dashingMaxDistance / dashingDuration);

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
-using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -22,6 +21,7 @@ public class PaceNode : BaseNode
     public override Node Create(Vector2 pos)
     {
         PaceNode node = CreateInstance<PaceNode>();
+        node.creationId = GetNextId();
         node.rect = new Rect(pos.x, pos.y, 150, 80);
         node.name = "Pace";
 
@@ -88,10 +88,6 @@ public class PaceNode : BaseNode
         if (Inputs[0].connection != null)
         {
             value = Inputs[0].GetValue<bool>();
-        }
-        else
-        {
-            value = true;
         }
 
         if(TreeManager.instance != null)

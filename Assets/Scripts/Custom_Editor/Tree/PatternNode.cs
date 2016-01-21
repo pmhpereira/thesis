@@ -17,11 +17,10 @@ public class PatternNode : BaseNode
     [HideInInspector]
     public int patternIndex;
 
-    private bool oldValue;
-
     public override Node Create(Vector2 pos)
     {
         PatternNode node = CreateInstance<PatternNode>();
+        node.creationId = GetNextId();
         node.rect = new Rect(pos.x, pos.y, 175, 50);
         node.name = "Challenge";
 
@@ -96,11 +95,7 @@ public class PatternNode : BaseNode
 
         Outputs[0].SetValue<bool>(value);
 
-        if (value != oldValue)
-        {
-            oldValue = value;
-            UpdateTreeManager();
-        }
+        UpdateTreeManager();
 
         return true;
     }

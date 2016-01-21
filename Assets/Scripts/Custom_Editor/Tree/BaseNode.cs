@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using NodeEditorFramework;
 using System;
 
@@ -8,7 +7,15 @@ using System;
 public class BaseNode : Node
 {
     public bool value;
+    public int creationId;
+
     private Texture2D outlineTexture;
+    private static int id = 0;
+
+    public static int GetNextId()
+    {
+        return ++id;
+    }
 
     public override string GetID
     {

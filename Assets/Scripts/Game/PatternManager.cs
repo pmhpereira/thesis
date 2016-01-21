@@ -238,38 +238,18 @@ public class PatternManager : MonoBehaviour
 
     public int[] GenerateArguments(PaceSpawnerNode paceSpawner, PatternSpawnerNode patternSpawner)
     {
-        if(paceSpawner == null)
+        if(paceSpawner == null || patternSpawner == null)
         {
             return null;
         }
 
+        PaceNode paceNode = TreeManager.instance.GetRandomPaceNode(paceSpawner);
+        
         List<int> args = new List<int>();
-
-        List<int> patternsIndices = new List<int>(patternSpawner.patternsIndices);
-        if(patternsIndices.Count == 0)
-        {
-            for(int i = 0; i < patternsName.Count; i++)
-            {
-                patternsIndices.Add(i);
-            }
-        }
-
-        List<int> filteredPatternsIndices = new List<int>();
-        foreach(int index in patternsIndices)
-        {
-            if(TreeManager.instance.IsPatternEnabled(patternsName[index]))
-            {
-                filteredPatternsIndices.Add(index);
-            }
-        }
-
-        PaceNode pace = null;
-        // TODO
-
-        for(int i = 0; i < pace.instancesCount; i++)
+        for(int i = 0; i < paceNode.instancesCount; i++)
         {
             int interval = 0;
-            switch(Pace.values[pace.paceIndex])
+            switch(Pace.values[paceNode.paceIndex])
             {
                 case Pace.SLOW:
                     interval = UnityEngine.Random.Range(13, 20);
@@ -291,8 +271,8 @@ public class PatternManager : MonoBehaviour
 
             args.Add(interval);
             
-            int pattern = UnityEngine.Random.Range(0, filteredPatternsIndices.Count);
-            args.Add(filteredPatternsIndices[pattern]);
+            PatternNode patternNode = TreeManager.instance.GetRandomPatternNode(patternSpawner);
+            args.Add(patternNode.patternIndex);
         }
 
         return args.ToArray();
@@ -465,8 +445,6 @@ public class PatternManager : MonoBehaviour
         {
             data += "\n\n";
             data += "Pattern " + key;
-
-            List<int> attempts = patternsInfo[key].attempts;
             data += "\n";
             data += "    " + "Attempts";
 
@@ -475,7 +453,6 @@ public class PatternManager : MonoBehaviour
                 data += " " + a;
             }
         }
-
         data += "\n";
 
         string filePath = snapshotsPath + "/" + snapshotsFilePrefix + slot + ".txt";

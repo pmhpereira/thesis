@@ -15,11 +15,10 @@ public class TagNode : BaseNode
     [HideInInspector]
     public int tagIndex;
 
-    private bool oldValue;
-
     public override Node Create(Vector2 pos)
     {
         TagNode node = CreateInstance<TagNode>();
+        node.creationId = GetNextId();
         node.rect = new Rect(pos.x, pos.y, 175, 50);
         node.name = "Mechanic";
 
@@ -94,11 +93,7 @@ public class TagNode : BaseNode
 
         Outputs[0].SetValue<bool>(value);
         
-        if(value != oldValue)
-        {
-            oldValue = value;
-            UpdateTreeManager();
-        }
+        UpdateTreeManager();
 
         return true;
     }
