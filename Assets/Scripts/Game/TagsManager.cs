@@ -81,11 +81,6 @@ public class TagsManager : MonoBehaviour
 
     void ProcessInput()
     {
-        if(GameManager.instance.isPaused)
-        {
-            return;
-        }
-
         if (Input.GetKeyDown(KeyCode.F1)) SaveSnapshot(1);
         else if (Input.GetKeyDown(KeyCode.F2)) SaveSnapshot(2);
         else if (Input.GetKeyDown(KeyCode.F3)) SaveSnapshot(3);
@@ -109,10 +104,14 @@ public class TagsManager : MonoBehaviour
         foreach(string key in tagsInfo.Keys)
         {
             data += "\n\n";
-            data += "Tag " + key;
+            data += "Tag " + key.Replace(' ', '_');
 
+            data += "\n";
             List<int> attempts = tagsInfo[key].attempts;
-
+            if(attempts.Count > 0)
+            {
+                data += "   ";
+            }
             foreach(int a in attempts)
             {
                 data += " " + a;
@@ -177,14 +176,14 @@ public class TagsManager : MonoBehaviour
                 }
                 else if (parameters[0] == "Tag")
                 {
-                    tagName = parameters[1];
+                    tagName = parameters[1].Replace('_', ' ');
                 }
             }
             else if(indentationLevel == 1)
             {
                 if(tagsInfo.ContainsKey(tagName))
                 {
-                    for (int p = 1; p < parameters.Length; p++)
+                    for (int p = 0; p < parameters.Length; p++)
                     {
                         tagsInfo[tagName].AddAttempt(int.Parse(parameters[p]) == 1);
                     }

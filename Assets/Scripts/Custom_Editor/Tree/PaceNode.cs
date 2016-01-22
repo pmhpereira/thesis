@@ -60,6 +60,7 @@ public class PaceNode : BaseNode
             float oldLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 40;
             paceName = EditorGUILayout.TextField("Name", paceName, GUILayout.MaxWidth(rect.width - 20));
+            paceName = paceName.Replace(' ', '_');
             paceIndex = EditorGUILayout.Popup("", paceIndex, Pace.values.ToArray(), GUILayout.MaxWidth(rect.width - 20));
             EditorGUIUtility.labelWidth = 70;
             instancesCount = EditorGUILayout.IntField("Instances", instancesCount);

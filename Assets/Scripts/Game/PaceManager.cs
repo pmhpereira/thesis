@@ -74,11 +74,6 @@ public class PaceManager : MonoBehaviour
 
     void ProcessInput()
     {
-        if(GameManager.instance.isPaused)
-        {
-            return;
-        }
-
         if (Input.GetKeyDown(KeyCode.F1)) SaveSnapshot(1);
         else if (Input.GetKeyDown(KeyCode.F2)) SaveSnapshot(2);
         else if (Input.GetKeyDown(KeyCode.F3)) SaveSnapshot(3);
@@ -103,9 +98,14 @@ public class PaceManager : MonoBehaviour
         {
             data += "\n\n";
             data += "Pace " + key;
-
+            
+            data += "\n";
             List<int> attempts = pacesInfo[key].attempts;
 
+            if(attempts.Count > 0)
+            {
+                data += "   ";
+            }
             foreach(int a in attempts)
             {
                 data += " " + a;
