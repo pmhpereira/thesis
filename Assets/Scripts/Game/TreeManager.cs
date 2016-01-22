@@ -123,7 +123,7 @@ public class TreeManager : MonoBehaviour
         }
         else if(node is MasteryNode)
         {
-            UpdateNode((MasteryNode)node);
+            throw new NotImplementedException();
         }
         else if(node is PatternSpawnerNode)
         {
@@ -320,23 +320,6 @@ public class TreeManager : MonoBehaviour
         masteryNodes = new List<BaseNode>();
     }
 
-    private void UpdateNode(MasteryNode node)
-    {
-        if(node.tagNode == null && node.patternNode == null)
-        {
-            return;
-        }
-
-        if(node.tagNode != null)
-        {
-            UpdateNode(node.tagNode);
-        }
-        else if(node.patternNode != null)
-        {
-            UpdateNode(node.patternNode);
-        }
-    }
-
     public void AddMasteryNode(MasteryNode node)
     {
         if (!masteryNodes.Contains(node))
@@ -346,15 +329,73 @@ public class TreeManager : MonoBehaviour
         }
     }
 
-    public bool IsMasteryResolved(MasteryNode masteryNode, PatternNode patternNode)
+    public bool IsMasteryResolved(MasteryNode masteryNode, BaseNode node)
     {
-        return MasteryComparison.Compare(MasteryComparison.values[masteryNode.masteryComparisonIndex], PatternManager.instance.patternsInfo[patternNode.pattern].GetMastery(), masteryNode.mastery);
+        if(node is PatternNode)
+        {
+            return IsMasteryResolved(masteryNode, (PatternNode)node);
+        }
+        else if(node is TagNode)
+        {
+            return IsMasteryResolved(masteryNode, (TagNode)node);
+        }
+        else if(node is PaceNode)
+        {
+            return IsMasteryResolved(masteryNode, (PaceNode)node);
+        }
+        else if(node is MasteryNode)
+        {
+            throw new NotImplementedException();
+        }
+        else if(node is PatternSpawnerNode)
+        {
+            return IsMasteryResolved(masteryNode, (PatternSpawnerNode)node);
+        }
+        else if(node is PaceSpawnerNode)
+        {
+            return IsMasteryResolved(masteryNode, (PaceSpawnerNode)node);
+        }
+
+        return false;
     }
 
-    public bool IsMasteryResolved(MasteryNode masteryNode, TagNode tagNode)
+    private bool IsMasteryResolved(MasteryNode masteryNode, PatternNode node)
     {
-        // TODO: implement IsMasteryResolved
-        throw new NotImplementedException();
+        return MasteryComparison.Compare(MasteryComparison.values[masteryNode.masteryComparisonIndex], PatternManager.instance.patternsInfo[node.pattern].GetMastery(), masteryNode.mastery);
+    }
+
+    private bool IsMasteryResolved(MasteryNode masteryNode, TagNode node)
+    {
+        return MasteryComparison.Compare(MasteryComparison.values[masteryNode.masteryComparisonIndex], TagsManager.instance.tagsInfo[node.tag].GetMastery(), masteryNode.mastery);
+    }
+    
+    private bool IsMasteryResolved(MasteryNode masteryNode, PaceNode node)
+    {
+        return MasteryComparison.Compare(MasteryComparison.values[masteryNode.masteryComparisonIndex], PaceManager.instance.pacesInfo[node.paceName].GetMastery(), masteryNode.mastery);
+    }
+
+    private bool IsMasteryResolved(MasteryNode masteryNode, PatternSpawnerNode node)
+    {
+        bool isResolved = (node.patternsIndices.Count > 0) ? true : false;
+
+        for(int i = 0; i < node.patternsIndices.Count; i++)
+        {
+            isResolved = isResolved && IsMasteryResolved(masteryNode, (PatternNode)patternNodes[node.patternsIndices[i]]);
+        }
+
+        return isResolved;
+    }
+
+    private bool IsMasteryResolved(MasteryNode masteryNode, PaceSpawnerNode node)
+    {
+        bool isResolved = (node.pacesIndices.Count > 0) ? true : false;
+
+        for(int i = 0; i < node.pacesIndices.Count; i++)
+        {
+            isResolved = isResolved && IsMasteryResolved(masteryNode, paceNodes[node.pacesIndices[i]]);
+        }
+
+        return isResolved;
     }
     #endregion
 
@@ -372,6 +413,7 @@ public class TreeManager : MonoBehaviour
         if(index < 0)
         {
             paceNodes.Add(node);
+            PaceManager.instance.SetPacesInfo(node.paceName, new PaceInfo(node.paceName, node.instancesCount)); 
             paceNodes.SortByCreation();
         }
         else

@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class TagInfo
+public class PaceInfo
 {
     public string name;
+    public int instancesCount;
     public List<int> attempts;
 
-    public TagInfo(string name)
+    public PaceInfo(string name, int instancesCount)
     {
         this.name = name;
-        this.attempts = new List<int>(TagsManager.instance.attemptsCount);
+        this.instancesCount = instancesCount;
+        this.attempts = new List<int>(PaceManager.instance.attemptsCount * instancesCount);
     }
 
     public float GetScore()
@@ -25,7 +27,7 @@ public class TagInfo
             {
                 index = i;
             }
-            float weight = TagsManager.instance.attemptsWeights[index];
+            float weight = PaceManager.instance.attemptsWeights[index / instancesCount];
 
             accumulator += weight;
             score += attempts[i] * weight;
@@ -43,16 +45,19 @@ public class TagInfo
 
     public string GetMastery()
     {
-        return Mastery.FromAttempts(GetScore(), attempts.Count);
+        return Mastery.FromAttempts(GetScore(), attempts.Count / instancesCount);
     }
 
     public void AddAttempt(bool success)
     {
-        if (attempts.Count == TagsManager.instance.attemptsCount)
+        for(int i = 0; i < instancesCount; i++)
         {
-            attempts.RemoveAt(0);
-        }
+            if (attempts.Count == PaceManager.instance.attemptsCount * instancesCount)
+            {
+                attempts.RemoveAt(0);
+            }
 
-        attempts.Add(success ? 1 : 0);
+            attempts.Add(success ? 1 : 0);
+        }
     }
 }

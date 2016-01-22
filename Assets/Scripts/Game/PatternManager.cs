@@ -147,14 +147,14 @@ public class PatternManager : MonoBehaviour
         SpawnPattern(index);
     }
 
-    void SpawnPattern(int index)
+    void SpawnPattern(int patternIndex, int paceIndex = -1)
     {
-        if(index < 0 || index >= patterns.Length)
+        if(patternIndex < 0 || patternIndex >= patterns.Length)
         {
             return;
         }
 
-        GameObject pattern = patterns[index];
+        GameObject pattern = patterns[patternIndex];
 
         if(!CanSpawn(pattern.name))
         {
@@ -175,6 +175,7 @@ public class PatternManager : MonoBehaviour
 
         patternController.SetupDebugMode();
         patternController.SetupBorderColliders();
+        patternController.SetPaceIndex(paceIndex);
 
         groundDistance += patternLength;
         ceilingDistance += patternLength;
@@ -189,11 +190,12 @@ public class PatternManager : MonoBehaviour
             return;
         }
 
-        for(int i = 0; i < paceArguments.Length; i++)
+        int paceIndex = paceArguments[0];
+        for(int i = 1; i < paceArguments.Length; i++)
         {
-            if(i % 2 == 1)
+            if(i % 2 == 0)
             {
-                SpawnPattern(paceArguments[i]);
+                SpawnPattern(paceArguments[i], paceIndex);
             }
             else
             {
@@ -246,6 +248,8 @@ public class PatternManager : MonoBehaviour
         PaceNode paceNode = TreeManager.instance.GetRandomPaceNode(paceSpawner);
         
         List<int> args = new List<int>();
+        args.Add(TreeManager.instance.paceNodes.IndexOf(paceNode));
+
         for(int i = 0; i < paceNode.instancesCount; i++)
         {
             int interval = 0;

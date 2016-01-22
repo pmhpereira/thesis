@@ -72,6 +72,11 @@ public class PaceNode : BaseNode
         #endif
         GUILayout.EndVertical();
 
+        if(PaceManager.instance.pacesInfo.ContainsKey(paceName))
+        {
+            GUILayout.Label(Mastery.ToId(PaceManager.instance.pacesInfo[paceName].GetMastery()));
+        }
+
         GUILayout.BeginVertical();
         for (int i = 0; i < Outputs.Count; i++)
         {

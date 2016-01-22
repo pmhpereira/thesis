@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections.Generic;
 using NodeEditorFramework;
 using NodeEditorFramework.Resources;

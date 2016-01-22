@@ -27,6 +27,9 @@ public class PatternController : MonoBehaviour
 
     public bool hasPlayerCollided;
 
+    [HideInInspector]
+    public int paceIndex;
+
     void Awake()
     {
         foreach(Transform child in transform)
@@ -151,13 +154,23 @@ public class PatternController : MonoBehaviour
         {
             hasPlayerCollided = true;
 
-            PatternManager.instance.patternsInfo[this.transform.name].AddAttempt(false);
+            AddAttempt(false);
+        }
+    }
 
-            List<string> tags = TagsManager.instance.PlayerStateToTags(playerStates.ToArray());
-            foreach(string tag in tags)
-            {
-                TagsManager.instance.tagsInfo[tag].AddAttempt(false);
-            }
+    public void AddAttempt(bool attempt)
+    {
+        PatternManager.instance.patternsInfo[name].AddAttempt(attempt);
+            
+        List<string> tags = TagsManager.instance.PlayerStateToTags(playerStates.ToArray());
+        foreach(string tag in tags)
+        {
+            TagsManager.instance.tagsInfo[tag].AddAttempt(attempt);
+        }
+
+        if(paceIndex >= 0)
+        {
+            PaceManager.instance.pacesInfo[((PaceNode)(TreeManager.instance.paceNodes[paceIndex])).paceName].AddAttempt(attempt);
         }
     }
 
@@ -187,8 +200,8 @@ public class PatternController : MonoBehaviour
         }
     }
 
-    void SavePlayerStates(bool attempt)
+    public void SetPaceIndex(int paceIndex)
     {
-
+        this.paceIndex = paceIndex;
     }
 }

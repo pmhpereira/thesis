@@ -30,13 +30,8 @@ public class PatternCheckpoint : MonoBehaviour
         {
             Destroy(this.GetComponent<BoxCollider2D>());
             patternController.isRecordingPlayer = false;
-            PatternManager.instance.patternsInfo[this.transform.parent.name].AddAttempt(true);
 
-            List<string> tags = TagsManager.instance.PlayerStateToTags(patternController.playerStates.ToArray());
-            foreach(string tag in tags)
-            {
-                TagsManager.instance.tagsInfo[tag].AddAttempt(true);
-            }
+            patternController.AddAttempt(true);
         }
     }
 }

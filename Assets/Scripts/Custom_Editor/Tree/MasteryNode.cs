@@ -14,15 +14,14 @@ public class MasteryNode : BaseNode
     [HideInInspector]
     public string tag;
     [HideInInspector]
-    public TagNode tagNode;
-    [HideInInspector]
     public int masteryIndex;
     [HideInInspector]
     public int masteryComparisonIndex;
     [HideInInspector]
-    public PatternNode patternNode;
-    [HideInInspector]
     public string mastery;
+
+    private BaseNode parentNode;
+    private bool isConnected;
 
     public override Node Create(Vector2 pos)
     {
@@ -69,26 +68,35 @@ public class MasteryNode : BaseNode
 
         if (Inputs[0].connection == null)
         {
-            patternNode = null;
-            tagNode = null;
             masteryIndex = Mastery.values.IndexOf(Mastery.INITIATED);
             masteryComparisonIndex = MasteryComparison.values.IndexOf(MasteryComparison.EQUAL);
             mastery = null;
-            GUILayout.Label("Game node missing");
-        }
-        else if (Inputs[0].connection.body.GetID == PatternNode.ID || Inputs[0].connection.body.GetID == TagNode.ID)
-        {
-            if(Inputs[0].connection.body.GetID == PatternNode.ID)
-            {
-                patternNode = (PatternNode)Inputs[0].connection.body;
-                tagNode = null;
-            }
-            else
-            {
-                tagNode = (TagNode)Inputs[0].connection.body;
-                patternNode = null;
-            }
 
+            parentNode = null;
+            isConnected = false;
+        }
+        else
+        {
+            switch (Inputs[0].connection.body.GetID)
+            {
+                case TagNode.ID:
+                case PatternNode.ID:
+                case PaceNode.ID:
+                case PatternSpawnerNode.ID:
+                case PaceSpawnerNode.ID:
+                    isConnected = true;
+                    parentNode = (BaseNode) Inputs[0].connection.body;
+                    break;
+                default:
+                    isConnected = false;
+                    parentNode = null;
+                    RemoveConnection(Inputs[0].connection.connections[0]);
+                    break;
+            }
+        }
+
+        if(isConnected)
+        {
             #if UNITY_EDITOR
                 masteryComparisonIndex = EditorGUILayout.Popup("", masteryComparisonIndex, MasteryComparison.values.ToArray(), GUILayout.MaxWidth(rect.width * .175f));
                 masteryIndex = EditorGUILayout.Popup("", masteryIndex, Mastery.values.ToArray(), GUILayout.MaxWidth(rect.width * .66f));
@@ -100,7 +108,7 @@ public class MasteryNode : BaseNode
         }
         else
         {
-            RemoveConnection(Inputs[0].connection.connections[0]);
+            GUILayout.Label("Game node missing");
         }
 
         GUILayout.BeginVertical();
@@ -129,13 +137,9 @@ public class MasteryNode : BaseNode
 
     public bool CalculateMastery()
     {
-        if(tagNode != null)
+        if(parentNode != null)
         {
-            return TreeManager.instance.IsMasteryResolved(this, tagNode);
-        }
-        else if(patternNode != null)
-        {
-            return TreeManager.instance.IsMasteryResolved(this, patternNode);
+            return TreeManager.instance.IsMasteryResolved(this, parentNode);
         }
 
         return false;

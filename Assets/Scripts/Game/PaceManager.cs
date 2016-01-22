@@ -7,19 +7,18 @@ using System;
 using UnityEditor;
 #endif
 
-public class TagsManager : MonoBehaviour
+public class PaceManager : MonoBehaviour
 {
-    public static TagsManager instance;
+    public static PaceManager instance;
 
-    public Dictionary<string, TagInfo> tagsInfo;
-    public List<string> tagsName;
+    public Dictionary<string, PaceInfo> pacesInfo;
 
     public int attemptsCount;
     public float[] attemptsWeights;
 
     private string snapshotsPath;
 
-    private const string snapshotsFilePrefix = "TagsSnapshot_";
+    private const string snapshotsFilePrefix = "PaceSnapshot_";
 
     [HideInInspector]
     public int linearRepetition;
@@ -37,7 +36,7 @@ public class TagsManager : MonoBehaviour
 
         instance = this;
 
-        SetTags(Tag.values.ToArray());
+        SetPaces(new PaceNode[0]);
 
         attemptsCount = attemptsWeights.Length;
 
@@ -53,25 +52,19 @@ public class TagsManager : MonoBehaviour
         snapshotsPath += "/Snapshots";
     }
 
-    public void SetTags(string[] tags)
+    public void SetPaces(PaceNode[] paces)
     {
-        tagsInfo = new Dictionary<string, TagInfo>();
-        tagsName = new List<string>(tags.Length);
+        pacesInfo = new Dictionary<string, PaceInfo>();
 
-        foreach (string tag in tags)
+        foreach (PaceNode node in paces)
         {
-            SetTagsInfo(tag, new TagInfo(tag));
+            SetPacesInfo(node.paceName, new PaceInfo(node.paceName, node.instancesCount));
         }
     }
 
-    public void SetTagsInfo(string tagName, TagInfo tagInfo)
+    public void SetPacesInfo(string paceName, PaceInfo paceInfo)
     {
-        tagsInfo[tagName] = tagInfo;
-
-        if(tagsName.Contains(tagName) == false)
-        {
-            tagsName.Add(tagName);
-        }
+        pacesInfo[paceName] = paceInfo;
     }
 
     void Update()
@@ -106,12 +99,12 @@ public class TagsManager : MonoBehaviour
             data += " " + attemptsWeights[i];
         }
 
-        foreach(string key in tagsInfo.Keys)
+        foreach(string key in pacesInfo.Keys)
         {
             data += "\n\n";
-            data += "Tag " + key;
+            data += "Pace " + key;
 
-            List<int> attempts = tagsInfo[key].attempts;
+            List<int> attempts = pacesInfo[key].attempts;
 
             foreach(int a in attempts)
             {
@@ -149,7 +142,7 @@ public class TagsManager : MonoBehaviour
 
         string[] lines = data.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-        string tagName = null;
+        string paceName = null;
 
         for (int i = 0; i < lines.Length; i++)
         {
@@ -173,20 +166,20 @@ public class TagsManager : MonoBehaviour
                         attemptsWeights[p - 1] = float.Parse(parameters[p]);
                     }
 
-                    tagName = null;
+                    paceName = null;
                 }
-                else if (parameters[0] == "Tag")
+                else if (parameters[0] == "Pace")
                 {
-                    tagName = parameters[1];
+                    paceName = parameters[1];
                 }
             }
             else if(indentationLevel == 1)
             {
-                if(tagsInfo.ContainsKey(tagName))
+                if(pacesInfo.ContainsKey(paceName))
                 {
                     for (int p = 1; p < parameters.Length; p++)
                     {
-                        tagsInfo[tagName].AddAttempt(int.Parse(parameters[p]) == 1);
+                        pacesInfo[paceName].AddAttempt(int.Parse(parameters[p]) == 1);
                     }
                 }
             }
@@ -194,58 +187,19 @@ public class TagsManager : MonoBehaviour
 
         Debug.Log("Loaded snapshot " + slot);
     }
-
-    public string PlayerStateToTag(PlayerState state)
-    {
-        if(state == PlayerState.JUMPING)
-        {
-            return Tag.Jump;
-        }
-        else if (state == PlayerState.DOUBLE_JUMPING)
-        {
-            return Tag.Double_Jump;
-        }
-        else if (state == PlayerState.SLIDING)
-        {
-            return Tag.Slide;
-        }
-        else if (state == PlayerState.DASHING)
-        {
-            return Tag.Dash;
-        }
-
-        return null;
-    }
-
-    public List<string> PlayerStateToTags(PlayerState[] playerStates)
-    {
-        List<string> tags = new List<string>();
-
-        foreach(PlayerState state in playerStates)
-        {
-            string tag = PlayerStateToTag(state);
-
-            if(tag != null)
-            {
-                tags.Add(tag);
-            }
-        }
-
-        return tags;
-    }
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(TagsManager))]
-public class TagsManagerEditor : Editor
+[CustomEditor(typeof(PaceManager))]
+public class PaceManagerEditor : Editor
 {
-    TagsManager controller;
+    PaceManager controller;
 
     public override void OnInspectorGUI()
     {
         if(controller == null)
         {
-            controller = (TagsManager)target;
+            controller = (PaceManager)target;
         }
 
         DrawDefaultInspector();
