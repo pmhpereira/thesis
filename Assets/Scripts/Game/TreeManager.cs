@@ -24,6 +24,8 @@ public class TreeManager : MonoBehaviour
     public List<BaseNode> paceSpawnerNodes;
     [HideInInspector]
     public List<BaseNode> patternSpawnerNodes;
+    [HideInInspector]
+    public List<BaseNode> pointerInputNodes;
 
     private RuntimeNodeEditor nodeEditor;
     private NodeCanvas nodeCanvas;
@@ -121,10 +123,6 @@ public class TreeManager : MonoBehaviour
         {
             UpdateNode((PaceNode)node);
         }
-        else if(node is MasteryNode)
-        {
-            throw new NotImplementedException();
-        }
         else if(node is PatternSpawnerNode)
         {
             UpdateNode((PatternSpawnerNode)node);
@@ -133,31 +131,23 @@ public class TreeManager : MonoBehaviour
         {
             UpdateNode((PaceSpawnerNode)node);
         }
+        else if(node is PointerInputNode)
+        {
+            UpdateNode((PointerInputNode)node);
+        }
+        else
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public void RemoveNode(BaseNode node)
     {
-        if(node is PatternNode)
-        {
-            throw new NotImplementedException();
-        }
-        else if(node is TagNode)
-        {
-            throw new NotImplementedException();
-        }
-        else if(node is PaceNode)
+        if(node is PaceNode)
         {
             RemoveNode((PaceNode) node);
         }
-        else if(node is MasteryNode)
-        {
-            throw new NotImplementedException();
-        }
-        else if(node is PatternSpawnerNode)
-        {
-            throw new NotImplementedException();
-        }
-        else if(node is PaceSpawnerNode)
+        else
         {
             throw new NotImplementedException();
         }
@@ -356,7 +346,7 @@ public class TreeManager : MonoBehaviour
             return IsMasteryResolved(masteryNode, (PaceSpawnerNode)node);
         }
 
-        return false;
+        throw new NotImplementedException();
     }
 
     private bool IsMasteryResolved(MasteryNode masteryNode, PatternNode node)
@@ -509,6 +499,39 @@ public class TreeManager : MonoBehaviour
         return activePaceNodes[index - 1];
     }
     #endregion
+    
+    private void UpdateNode(PointerInputNode node)
+    {
+        if(pointerInputNodes == null)
+        {
+            pointerInputNodes = new List<BaseNode>();
+        }
+
+        int index = pointerInputNodes.IndexOf(node);
+
+        if(index < 0)
+        {
+            pointerInputNodes.Add(node);
+            pointerInputNodes.SortByCreation();
+        }
+        else
+        {
+            pointerInputNodes[index] = node;
+        }
+    }
+
+    public bool GetPointerValue(string pointerName)
+    {
+        foreach(PointerInputNode pointerInputNode in pointerInputNodes)
+        {
+            if(pointerInputNode.pointerName == pointerName)
+            {
+                return pointerInputNode.value;
+            }
+        }
+
+        return false;
+    }
 
     public void ToogleNodeEditor()
     {
