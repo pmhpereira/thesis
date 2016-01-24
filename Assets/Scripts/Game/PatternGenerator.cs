@@ -17,8 +17,6 @@ public class PatternGenerator : MonoBehaviour
     private Dictionary<string, GameObject> patternsMap;
     private Dictionary<string, PatternInfo> patternsInfo;
 
-    private GameObject generated;
-
     void Awake()
     {
         if (instance != null && instance != this)
@@ -27,19 +25,24 @@ public class PatternGenerator : MonoBehaviour
         }
 
         instance = this;
-
         LoadAll();
     }
 
     public void LoadAll()
     {
-        if (generated != null)
-        {
-            Destroy(generated);
-        }
-
+        ResetAll();
         LoadPatternsFromFile();
         UpdatePatternManager();
+    }
+
+    void ResetAll()
+    {
+        foreach (Transform child in this.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        PatternManager.instance.SetPatterns(new GameObject[0]);
     }
 
     void LoadPatternsFromFile()
@@ -60,10 +63,6 @@ public class PatternGenerator : MonoBehaviour
         string[] lines = patternsText.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
         GameObject pattern = null, block = null;
-
-        generated = new GameObject("Generated");
-        generated.transform.SetParent(this.transform);
-        generated.transform.position = new Vector3(0, -1000, 0);
 
         int lastCommentIndendation = -1;
         float height = 0;
@@ -93,7 +92,7 @@ public class PatternGenerator : MonoBehaviour
             {
                 pattern = new GameObject(parameters[0]);
                 pattern.AddComponent<PatternController>();
-                pattern.transform.SetParent(generated.transform);
+                pattern.transform.SetParent(this.transform);
                 pattern.transform.tag = "Pattern";
                 pattern.transform.localPosition = new Vector3(0, height, 0);
                 patternsMap[pattern.name] = pattern;
@@ -103,9 +102,17 @@ public class PatternGenerator : MonoBehaviour
             }
             else if (indentationLevel == 1)
             {
-                block = Instantiate(blocksMap[parameters[0]]);
-                block.name = parameters[0];
-                block.transform.SetParent(pattern.transform);
+                if(parameters[0] == "Spacing")
+                {
+                    pattern.GetComponent<PatternController>().preSpacing = int.Parse(parameters[1]);
+                    pattern.GetComponent<PatternController>().postSpacing = int.Parse(parameters[2]);
+                }
+                else
+                {
+                    block = Instantiate(blocksMap[parameters[0]]);
+                    block.name = parameters[0];
+                    block.transform.SetParent(pattern.transform);
+                }
             }
             else if (indentationLevel == 2)
             {
@@ -137,7 +144,7 @@ public class PatternGenerator : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && SceneView.lastActiveSceneView)
         {
             CameraController.instance.sceneViewFollow = false;
-            SceneView.lastActiveSceneView.pivot = generated.transform.position;
+            SceneView.lastActiveSceneView.pivot = this.transform.position;
         }
         #endif
     }
@@ -150,18 +157,17 @@ public class PatternGenerator : MonoBehaviour
 
     private void SavePatternsToFile()
     {
-        if (generated == null)
-        {
-            return;
-        }
-
         string data = "";
 
-        foreach (Transform pattern in generated.transform)
+        foreach (Transform pattern in this.transform)
         {
             data += pattern.name;
             data += "\n";
 
+            data += "    ";
+            data += "Spacing ";
+            data += pattern.GetComponent<PatternController>().preSpacing + " " + pattern.GetComponent<PatternController>().postSpacing;
+            data += "\n";
             foreach (Transform block in pattern)
             {
                 data += "    ";

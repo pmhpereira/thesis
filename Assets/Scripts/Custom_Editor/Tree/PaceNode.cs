@@ -16,7 +16,7 @@ public class PaceNode : BaseNode
     [HideInInspector]
     public int instancesCount;
     [HideInInspector]
-    public string paceName;
+    public string paceName = "";
 
     public override Node Create(Vector2 pos)
     {

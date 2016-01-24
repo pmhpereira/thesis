@@ -277,8 +277,17 @@ public class TreeManager : MonoBehaviour
 
         for(int i = 0; i < patternSpawner.patternsIndices.Count; i++)
         {
-            PatternNode currentPatternNode = (PatternNode) patternNodes[patternSpawner.patternsIndices[i]];
-            if(currentPatternNode.value)
+            PatternNode currentPatternNode = null;
+            foreach(PatternNode patternNode in patternNodes)
+            {
+                if(patternNode.patternIndex == patternSpawner.patternsIndices[i])
+                {
+                    currentPatternNode = patternNode;
+                    break;
+                }
+            }
+
+            if(currentPatternNode != null && currentPatternNode.value)
             {
                 activePatternNodes.Add(currentPatternNode);
                 weights.Add(patternSpawner.patternsWeights[i]);
@@ -399,6 +408,11 @@ public class TreeManager : MonoBehaviour
     private void UpdateNode(PaceNode node)
     {
         int index = paceNodes.IndexOf(node);
+
+        if(string.IsNullOrEmpty(node.paceName))
+        {
+            return;
+        }
 
         if(index < 0)
         {

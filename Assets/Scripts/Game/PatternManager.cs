@@ -45,6 +45,8 @@ public class PatternManager : MonoBehaviour
     [HideInInspector]
     public float logarithmicBase;
 
+    private int lastPostSpacing;
+
     void Awake()
     {
         if (instance != null && instance != this)
@@ -77,6 +79,16 @@ public class PatternManager : MonoBehaviour
         }
 
         snapshotsPath += "/Snapshots";
+
+        SetupGenerator();
+    }
+
+    void SetupGenerator()
+    {
+        GameObject generated = new GameObject("Generator");
+        generated.AddComponent<PatternGenerator>();
+        generated.transform.SetParent(this.transform);
+        generated.transform.position = new Vector3(0, -1000, 0);
     }
 
     public void SetPatterns(GameObject[] newPatterns)
@@ -250,6 +262,7 @@ public class PatternManager : MonoBehaviour
         List<int> args = new List<int>();
         args.Add(TreeManager.instance.paceNodes.IndexOf(paceNode));
 
+        int previousPostSpacing = 0;
         for(int i = 0; i < paceNode.instancesCount; i++)
         {
             int interval = 0;
@@ -270,14 +283,21 @@ public class PatternManager : MonoBehaviour
 
             if(i == 0)
             {
-                interval /= 2;
+                interval = Mathf.Max(interval, lastPostSpacing);
             }
-
-            args.Add(interval);
             
             PatternNode patternNode = TreeManager.instance.GetRandomPatternNode(patternSpawner);
+            int preSpacing = patterns[patternNode.patternIndex].GetComponent<PatternController>().preSpacing;
+
+            interval = Mathf.Max(interval, Mathf.Max(preSpacing, previousPostSpacing));
+            args.Add(interval);
+
             args.Add(patternNode.patternIndex);
+
+            previousPostSpacing = patterns[patternNode.patternIndex].GetComponent<PatternController>().postSpacing;
         }
+
+        lastPostSpacing = previousPostSpacing;
 
         return args.ToArray();
     }

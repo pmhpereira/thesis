@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,14 +26,18 @@ public class PatternController : MonoBehaviour
     [HideInInspector]
     public List<PlayerState> playerStates;
 
+    [HideInInspector]
     public bool hasPlayerCollided;
 
     [HideInInspector]
     public int paceIndex;
 
+    [HideInInspector]
+    public int preSpacing, postSpacing;
+
     void Awake()
     {
-        foreach(Transform child in transform)
+        foreach (Transform child in transform)
         {
             float childSize = child.position.x + child.localScale.x;
             if (childSize > length)
@@ -46,7 +51,7 @@ public class PatternController : MonoBehaviour
 
     void Update()
     {
-        if(startLineRenderer != null)
+        if (startLineRenderer != null)
         {
             startLineRenderer.SetVertexCount(0);
             endLineRenderer.SetVertexCount(0);
@@ -55,7 +60,7 @@ public class PatternController : MonoBehaviour
             DebugPatternInfo();
         }
 
-        if(isRecordingPlayer)
+        if (isRecordingPlayer)
         {
             RecordPlayer();
         }
@@ -161,14 +166,14 @@ public class PatternController : MonoBehaviour
     public void AddAttempt(bool attempt)
     {
         PatternManager.instance.patternsInfo[name].AddAttempt(attempt);
-            
+
         List<string> tags = TagsManager.instance.PlayerStateToTags(playerStates.ToArray());
-        foreach(string tag in tags)
+        foreach (string tag in tags)
         {
             TagsManager.instance.tagsInfo[tag].AddAttempt(attempt);
         }
 
-        if(paceIndex >= 0)
+        if (paceIndex >= 0)
         {
             PaceManager.instance.pacesInfo[((PaceNode)(TreeManager.instance.paceNodes[paceIndex])).paceName].AddAttempt(attempt);
         }
@@ -191,9 +196,9 @@ public class PatternController : MonoBehaviour
     {
         PlayerState[] currentPlayerStates = PlayerController.instance.ResolveState();
 
-        foreach(PlayerState state in currentPlayerStates)
+        foreach (PlayerState state in currentPlayerStates)
         {
-            if(!playerStates.Contains(state))
+            if (!playerStates.Contains(state))
             {
                 playerStates.Add(state);
             }
@@ -205,3 +210,30 @@ public class PatternController : MonoBehaviour
         this.paceIndex = paceIndex;
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(PatternController))]
+public class PatternControllerEditor : Editor
+{
+    private PatternController controller;
+
+    public override void OnInspectorGUI()
+    {
+        if(controller == null)
+        {
+            controller = (PatternController) target;
+        }
+
+        DrawDefaultInspector();
+
+        if(controller.transform.parent.name == "Generator")
+        {
+            controller.preSpacing = EditorGUILayout.IntField("Pre-spacing", controller.preSpacing);
+            controller.postSpacing = EditorGUILayout.IntField("Post-spacing", controller.postSpacing);
+
+            controller.preSpacing = Mathf.Max(0, controller.preSpacing);
+            controller.postSpacing = Mathf.Max(0, controller.postSpacing);
+        }
+    }
+}
+#endif
