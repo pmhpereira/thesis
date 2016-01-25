@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-[Node(false, "Game Node/OutputPointer", false)]
+[Node(false, "Game Node/Pointer/Ouput", false)]
 public class PointerOutputNode : BaseNode
 {
     public const string ID = "pointerOutputNode";
