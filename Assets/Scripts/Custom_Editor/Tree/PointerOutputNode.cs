@@ -10,7 +10,6 @@ public class PointerOutputNode : BaseNode
 {
     public const string ID = "pointerOutputNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor = new Color(1f, .4f, 0f);
 
     [HideInInspector]
     public string pointerName = "";
@@ -30,7 +29,7 @@ public class PointerOutputNode : BaseNode
     public override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
-        GUI.backgroundColor = nodeColor;
+        GUI.backgroundColor = Constants.Colors.Nodes.Pointer;
 
         base.DrawOutlinedNode();
 

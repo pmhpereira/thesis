@@ -8,7 +8,6 @@ public class TagNode : BaseNode
 {
     public const string ID = "tagNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor = new Color(1f, 0f, 0f);
 
     [HideInInspector]
     public string tag;
@@ -33,7 +32,7 @@ public class TagNode : BaseNode
     public override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
-        GUI.backgroundColor = nodeColor;
+        GUI.backgroundColor = Constants.Colors.Nodes.Tag;
 
         if(rect.width != 175)
         {
@@ -85,10 +84,6 @@ public class TagNode : BaseNode
         if(Inputs[0].connection != null)
         {
             value = Inputs[0].GetValue<bool>();
-        }
-        else
-        {
-            value = true;
         }
 
         Outputs[0].SetValue<bool>(value);

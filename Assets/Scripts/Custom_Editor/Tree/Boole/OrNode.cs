@@ -6,7 +6,6 @@ public class OrNode : BaseNode
 {
     public const string ID = "orNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor = new Color(1f, 1f, 0f);
 
     public override Node Create(Vector2 pos)
     {
@@ -29,9 +28,9 @@ public class OrNode : BaseNode
     public override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
-        GUI.backgroundColor = nodeColor;
+        GUI.backgroundColor = Constants.Colors.Nodes.Or;
 
-        base.DrawNode();
+        base.DrawOutlinedNode();
 
         GUI.backgroundColor = oldColor;
     }

@@ -20,7 +20,6 @@ public class BoolNode : BaseNode
 {
     public const string ID = "boolNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor = new Color(.1f, .7f, 1f);
 
     public override Node Create(Vector2 pos)
     {
@@ -35,9 +34,9 @@ public class BoolNode : BaseNode
     public override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
-        GUI.backgroundColor = nodeColor;
+        GUI.backgroundColor = Constants.Colors.Nodes.Input;
 
-        base.DrawNode();
+        base.DrawOutlinedNode();
 
         GUI.backgroundColor = oldColor;
     }

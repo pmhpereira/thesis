@@ -9,7 +9,6 @@ public class PaceNode : BaseNode
 {
     public const string ID = "paceNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor = new Color(1f, .4f, 0f);
 
     [HideInInspector]
     public int paceIndex;
@@ -34,7 +33,7 @@ public class PaceNode : BaseNode
     public override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
-        GUI.backgroundColor = nodeColor;
+        GUI.backgroundColor = Constants.Colors.Nodes.Pace;
 
         base.DrawOutlinedNode();
 

@@ -9,7 +9,6 @@ public class MasteryNode : BaseNode
 {
     public const string ID = "masteryNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor = new Color(1f, .4f, 0f);
 
     [HideInInspector]
     public string tag;
@@ -39,7 +38,7 @@ public class MasteryNode : BaseNode
     public override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
-        GUI.backgroundColor = nodeColor;
+        GUI.backgroundColor = Constants.Colors.Nodes.Mastery;
 
         if(rect.width != 180)
         {

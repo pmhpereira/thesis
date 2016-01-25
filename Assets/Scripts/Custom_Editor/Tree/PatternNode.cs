@@ -10,7 +10,6 @@ public class PatternNode : BaseNode
 {
     public const string ID = "patternNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor = new Color(0.6f, 0.4f, 0.2f);
 
     [HideInInspector]
     public string pattern;
@@ -35,7 +34,7 @@ public class PatternNode : BaseNode
     public override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
-        GUI.backgroundColor = nodeColor;
+        GUI.backgroundColor = Constants.Colors.Nodes.Pattern;
 
         if(rect.width != 175)
         {
@@ -87,10 +86,6 @@ public class PatternNode : BaseNode
         if (Inputs[0].connection != null)
         {
             value = Inputs[0].GetValue<bool>();
-        }
-        else
-        {
-            value = true;
         }
 
         Outputs[0].SetValue<bool>(value);

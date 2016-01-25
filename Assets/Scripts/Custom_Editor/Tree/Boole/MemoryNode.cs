@@ -6,7 +6,6 @@ public class MemoryNode : BaseNode
 {
     public const string ID = "memoryNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor = new Color(.7f, .1f, .7f);
 
     private bool realValue = false;
 
@@ -24,9 +23,9 @@ public class MemoryNode : BaseNode
     public override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
-        GUI.backgroundColor = nodeColor;
+        GUI.backgroundColor = Constants.Colors.Nodes.Memory;
 
-        base.DrawNode();
+        base.DrawOutlinedNode();
 
         GUI.backgroundColor = oldColor;
     }

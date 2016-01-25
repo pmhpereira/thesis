@@ -6,7 +6,6 @@ public class NotNode : BaseNode
 {
     public const string ID = "notNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor = new Color(.7f, .1f, .7f);
 
     public override Node Create(Vector2 pos)
     {
@@ -22,9 +21,9 @@ public class NotNode : BaseNode
     public override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
-        GUI.backgroundColor = nodeColor;
+        GUI.backgroundColor = Constants.Colors.Nodes.Not;
 
-        base.DrawNode();
+        base.DrawOutlinedNode();
 
         GUI.backgroundColor = oldColor;
     }

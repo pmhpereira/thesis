@@ -6,7 +6,6 @@ public class AndNode : BaseNode
 {
     public const string ID = "andNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor = new Color(0f, 1f, 0f);
 
     public override Node Create(Vector2 pos)
     {
@@ -29,9 +28,9 @@ public class AndNode : BaseNode
     public override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
-        GUI.backgroundColor = nodeColor;
+        GUI.backgroundColor = Constants.Colors.Nodes.And;
 
-        base.DrawNode();
+        base.DrawOutlinedNode();
 
         GUI.backgroundColor = oldColor;
     }

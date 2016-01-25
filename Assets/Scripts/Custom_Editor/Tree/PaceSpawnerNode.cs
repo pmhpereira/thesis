@@ -10,7 +10,6 @@ public class PaceSpawnerNode : BaseNode
 {
     public const string ID = "paceSpawnerNode";
     public override string GetID { get { return ID; } }
-    private Color nodeColor = new Color(1f, .4f, 0f);
 
     [SerializeField][HideInInspector]
     public List<int> pacesIndices;
@@ -34,7 +33,7 @@ public class PaceSpawnerNode : BaseNode
     public override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
-        GUI.backgroundColor = nodeColor;
+        GUI.backgroundColor = Constants.Colors.Nodes.PaceSpawner;
 
         if(pacesIndices == null)
         {
@@ -126,10 +125,6 @@ public class PaceSpawnerNode : BaseNode
         if (Inputs[0].connection != null)
         {
             value = Inputs[0].GetValue<bool>();
-        }
-        else
-        {
-            value = true;
         }
 
         if(TreeManager.instance != null)
