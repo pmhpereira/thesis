@@ -73,8 +73,10 @@ public class PointerOutputNode : BaseNode
     {
         if(TreeManager.instance != null && !string.IsNullOrEmpty(pointerName))
         {
-            Outputs[0].SetValue<bool>(TreeManager.instance.GetPointerValue(pointerName));
+            value = TreeManager.instance.GetPointerValue(pointerName);
         }
+
+        Outputs[0].SetValue<bool>(value);
 
         return true;
     }
