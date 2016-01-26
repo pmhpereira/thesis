@@ -20,8 +20,6 @@ public class RuntimeNodeEditor : MonoBehaviour
 		}
 		else
 			NodeEditor.RecalculateAll (canvas);
-
-		NodeEditor.initiated = false;
 	}
 
     public enum Splitscreen
@@ -47,10 +45,9 @@ public class RuntimeNodeEditor : MonoBehaviour
         UpdateSplitscreen();
     }
 
+    private Rect rect = new Rect();
     void UpdateSplitscreen()
     {
-        Rect rect = new Rect();
-
         if(splitscreen == Splitscreen.None)
         {
             rect.width = 0;
@@ -75,7 +72,11 @@ public class RuntimeNodeEditor : MonoBehaviour
 	{
 		if (canvas != null && state != null) 
 		{
-			NodeEditor.checkInit ();
+            if(!NodeEditor.initiated)
+            {
+                NodeEditor.checkInit ();
+            }
+
 			if (NodeEditor.InitiationError) 
 			{
 				GUILayout.Label ("Initiation failed! Check console for more information!");
@@ -124,7 +125,7 @@ public class RuntimeNodeEditor : MonoBehaviour
 			if (state == null)
 				state = editorStates[0];
 		}
-		
+
 		NodeEditor.RecalculateAll (canvas);
 	}
 
