@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 
-[Node(false, "Boole Node/Not", false)]
+[Node(false, "Boole Node/Not")]
 public class NotNode : BaseNode
 {
     public const string ID = "notNode";
@@ -18,7 +18,7 @@ public class NotNode : BaseNode
         return node;
     }
 
-    public override void DrawNode()
+    protected override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Not;

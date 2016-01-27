@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-[Node(false, "Game Node/Spawner/Challenge", false)]
+[Node(false, "Game Node/Spawner/Challenge")]
 public class PatternSpawnerNode : BaseNode
 {
     public const string ID = "patternSpawnerNode";
@@ -30,7 +30,7 @@ public class PatternSpawnerNode : BaseNode
         return node;
     }
 
-    public override void DrawNode()
+    protected override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.PatternSpawner;

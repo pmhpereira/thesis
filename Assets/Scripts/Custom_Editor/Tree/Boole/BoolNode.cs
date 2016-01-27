@@ -15,7 +15,7 @@ public class BoolType : ITypeDeclaration
     }
 }
 
-[Node(false, "Boole Node/Input", false)]
+[Node(false, "Boole Node/Input")]
 public class BoolNode : BaseNode
 {
     public const string ID = "boolNode";
@@ -31,7 +31,7 @@ public class BoolNode : BaseNode
         return node;
     }
 
-    public override void DrawNode()
+    protected override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Input;

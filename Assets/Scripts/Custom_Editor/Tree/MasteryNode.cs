@@ -4,7 +4,7 @@ using NodeEditorFramework;
 using UnityEditor;
 #endif
 
-[Node(false, "Game Node/Mastery", false)]
+[Node(false, "Game Node/Mastery")]
 public class MasteryNode : BaseNode
 {
     public const string ID = "masteryNode";
@@ -35,7 +35,7 @@ public class MasteryNode : BaseNode
         return node;
     }
 
-    public override void DrawNode()
+    protected override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Mastery;

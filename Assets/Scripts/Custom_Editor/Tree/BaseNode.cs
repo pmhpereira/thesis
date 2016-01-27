@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 using System;
+using NodeEditorFramework.Utilities;
 
-[Node(true, "", false)]
-
+[Node(true, "")]
 public class BaseNode : Node
 {
     public bool value;
@@ -43,7 +43,7 @@ public class BaseNode : Node
         {
             if(outlineTexture == null)
             {
-                outlineTexture = NodeEditorGUI.Tint(Texture2D.whiteTexture, Color.green);
+                outlineTexture = RTEditorGUI.Tint(Texture2D.whiteTexture, Color.green);
             }
 
             Rect outlineRect = new Rect(rect);
@@ -62,13 +62,16 @@ public class BaseNode : Node
     {
         if (NodeEditor.curEditorState.selectedNode == this)
         {
-            Event e = Event.current;
-
-            if (e.type == EventType.KeyDown)
+            if(this is BoolNode)
             {
-                if (e.keyCode == KeyCode.Space)
+                Event e = Event.current;
+
+                if (e.type == EventType.KeyDown)
                 {
-                    value = !value;
+                    if (e.keyCode == KeyCode.Z)
+                    {
+                        value = !value;
+                    }
                 }
             }
         }

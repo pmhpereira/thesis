@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
-using NodeEditorFramework.Resources;
-using NodeEditorFramework.Utilities;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-[Node(false, "Game Node/Challenge", false)]
+[Node(false, "Game Node/Challenge")]
 public class PatternNode : BaseNode
 {
     public const string ID = "patternNode";
@@ -31,7 +29,7 @@ public class PatternNode : BaseNode
         return node;
     }
 
-    public override void DrawNode()
+    protected override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Pattern;

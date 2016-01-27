@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-[Node(false, "Game Node/Pointer/Ouput", false)]
+[Node(false, "Game Node/Pointer/Ouput")]
 public class PointerOutputNode : BaseNode
 {
     public const string ID = "pointerOutputNode";
@@ -26,7 +26,7 @@ public class PointerOutputNode : BaseNode
         return node;
     }
 
-    public override void DrawNode()
+    protected override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Pointer;

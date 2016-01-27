@@ -43,6 +43,7 @@ public class TreeManager : MonoBehaviour
         instance = this;
 
         nodeEditor = GetComponent<RuntimeNodeEditor>();
+        nodeEditor.canvas = NodeEditor.curNodeCanvas;
         InitializeAssetBrowser();
     }
 
@@ -76,7 +77,6 @@ public class TreeManager : MonoBehaviour
             patterns = null;
             patternNodes = new List<BaseNode>();
             masteryNodes = null;
-            nodeEditor.canvas = null;
         }
         else
         {
@@ -85,8 +85,8 @@ public class TreeManager : MonoBehaviour
             InitializeMasteries();
             InitializePaces();
 
-            nodeEditor.CanvasString = rootPath + "/" + assetBrowser.options[assetBrowser.value].text + ".asset";
-            nodeEditor.LoadNodeCanvas(nodeEditor.CanvasString);
+            nodeEditor.canvasPath = rootPath + "/" + assetBrowser.options[assetBrowser.value].text + ".asset";
+            nodeEditor.Start();
         }
 
         canvasStart = false;
@@ -103,6 +103,7 @@ public class TreeManager : MonoBehaviour
 
         if (nodeCanvas != null)
         {
+            UpdateNodeEditorRect();
             NodeEditor.RecalculateAll(nodeCanvas);
         }
 
@@ -547,8 +548,47 @@ public class TreeManager : MonoBehaviour
         return false;
     }
 
+    private enum Splitscreen
+    {
+        None,
+        Vertical,
+    }
+
+    private Splitscreen splitscreen = Splitscreen.None;
+
     public void ToogleNodeEditor()
     {
-        nodeEditor.ToogleSplitscreen();
+        switch(splitscreen)
+        {
+            case Splitscreen.None:
+                splitscreen = Splitscreen.Vertical;
+                break;
+            case Splitscreen.Vertical:
+                splitscreen = Splitscreen.None;
+                break;
+        }
+    }
+
+    private void UpdateNodeEditorRect()
+    {
+        if (splitscreen == Splitscreen.None)
+        {
+            nodeEditor.specifiedRootRect.width = 0;
+            nodeEditor.specifiedRootRect.height = 0;
+            
+            nodeEditor.specifiedRootRect.x = 0;
+            nodeEditor.specifiedRootRect.y = 0;
+        }
+        else if(splitscreen == Splitscreen.Vertical)
+        {
+            nodeEditor.specifiedRootRect.width = Screen.width;
+            nodeEditor.specifiedRootRect.height = Screen.height / 2;
+
+            nodeEditor.specifiedRootRect.x = Screen.width - nodeEditor.specifiedRootRect.width;
+            nodeEditor.specifiedRootRect.y = Screen.height - nodeEditor.specifiedRootRect.height;
+        }
+
+        nodeEditor.specifiedCanvasRect = nodeEditor.specifiedRootRect;
+        nodeEditor.specifiedCanvasRect.y = 0;
     }
 }

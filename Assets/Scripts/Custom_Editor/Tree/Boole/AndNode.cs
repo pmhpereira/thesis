@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 
-[Node(false, "Boole Node/And", false)]
+[Node(false, "Boole Node/And")]
 public class AndNode : BaseNode
 {
     public const string ID = "andNode";
@@ -25,7 +25,7 @@ public class AndNode : BaseNode
         return node;
     }
 
-    public override void DrawNode()
+    protected override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.And;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 
-[Node(false, "Boole Node/Or", false)]
+[Node(false, "Boole Node/Or")]
 public class OrNode : BaseNode
 {
     public const string ID = "orNode";
@@ -25,7 +25,7 @@ public class OrNode : BaseNode
         return node;
     }
 
-    public override void DrawNode()
+    protected override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Or;

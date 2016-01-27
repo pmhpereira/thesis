@@ -1735,13 +1735,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 2076266477}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1f279173866b174287757e1d3084ff2, type: 3}
+  m_Script: {fileID: 11500000, guid: 058701fb26fe9874f8dffda7e66a0fe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanvasString: 
+  canvasPath: 
   canvas: {fileID: 0}
-  state: {fileID: 0}
-  splitscreen: 0
+  screenSize: 0
+  specifiedRootRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  specifiedCanvasRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!114 &2076266484
 MonoBehaviour:
   m_ObjectHideFlags: 0

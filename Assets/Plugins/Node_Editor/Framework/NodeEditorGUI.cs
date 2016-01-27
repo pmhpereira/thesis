@@ -2,13 +2,17 @@
 using System.Collections;
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
-using NodeEditorFramework.Resources;
 
 namespace NodeEditorFramework 
 {
 	public static class NodeEditorGUI 
 	{
-		// Static textures and styles
+		// static GUI settings, textures and styles
+		public static int knobSize = 16;
+
+		public static Color NE_LightColor = new Color (0.4f, 0.4f, 0.4f);
+		public static Color NE_TextColor = new Color (0.7f, 0.7f, 0.7f);
+
 		public static Texture2D Background;
 		public static Texture2D AALineTex;
 		public static Texture2D GUIBox;
@@ -21,10 +25,12 @@ namespace NodeEditorFramework
 		public static GUIStyle nodeLabelBold;
 		public static GUIStyle nodeLabelSelected;
 
-		public static int knobSize = 16;
+		public static GUIStyle nodeBox;
+		public static GUIStyle nodeBoxBold;
 		
-		public static bool Init () 
+		public static bool Init (bool GUIFunction) 
 		{
+			// Textures
 			Background = ResourceManager.LoadTexture ("Textures/background.png");
 			AALineTex = ResourceManager.LoadTexture ("Textures/AALine.png");
 			GUIBox = ResourceManager.LoadTexture ("Textures/NE_Box.png");
@@ -32,29 +38,34 @@ namespace NodeEditorFramework
 			
 			if (!Background || !AALineTex || !GUIBox || !GUIButton)
 				return false;
-			
-			// Styles
+			if (!GUIFunction)
+				return true;
 
+			// Skin & Styles
 			nodeSkin = Object.Instantiate<GUISkin> (GUI.skin);
 
-			nodeSkin.label.normal.textColor = new Color (0.7f, 0.7f, 0.7f);
-
-			nodeSkin.box.normal.textColor = new Color (0.7f, 0.7f, 0.7f);
+			// Label
+			nodeSkin.label.normal.textColor = NE_TextColor;
+			nodeLabel = nodeSkin.label;
+			// Box
+			nodeSkin.box.normal.textColor = NE_TextColor;
 			nodeSkin.box.normal.background = GUIBox;
-
-			nodeSkin.button.normal.textColor = new Color (0.7f, 0.7f, 0.7f);
+			nodeBox = nodeSkin.box;
+			// Button
+			nodeSkin.button.normal.textColor = NE_TextColor;
 			nodeSkin.button.normal.background = GUIButton;
-
+			// TextArea
 			nodeSkin.textArea.normal.background = GUIBox;
 			nodeSkin.textArea.active.background = GUIBox;
-
-			nodeLabel = nodeSkin.label;
-
+			// Bold Label
 			nodeLabelBold = new GUIStyle (nodeLabel);
 			nodeLabelBold.fontStyle = FontStyle.Bold;
-
+			// Selected Label
 			nodeLabelSelected = new GUIStyle (nodeLabel);
-			nodeLabelSelected.normal.background = RTEditorGUI.ColorToTex (new Color (0.4f, 0.4f, 0.4f));
+			nodeLabelSelected.normal.background = RTEditorGUI.ColorToTex (1, NE_LightColor);
+			// Bold Box
+			nodeBoxBold = new GUIStyle (nodeBox);
+			nodeBoxBold.fontStyle = FontStyle.Bold;
 
 			return true;
 		}
@@ -62,6 +73,8 @@ namespace NodeEditorFramework
 		public static void StartNodeGUI () 
 		{
 			defaultSkin = GUI.skin;
+			if (nodeSkin == null)
+				Init (true);
 			GUI.skin = nodeSkin;
 		}
 
@@ -70,133 +83,53 @@ namespace NodeEditorFramework
 			GUI.skin = defaultSkin;
 		}
 
-		#region Drawing
+		#region Connection Drawing
 
 		/// <summary>
-		/// Draws a Bezier curve just as UnityEditor.Handles.DrawBezier
+		/// Draws a node connection from start to end, horizontally
 		/// </summary>
-		public static void DrawBezier (Vector2 startPos, Vector2 endPos, Vector2 startTan, Vector2 endTan, Color col, Texture2D tex, float width)
+		public static void DrawConnection (Vector2 startPos, Vector2 endPos, Color col) 
 		{
-			if (Event.current.type != EventType.Repaint)
-				return;
-			
-			if (tex == null)
-				tex = ResourceManager.GetTintedTexture ("Textures/AALine.png", col);
-
-			int segmentCount = (int)(((startPos-startTan).magnitude + (startTan-endTan).magnitude + (endTan-endPos).magnitude) / 10);
-			Vector2 curPoint = startPos;
-			for (int segCnt = 1; segCnt <= segmentCount; segCnt++) 
-			{
-				float t = (float)segCnt/segmentCount;
-				Vector2 nextPoint = new Vector2 (startPos.x * Mathf.Pow (1-t, 3) + 
-				                                 startTan.x * 3 * Mathf.Pow (1-t, 2) * t + 
-				                                 endTan.x 	* 3 * (1-t) * Mathf.Pow (t, 2) + 
-				                                 endPos.x 	* Mathf.Pow (t, 3),
-				                                 
-				                                 startPos.y * Mathf.Pow (1-t, 3) + 
-				                                 startTan.y * 3 * Mathf.Pow (1-t, 2) * t + 
-				                                 endTan.y 	* 3 * (1-t) * Mathf.Pow (t, 2) + 
-				                                 endPos.y 	* Mathf.Pow (t, 3));
-				DrawLine (curPoint, nextPoint, Color.white, tex, width);
-				curPoint = nextPoint;
-			}
+			Vector2 startVector = startPos.x <= endPos.x? Vector2.right : Vector2.left;
+			DrawConnection (startPos, startVector, endPos, -startVector, col);
 		}
-		
-		public static void DrawLine (Vector2 startPos, Vector2 endPos, Color col, Texture2D tex, float width)
+		/// <summary>
+		/// Draws a node connection from start to end with specified vectors
+		/// </summary>
+		public static void DrawConnection (Vector2 startPos, Vector2 startDir, Vector2 endPos, Vector2 endDir, Color col) 
 		{
-			if (Event.current.type != EventType.Repaint)
-				return;
-			
-            Rect canvasRect = NodeEditor.curEditorState.canvasRect;
-            if(!canvasRect.Contains(startPos + canvasRect.min) || !canvasRect.Contains(endPos + canvasRect.min))
-                return;
-
-			if (width == 1)
-			{
-				GL.Begin (GL.LINES);
-				GL.Color (col);
-				GL.Vertex (startPos);
-				GL.Vertex (endPos);
-				GL.End ();
-			}
-			else 
-			{
-				if (tex == null)
-					tex = ResourceManager.GetTintedTexture ("Textures/AALine.png", col);
-				Vector2 perpWidthOffset = new Vector2 ((endPos-startPos).y, -(endPos-startPos).x).normalized * width / 2;
-				
-                if(mat == null)
-                    mat = new Material (Shader.Find ("Unlit/Transparent"));
-
-				mat.SetTexture ("_MainTex", tex);
-				mat.SetPass (0);
-				GL.Begin (GL.TRIANGLE_STRIP);
-				GL.TexCoord2 (0, 0);
-				GL.Vertex (startPos - perpWidthOffset);
-				GL.TexCoord2 (0, 1);
-				GL.Vertex (startPos + perpWidthOffset);
-				GL.TexCoord2 (1, 0);
-				GL.Vertex (endPos - perpWidthOffset);
-				GL.TexCoord2 (1, 1);
-				GL.Vertex (endPos + perpWidthOffset);
-				GL.End ();
-			}
+			#if NODE_EDITOR_LINE_CONNECTION
+			DrawConnection (startPos, startDir, endPos, endDir, ConnectionDrawMethod.StraightLine, col);
+			#else
+			DrawConnection (startPos, startDir, endPos, endDir, ConnectionDrawMethod.Bezier, col);
+			#endif
 		}
-        static Material mat = null;
-		#endregion
-
-		#region Texture Utilities
+		/// <summary>
+		/// Draws a node connection from start to end with specified vectors
+		/// </summary>
+		public static void DrawConnection (Vector2 startPos, Vector2 startDir, Vector2 endPos, Vector2 endDir, ConnectionDrawMethod drawMethod, Color col) 
+		{
+			if (drawMethod == ConnectionDrawMethod.Bezier) 
+			{
+				float dirFactor = 80;//Mathf.Pow ((startPos-endPos).magnitude, 0.3f) * 20;
+				//Debug.Log ("DirFactor is " + dirFactor + "with a bezier lenght of " + (startPos-endPos).magnitude);
+				RTEditorGUI.DrawBezier (startPos, endPos, startPos + startDir * dirFactor, endPos + endDir * dirFactor, col * Color.gray, null, 3);
+			}
+			else if (drawMethod == ConnectionDrawMethod.StraightLine)
+				RTEditorGUI.DrawLine (startPos, endPos, col * Color.gray, null, 3);
+		}
 
 		/// <summary>
-		/// Create a 1x1 tex with color col
+		/// Gets the second connection vector that matches best, accounting for positions
 		/// </summary>
-		public static Texture2D ColorToTex (Color col) 
+		internal static Vector2 GetSecondConnectionVector (Vector2 startPos, Vector2 endPos, Vector2 firstVector) 
 		{
-			Texture2D tex = new Texture2D (1, 1);
-			tex.SetPixel (1, 1, col);
-			tex.Apply ();
-			return tex;
-		}
-		
-		/// <summary>
-		/// Tint the texture with the color.
-		/// </summary>
-		public static Texture2D Tint (Texture2D tex, Color color) 
-		{
-			Texture2D tintedTex = UnityEngine.Object.Instantiate (tex);
-			for (int x = 0; x < tex.width; x++) 
-				for (int y = 0; y < tex.height; y++) 
-					tintedTex.SetPixel (x, y, tex.GetPixel (x, y) * color);
-			tintedTex.Apply ();
-			return tintedTex;
-		}
-		
-		public static Texture2D RotateTextureAntiCW (Texture2D tex, int NintyDegrSteps) 
-		{
-			if (tex == null)
-				return null;
-			tex = UnityEngine.Object.Instantiate (tex);
-			int width = tex.width, height = tex.height;
-			Color[] col = tex.GetPixels ();
-			Color[] rotatedCol = new Color[width*height];
-			for (int itCnt = 0; itCnt < NintyDegrSteps; itCnt++) 
-			{
-				for (int x = 0; x < width; x++) 
-				{
-					for (int y = 0; y < height; y++) 
-					{
-						rotatedCol[x*width + y] = col[(width-y-1) * width + x];
-					}
-				}
-				if (itCnt < NintyDegrSteps-1)
-				{
-					col = rotatedCol;
-					rotatedCol = new Color[width*height];
-				}
-			}
-			tex.SetPixels (rotatedCol);
-			tex.Apply ();
-			return tex;
+			if (firstVector.x != 0 && firstVector.y == 0)
+				return startPos.x <= endPos.x? -firstVector : firstVector;
+			else if (firstVector.y != 0 && firstVector.x == 0)
+				return startPos.y <= endPos.y? -firstVector : firstVector;
+			else
+				return -firstVector;
 		}
 
 		#endregion

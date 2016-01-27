@@ -4,7 +4,7 @@ using NodeEditorFramework;
 using UnityEditor;
 #endif
 
-[Node(false, "Game Node/Pace", false)]
+[Node(false, "Game Node/Pace")]
 public class PaceNode : BaseNode
 {
     public const string ID = "paceNode";
@@ -30,7 +30,7 @@ public class PaceNode : BaseNode
         return node;
     }
 
-    public override void DrawNode()
+    protected override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Pace;
@@ -105,7 +105,7 @@ public class PaceNode : BaseNode
         return true;
     }
 
-    public override void OnDelete()
+    protected override void OnDelete()
     {
         TreeManager.instance.RemoveNode(this);
     }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 
-[Node (true, "Example Node", false)]
+[Node (true, "Example Node")]
 public class ExampleNode : Node 
 {
 	public const string ID = "exampleNode";
@@ -43,7 +43,7 @@ public class ExampleNode : Node
 	{
 		if (!allInputsReady ())
 			return false;
-		Outputs[0].SetValue<float> (Inputs[0].connection.GetValue<float> () * 5);
+		Outputs[0].SetValue<float> (Inputs[0].GetValue<float> () * 5);
 		return true;
 	}
 }

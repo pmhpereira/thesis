@@ -3,7 +3,7 @@ using NodeEditorFramework;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-[Node(false, "Game Node/Mechanic", false)]
+[Node(false, "Game Node/Mechanic")]
 public class TagNode : BaseNode
 {
     public const string ID = "tagNode";
@@ -29,7 +29,7 @@ public class TagNode : BaseNode
         return node;
     }
 
-    public override void DrawNode()
+    protected override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Tag;

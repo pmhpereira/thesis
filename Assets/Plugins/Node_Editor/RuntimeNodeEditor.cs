@@ -1,82 +1,40 @@
 ﻿using UnityEngine;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using NodeEditorFramework;
-using NodeEditorFramework.Resources;
 
 public class RuntimeNodeEditor : MonoBehaviour 
 {
-	public string CanvasString;
+	public string canvasPath;
 	public NodeCanvas canvas;
-	public NodeEditorState state;
+	private NodeEditorState state;
+
+	public bool screenSize = false;
+	private Rect canvasRect;
+	public Rect specifiedRootRect;
+	public Rect specifiedCanvasRect;
 
 	public void Start () 
 	{
-		if ((canvas == null || state == null))
-		{
-			if (!string.IsNullOrEmpty (CanvasString))
-				LoadNodeCanvas (CanvasString);
-			else
-				Debug.LogWarning ("Please use one option to select a canvas!");
-		}
+		if (!string.IsNullOrEmpty (canvasPath))
+			LoadNodeCanvas (canvasPath);
 		else
-			NodeEditor.RecalculateAll (canvas);
+			NewNodeCanvas ();
+		NodeEditor.initiated = false;
+		FPSCounter.Create ();
 	}
 
-    public enum Splitscreen
-    {
-        None,
-        Vertical,
-    }
-
-    public Splitscreen splitscreen = Splitscreen.None;
-
-    public void ToogleSplitscreen()
-    {
-        switch(splitscreen)
-        {
-            case Splitscreen.None:
-                splitscreen = Splitscreen.Vertical;
-                break;
-            case Splitscreen.Vertical:
-                splitscreen = Splitscreen.None;
-                break;
-        }
-
-        UpdateSplitscreen();
-    }
-
-    private Rect rect = new Rect();
-    void UpdateSplitscreen()
-    {
-        if(splitscreen == Splitscreen.None)
-        {
-            rect.width = 0;
-            rect.height = 0;
-        }
-        else if(splitscreen == Splitscreen.Vertical)
-        {
-            rect.width = Screen.width;
-            rect.height = Screen.height / 2;
-        }
-
-        rect.x = Screen.width - rect.width;
-        rect.y = Screen.height - rect.height;
-
-        if(state != null)
-        {
-		    state.canvasRect = rect;
-        }
-    }
+	public void Update () 
+	{
+		FPSCounter.Update ();
+	}
 
 	public void OnGUI ()
 	{
 		if (canvas != null && state != null) 
 		{
-            if(!NodeEditor.initiated)
-            {
-                NodeEditor.checkInit ();
-            }
-
+			NodeEditor.checkInit ();
 			if (NodeEditor.InitiationError) 
 			{
 				GUILayout.Label ("Initiation failed! Check console for more information!");
@@ -85,17 +43,15 @@ public class RuntimeNodeEditor : MonoBehaviour
 
 			try
 			{
-				//GUI.BeginGroup (rootRect, NodeEditorGUI.nodeSkin.box);
+				if (!screenSize && specifiedRootRect.max != specifiedRootRect.min) GUI.BeginGroup (specifiedRootRect, NodeEditorGUI.nodeSkin.box);
 
-				//GUILayout.FlexibleSpace ();
-
-				//GUI.BeginGroup (subRootRect, NodeEditorGUI.nodeSkin.box);
-                UpdateSplitscreen();
+				canvasRect = screenSize? new Rect (0, 0, Screen.width, Screen.height) : specifiedCanvasRect;
+				canvasRect.width -= 200;
+				state.canvasRect = canvasRect;
 				NodeEditor.DrawCanvas (canvas, state);
+				SideGUI ();
 
-				//GUI.EndGroup ();
-
-				//GUI.EndGroup ();
+				if (!screenSize && specifiedRootRect.max != specifiedRootRect.min) GUI.EndGroup ();
 			}
 			catch (UnityException e)
 			{ // on exceptions in drawing flush the canvas to avoid locking the ui.
@@ -106,15 +62,24 @@ public class RuntimeNodeEditor : MonoBehaviour
 		}
 	}
 
+	public void SideGUI () 
+	{
+		GUILayout.BeginArea (new Rect (canvasRect.x + state.canvasRect.width, state.canvasRect.y, 200, state.canvasRect.height), NodeEditorGUI.nodeSkin.box);
+		GUILayout.Label (new GUIContent ("Node Editor (" + canvas.name + ")", "The currently opened canvas in the Node Editor"));
+		screenSize = GUILayout.Toggle (screenSize, "Adapt to Screen");
+		GUILayout.Label ("FPS: " + FPSCounter.currentFPS);
+		GUILayout.EndArea ();
+	}
+
 	public void LoadNodeCanvas (string path) 
 	{
-        // Load the NodeCanvas
-        ResourceManager.Init(NodeEditor.editorPath + "Resources/");
-
-        canvas = NodeEditor.LoadNodeCanvas (path);
+		// Load the NodeCanvas
+		canvas = NodeEditor.LoadNodeCanvas (path);
 		if (canvas == null)
+		{
 			canvas = ScriptableObject.CreateInstance<NodeCanvas> ();
-		
+		}
+
 		// Load the associated MainEditorState
 		List<NodeEditorState> editorStates = NodeEditor.LoadEditorStates (path);
 		if (editorStates.Count == 0)
@@ -122,20 +87,51 @@ public class RuntimeNodeEditor : MonoBehaviour
 		else 
 		{
 			state = editorStates.Find (x => x.name == "MainEditorState");
-			if (state == null)
-				state = editorStates[0];
+			if (state == null) state = editorStates[0];
 		}
-
+		state.canvas = canvas;
+		
 		NodeEditor.RecalculateAll (canvas);
 	}
 
 	public void NewNodeCanvas () 
 	{
-		// New NodeCanvas
-		canvas = ScriptableObject.CreateInstance<NodeCanvas> ();;
-		// New NodeEditorState
+		canvas = ScriptableObject.CreateInstance<NodeCanvas> ();
 		state = ScriptableObject.CreateInstance<NodeEditorState> ();
 		state.canvas = canvas;
 		state.name = "MainEditorState";
+	}
+}
+
+
+public class FPSCounter
+{
+	public static float FPSMeasurePeriod = 0.1f;
+	private int FPSAccumulator;
+	private float FPSNextPeriod;
+	public static int currentFPS;
+
+	private static FPSCounter instance;
+
+	public static void Create ()
+	{
+		if (instance == null)
+		{
+			instance = new FPSCounter ();
+			instance.FPSNextPeriod = Time.realtimeSinceStartup + FPSMeasurePeriod;
+		}
+	}
+
+	// has to be called
+	public static void Update ()
+	{
+		Create ();
+		instance.FPSAccumulator++;
+		if (Time.realtimeSinceStartup > instance.FPSNextPeriod)
+		{
+			currentFPS = (int) (instance.FPSAccumulator/FPSMeasurePeriod);
+			instance.FPSAccumulator = 0;
+			instance.FPSNextPeriod += FPSMeasurePeriod;
+		}
 	}
 }
