@@ -25,4 +25,4 @@ Custom
 ======
 Snapshots/
 Saves/
-*.asset
+/Assets/Plugins/Node_Editor/Editor/Node_Editor/*.asset*
