@@ -28,7 +28,6 @@ public class TreeManager : MonoBehaviour
     public List<BaseNode> pointerInputNodes;
 
     private RuntimeNodeEditor nodeEditor;
-    private NodeCanvas nodeCanvas;
     private bool canvasStart;
 
     public Dropdown assetBrowser;
@@ -100,13 +99,12 @@ public class TreeManager : MonoBehaviour
         if(!canvasStart)
         {
             canvasStart = true;
-            nodeCanvas = nodeEditor.canvas;
         }
 
-        if (nodeCanvas != null)
+        if (nodeEditor.canvas != null)
         {
             UpdateNodeEditorRect();
-            NodeEditor.RecalculateAll(nodeCanvas);
+            NodeEditor.RecalculateAll(nodeEditor.canvas);
         }
 
         assetBrowser.gameObject.SetActive(GameManager.instance.debugMode);
