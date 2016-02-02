@@ -13,15 +13,16 @@ public class PatternSpawnerNode : BaseNode
 
     [SerializeField][HideInInspector]
     public List<int> patternsIndices;
-    public List<float> patternsWeights;
+    public List<float> patternsSpawnWeights;
+    public List<float> patternsMasteryWeights;
 
-    private int rectDefaultHeight = 60;
+    private int rectDefaultHeight = 70;
 
     public override Node Create(Vector2 pos)
     {
         PatternSpawnerNode node = CreateInstance<PatternSpawnerNode>();
         node.creationId = GetNextId();
-        node.rect = new Rect(pos.x, pos.y, 180, rectDefaultHeight);
+        node.rect = new Rect(pos.x, pos.y, 210, rectDefaultHeight);
         node.name = "Challenge Spawner";
 
         node.CreateInput("", "Bool");
@@ -38,7 +39,8 @@ public class PatternSpawnerNode : BaseNode
         if(patternsIndices == null)
         {
             patternsIndices = new List<int>();
-            patternsWeights = new List<float>();
+            patternsSpawnWeights = new List<float>();
+            patternsMasteryWeights = new List<float>();
         }
         rect.height = rectDefaultHeight + patternsIndices.Count * 20;
 
@@ -61,7 +63,12 @@ public class PatternSpawnerNode : BaseNode
         }
         GUILayout.EndVertical();
 
+
         GUILayout.BeginVertical();
+        if(patternsIndices.Count > 0)
+        {
+            GUILayout.Label("#   Pattern           sW       mW");
+        }
         #if UNITY_EDITOR
         {
             float oldLabelWidth = EditorGUIUtility.labelWidth;
@@ -72,14 +79,22 @@ public class PatternSpawnerNode : BaseNode
                 if(GUILayout.Button("" + i, GUILayout.MaxWidth(25)))
                 {
                     patternsIndices.RemoveAt(i);
-                    patternsWeights.RemoveAt(i);
+                    patternsSpawnWeights.RemoveAt(i);
+                    patternsMasteryWeights.RemoveAt(i);
+
+                    if(i == patternsIndices.Count)
+                    {
+                        break;
+                    }
                 }
 
                 if(patternsIndices.Count > 0)
                 {
                     patternsIndices[i] = EditorGUILayout.Popup("", patternsIndices[i], PatternManager.instance.patternsName.ToArray(), GUILayout.MaxWidth(rect.width - 40));
-                    patternsWeights[i] = EditorGUILayout.FloatField("", patternsWeights[i], GUILayout.MaxWidth(40));
-                    patternsWeights[i] = Mathf.Max(0, patternsWeights[i]);
+                    patternsSpawnWeights[i] = EditorGUILayout.FloatField("", patternsSpawnWeights[i], GUILayout.MaxWidth(40));
+                    patternsSpawnWeights[i] = Mathf.Max(0, patternsSpawnWeights[i]);
+                    patternsMasteryWeights[i] = EditorGUILayout.FloatField("", patternsMasteryWeights[i], GUILayout.MaxWidth(40));
+                    patternsMasteryWeights[i] = Mathf.Max(0, patternsMasteryWeights[i]);
                 }
                 GUILayout.EndHorizontal();
             }
@@ -87,7 +102,8 @@ public class PatternSpawnerNode : BaseNode
             if (GUILayout.Button("Add Pattern"))
             {
                 patternsIndices.Add(0);
-                patternsWeights.Add(1);
+                patternsSpawnWeights.Add(1);
+                patternsMasteryWeights.Add(1);
             }
 
             EditorGUIUtility.labelWidth = oldLabelWidth;
@@ -96,7 +112,7 @@ public class PatternSpawnerNode : BaseNode
         {
             for(int i = 0; i < patternsIndices.Count; i++)
             {
-                GUILayout.Label(i + ": " + PatternManager.instance.patternsName[patternsIndices[i]] + " | " + patternsWeights[i]);
+                GUILayout.Label(i.ToString().PadRight(4) + PatternManager.instance.patternsName[patternsIndices[i]].PadRight(19) + patternsSpawnWeights[i].ToString().PadRight(11) + patternsMasteryWeights[i]);
             }
         }
         #endif

@@ -77,9 +77,11 @@ public class TreeManager : MonoBehaviour
             patterns = null;
             patternNodes = new List<BaseNode>();
             masteryNodes = null;
+            nodeEditor.enabled = false;
         }
         else
         {
+            nodeEditor.enabled = true;
             InitializeTags();
             InitializePatterns();
             InitializeMasteries();
@@ -291,8 +293,8 @@ public class TreeManager : MonoBehaviour
             if(currentPatternNode != null && currentPatternNode.value)
             {
                 activePatternNodes.Add(currentPatternNode);
-                weights.Add(patternSpawner.patternsWeights[i]);
-                totalWeights += patternSpawner.patternsWeights[i];
+                weights.Add(patternSpawner.patternsSpawnWeights[i]);
+                totalWeights += patternSpawner.patternsSpawnWeights[i];
             }
         }
 
@@ -438,7 +440,7 @@ public class TreeManager : MonoBehaviour
                 if(paceSpawner.pacesIndices[i] == paceIndex)
                 {
                     paceSpawner.pacesIndices.RemoveAt(i);
-                    paceSpawner.pacesWeights.RemoveAt(i);
+                    paceSpawner.pacesSpawnWeights.RemoveAt(i);
                     i--;
                 }
                 else if(paceSpawner.pacesIndices[i] > paceIndex)
@@ -497,8 +499,8 @@ public class TreeManager : MonoBehaviour
             if(currentPaceNode.value)
             {
                 activePaceNodes.Add(currentPaceNode);
-                weights.Add(paceSpawner.pacesWeights[i]);
-                totalWeights += paceSpawner.pacesWeights[i];
+                weights.Add(paceSpawner.pacesSpawnWeights[i]);
+                totalWeights += paceSpawner.pacesSpawnWeights[i];
             }
         }
 

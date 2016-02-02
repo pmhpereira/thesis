@@ -13,15 +13,16 @@ public class PaceSpawnerNode : BaseNode
 
     [SerializeField][HideInInspector]
     public List<int> pacesIndices;
-    public List<float> pacesWeights;
+    public List<float> pacesSpawnWeights;
+    public List<float> pacesMasteryWeights;
 
-    private int rectDefaultHeight = 60;
+    private int rectDefaultHeight = 70;
 
     public override Node Create(Vector2 pos)
     {
         PaceSpawnerNode node = CreateInstance<PaceSpawnerNode>();
         node.creationId = GetNextId();
-        node.rect = new Rect(pos.x, pos.y, 180, rectDefaultHeight);
+        node.rect = new Rect(pos.x, pos.y, 210, rectDefaultHeight);
         node.name = "Pace Spawner";
 
         node.CreateInput("", "Bool");
@@ -38,7 +39,8 @@ public class PaceSpawnerNode : BaseNode
         if(pacesIndices == null)
         {
             pacesIndices = new List<int>();
-            pacesWeights = new List<float>();
+            pacesSpawnWeights = new List<float>();
+            pacesMasteryWeights = new List<float>();
         }
         rect.height = rectDefaultHeight + pacesIndices.Count * 20;
 
@@ -69,6 +71,11 @@ public class PaceSpawnerNode : BaseNode
             paceNames[p] = ((PaceNode) paceNodes[p]).paceName;
         }
 
+        if(pacesIndices.Count > 0)
+        {
+            GUILayout.Label("#   Pace              sW       mW");
+        }
+
         #if UNITY_EDITOR
         {
             float oldLabelWidth = EditorGUIUtility.labelWidth;
@@ -79,14 +86,22 @@ public class PaceSpawnerNode : BaseNode
                 if(GUILayout.Button("" + i, GUILayout.MaxWidth(25)))
                 {
                     pacesIndices.RemoveAt(i);
-                    pacesWeights.RemoveAt(i);
+                    pacesSpawnWeights.RemoveAt(i);
+                    pacesMasteryWeights.RemoveAt(i);
+
+                    if(i == pacesIndices.Count)
+                    {
+                        break;
+                    }
                 }
 
                 if(paceNodes.Length > 0)
                 {
                     pacesIndices[i] = EditorGUILayout.Popup("", pacesIndices[i], paceNames, GUILayout.MaxWidth(rect.width - 40));
-                    pacesWeights[i] = EditorGUILayout.FloatField("", pacesWeights[i], GUILayout.MaxWidth(40));
-                    pacesWeights[i] = Mathf.Max(0, pacesWeights[i]);
+                    pacesSpawnWeights[i] = EditorGUILayout.FloatField("", pacesSpawnWeights[i], GUILayout.MaxWidth(40));
+                    pacesSpawnWeights[i] = Mathf.Max(0, pacesSpawnWeights[i]);
+                    pacesMasteryWeights[i] = EditorGUILayout.FloatField("", pacesMasteryWeights[i], GUILayout.MaxWidth(40));
+                    pacesMasteryWeights[i] = Mathf.Max(0, pacesMasteryWeights[i]);
                 }
                 GUILayout.EndHorizontal();
             }
@@ -94,16 +109,17 @@ public class PaceSpawnerNode : BaseNode
             if (GUILayout.Button("Add Pace"))
             {
                 pacesIndices.Add(0);
-                pacesWeights.Add(1);
+                pacesSpawnWeights.Add(1);
+                pacesMasteryWeights.Add(1);
             }
 
             EditorGUIUtility.labelWidth = oldLabelWidth;
         }
         #else
         {
-            for(int i = 0; i < patternsIndices.Count; i++)
+            for(int i = 0; i < pacesIndices.Count; i++)
             {
-                GUILayout.Label(i + ": " + PatternManager.instance.patternsName[patternsIndices[i]] + " | " + pacesWeights[i]);
+                GUILayout.Label(i.ToString().PadRight(4) + paceNames[pacesIndices[i]].PadRight(19) + pacesSpawnWeights[i].ToString().PadRight(11) + pacesMasteryWeights[i]);
             }
         }
         #endif
