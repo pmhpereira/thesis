@@ -48,6 +48,25 @@ public class TreeManager : MonoBehaviour
 
     private string rootPath = NodeEditor.editorPath + "Resources/Saves";
 
+    void RefreshAssetBrowser()
+    {
+        string oldAssetName = assetBrowser.options[assetBrowser.value].text;
+        InitializeAssetBrowser();
+
+        int newAssetIndex = 0;
+        for(int i = 0; i < assetBrowser.options.Count; i++)
+        {
+            if(assetBrowser.options[i].text == oldAssetName)
+            {
+                newAssetIndex = i;
+                break;
+            }
+        }
+
+        assetBrowser.value = newAssetIndex;
+        OnValueChanged();
+    }
+
     void InitializeAssetBrowser()
     {
         string path = rootPath;
@@ -105,6 +124,11 @@ public class TreeManager : MonoBehaviour
         {
             UpdateNodeEditorRect();
             NodeEditor.RecalculateAll(nodeEditor.canvas);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Backspace))
+        {
+            RefreshAssetBrowser();
         }
 
         assetBrowser.gameObject.SetActive(GameManager.instance.debugMode);
@@ -376,27 +400,48 @@ public class TreeManager : MonoBehaviour
 
     private bool IsMasteryResolved(MasteryNode masteryNode, PatternSpawnerNode node)
     {
-        bool isResolved = (node.patternsIndices.Count > 0) ? true : false;
+        float sumWeights = 0;
+        float sumMasteries = 0;
 
         for(int i = 0; i < node.patternsIndices.Count; i++)
         {
-            isResolved = isResolved && IsMasteryResolved(masteryNode, (PatternNode)patternNodes[node.patternsIndices[i]]);
+            string patternName = PatternManager.instance.patternsName[node.patternsIndices[i]];
+            string mastery = PatternManager.instance.patternsInfo[patternName].GetMastery();
+
+            sumMasteries += Mastery.values.IndexOf(mastery) * node.patternsMasteryWeights[i];
+            sumWeights += node.patternsMasteryWeights[i];
         }
 
-        return isResolved;
+        int masteryIndex = (int) Mathf.Round(sumMasteries / sumWeights);
+
+        return MasteryComparison.Compare(MasteryComparison.values[masteryNode.masteryComparisonIndex], Mastery.values[masteryIndex], masteryNode.mastery);
     }
 
     private bool IsMasteryResolved(MasteryNode masteryNode, PaceSpawnerNode node)
     {
-        bool isResolved = (node.pacesIndices.Count > 0) ? true : false;
+        float sumWeights = 0;
+        float sumMasteries = 0;
+
+        string[] paceNames = new string[paceNodes.Count];
+        for(int p = 0; p < paceNodes.Count; p++)
+        {
+            paceNames[p] = ((PaceNode) paceNodes[p]).paceName;
+        }
 
         for(int i = 0; i < node.pacesIndices.Count; i++)
         {
-            isResolved = isResolved && IsMasteryResolved(masteryNode, paceNodes[node.pacesIndices[i]]);
+            string paceName = paceNames[node.pacesIndices[i]];
+            string mastery = PaceManager.instance.pacesInfo[paceName].GetMastery();
+
+            sumMasteries += Mastery.values.IndexOf(mastery) * node.pacesMasteryWeights[i];
+            sumWeights += node.pacesMasteryWeights[i];
         }
 
-        return isResolved;
+        int masteryIndex = (int) Mathf.Round(sumMasteries / sumWeights);
+
+        return MasteryComparison.Compare(MasteryComparison.values[masteryNode.masteryComparisonIndex], Mastery.values[masteryIndex], masteryNode.mastery);
     }
+
     #endregion
 
     #region Pace
