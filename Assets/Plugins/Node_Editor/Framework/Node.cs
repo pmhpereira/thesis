@@ -181,7 +181,7 @@ namespace NodeEditorFramework
 					NodeEditorGUI.DrawConnection (startPos,
 					                           startDir,
 					                           input.GetGUIKnob ().center,
-					                           input.GetDirection () * -1,
+					                           input.GetDirection (),
                                                ConnectionTypes.GetTypeData(output.type).declaration.GetColor(input.GetValue<object>()));
 				}
 			}
