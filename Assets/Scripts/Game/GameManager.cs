@@ -50,6 +50,16 @@ public class GameManager : MonoBehaviour
             CameraController.instance.ToogleSplitscreen();
             TreeManager.instance.ToogleNodeEditor();
         }
+
+        if (Input.GetKeyDown(KeyCode.F1)) SaveSnapshot(1);
+        else if (Input.GetKeyDown(KeyCode.F2)) SaveSnapshot(2);
+        else if (Input.GetKeyDown(KeyCode.F3)) SaveSnapshot(3);
+        else if (Input.GetKeyDown(KeyCode.F4)) SaveSnapshot(4);
+
+        if (Input.GetKeyDown(KeyCode.F5)) LoadSnapshot(1);
+        else if (Input.GetKeyDown(KeyCode.F6)) LoadSnapshot(2);
+        else if (Input.GetKeyDown(KeyCode.F7)) LoadSnapshot(3);
+        else if (Input.GetKeyDown(KeyCode.F8)) LoadSnapshot(4);
     }
 
     public void SetPause(bool paused)
@@ -77,5 +87,19 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         PlayerPrefs.Save();
+    }
+
+    public void SaveSnapshot(int slot)
+    {
+        PatternManager.instance.SaveSnapshot(slot);
+        TagsManager.instance.SaveSnapshot(slot);
+        PaceManager.instance.SaveSnapshot(slot);
+    }
+
+    public void LoadSnapshot(int slot)
+    {
+        PatternManager.instance.LoadSnapshot(slot);
+        TagsManager.instance.LoadSnapshot(slot);
+        PaceManager.instance.LoadSnapshot(slot);
     }
 }

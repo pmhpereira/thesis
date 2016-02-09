@@ -37,6 +37,8 @@ public class TextDebugger : MonoBehaviour
             textToDisplay += "\n";
             textToDisplay += "N-M | Camera Zoom";
             textToDisplay += "\n";
+            textToDisplay += "F12 | Node Editor";
+            textToDisplay += "\n";
             textToDisplay += "Space | Pause";
             textToDisplay += "\n";
             textToDisplay += "R | Restart";

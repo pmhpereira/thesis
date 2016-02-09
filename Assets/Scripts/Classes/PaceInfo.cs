@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PaceInfo
 {
@@ -45,7 +46,7 @@ public class PaceInfo
 
     public string GetMastery()
     {
-        return Mastery.FromAttempts(GetScore(), attempts.Count / instancesCount);
+        return Mastery.FromAttempts(GetScore(), attempts.Count / Mathf.Max(instancesCount, 1));
     }
 
     public void AddAttempt(bool success)

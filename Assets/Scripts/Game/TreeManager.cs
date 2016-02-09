@@ -30,8 +30,12 @@ public class TreeManager : MonoBehaviour
     private RuntimeNodeEditor nodeEditor;
     private bool canvasStart;
 
+    public Button refreshButton;
     public Dropdown assetBrowser;
+    public Button validateButton;
     
+    public int oldAssetValue;
+
     void Awake()
     {
         if (instance != null && instance != this)
@@ -48,7 +52,7 @@ public class TreeManager : MonoBehaviour
 
     private string rootPath = NodeEditor.editorPath + "Resources/Saves";
 
-    void RefreshAssetBrowser()
+    public void RefreshAssetBrowser()
     {
         string oldAssetName = assetBrowser.options[assetBrowser.value].text;
         InitializeAssetBrowser();
@@ -99,18 +103,30 @@ public class TreeManager : MonoBehaviour
         }
         else
         {
+            if(oldAssetValue != 0)
+            {
+                GameManager.instance.SaveSnapshot(0);
+            }
+
+            nodeEditor.canvasPath = rootPath + "/" + assetBrowser.options[assetBrowser.value].text + ".asset";
+            nodeEditor.Start();
             nodeEditor.enabled = true;
+
             InitializeTags();
             InitializePatterns();
             InitializeMasteries();
             InitializePaces();
+            InitializePointers();
 
-            nodeEditor.canvasPath = rootPath + "/" + assetBrowser.options[assetBrowser.value].text + ".asset";
-            nodeEditor.Start();
+            if(oldAssetValue != 0)
+            {
+                GameManager.instance.LoadSnapshot(0);
+            }
         }
 
         canvasStart = false;
         assetBrowser.captionText.text = assetBrowser.options[assetBrowser.value].text;
+        oldAssetValue = assetBrowser.value;
     }
 
     void Update()
@@ -126,39 +142,88 @@ public class TreeManager : MonoBehaviour
             NodeEditor.RecalculateAll(nodeEditor.canvas);
         }
 
-        if(Input.GetKeyDown(KeyCode.Backspace))
-        {
-            RefreshAssetBrowser();
-        }
-
+        refreshButton.gameObject.SetActive(GameManager.instance.debugMode);
         assetBrowser.gameObject.SetActive(GameManager.instance.debugMode);
+        validateButton.gameObject.SetActive(GameManager.instance.debugMode);
     }
     
+    public void ValidateCanvas()
+    {
+        if(assetBrowser.value == 0)
+        {
+            return;
+        }
+
+        bool invalid = false;
+
+        if(paceSpawnerNodes.Count == 0)
+        {
+            Debug.Log("Missing: Game Node > Spawner > Pace");
+            invalid = true;
+        }
+        else if(paceNodes.Count == 0)
+        {
+            Debug.Log("Missing: Game Node > Pace");
+            invalid = true;
+        }
+
+        if(patternSpawnerNodes.Count == 0)
+        {
+            Debug.Log("Missing: Game Node > Spawner > Challenge");
+            invalid = true;
+        }
+        else if(patternNodes.Count == 0)
+        {
+            Debug.Log("Missing: Game Node > Challenge");
+            invalid = true;
+        }
+        
+        if(patternNodes.Count == 0)
+        {
+            Debug.Log("Missing: Game Node > Challenge");
+            invalid = true;
+        }
+
+        if(tagNodes.Count == 0)
+        {
+            Debug.Log("Missing: Game Node > Mechanic");
+            invalid = true;
+        }
+
+        if(!invalid)
+        {
+            Debug.Log("Everything looks fine.");
+        }
+    }
+
     public void UpdateNode(BaseNode node)
     {
         if(node is PatternNode)
         {
             UpdateNode((PatternNode)node);
+            InsertOrUpdateNode(ref patternNodes, ref node);
         }
         else if(node is TagNode)
         {
             UpdateNode((TagNode)node);
+            InsertOrUpdateNode(ref tagNodes, ref node);
         }
         else if(node is PaceNode)
         {
             UpdateNode((PaceNode)node);
+            InsertOrUpdateNode(ref paceNodes, ref node);
         }
         else if(node is PatternSpawnerNode)
         {
-            UpdateNode((PatternSpawnerNode)node);
+            InsertOrUpdateNode(ref patternSpawnerNodes, ref node);
         }
         else if(node is PaceSpawnerNode)
         {
-            UpdateNode((PaceSpawnerNode)node);
+            InsertOrUpdateNode(ref paceSpawnerNodes, ref node);
         }
         else if(node is PointerInputNode)
         {
-            UpdateNode((PointerInputNode)node);
+            InsertOrUpdateNode(ref pointerInputNodes, ref node);
         }
         else
         {
@@ -182,6 +247,7 @@ public class TreeManager : MonoBehaviour
     private void InitializeTags()
     {
         tags = new Dictionary<string, bool>();
+        tagNodes = new List<BaseNode>();
 
         foreach (string tag in Tag.values)
         {
@@ -206,7 +272,7 @@ public class TreeManager : MonoBehaviour
 
     private void UpdateNode(TagNode node)
     {
-        if (tags != null && node.tag != Tag.None)
+        if (tags != null && node.tag != null)
         {
             tags[node.tag] = node.value;
         }
@@ -242,36 +308,9 @@ public class TreeManager : MonoBehaviour
 
     private void UpdateNode(PatternNode node)
     {
-        if(patterns != null)
+        if(patterns != null && node.pattern != null)
         {
             patterns[node.pattern] = node.value;
-        }
-
-        int index = patternNodes.IndexOf(node);
-
-        if(index < 0)
-        {
-            patternNodes.Add(node);
-            patternNodes.SortByCreation();
-        }
-        else
-        {
-            patternNodes[index] = node;
-        }
-    }
-
-    private void UpdateNode(PatternSpawnerNode node)
-    {
-        int index = patternSpawnerNodes.IndexOf(node);
-
-        if(index < 0)
-        {
-            patternSpawnerNodes.Add(node);
-            patternSpawnerNodes.SortByCreation();
-        }
-        else
-        {
-            patternSpawnerNodes[index] = node;
         }
     }
 
@@ -453,22 +492,20 @@ public class TreeManager : MonoBehaviour
     
     private void UpdateNode(PaceNode node)
     {
-        int index = paceNodes.IndexOf(node);
+        int index = -1;
 
-        if(string.IsNullOrEmpty(node.paceName))
+        for(int i = 0; i < paceNodes.Count; i++)
         {
-            return;
+            if(paceNodes[i].creationId == node.creationId)
+            {
+                index = i;
+                break;
+            }
         }
 
-        if(index < 0)
+        if(index == -1)
         {
-            paceNodes.Add(node);
             PaceManager.instance.SetPacesInfo(node.paceName, new PaceInfo(node.paceName, node.instancesCount)); 
-            paceNodes.SortByCreation();
-        }
-        else
-        {
-            paceNodes[index] = node;
         }
     }
 
@@ -494,21 +531,6 @@ public class TreeManager : MonoBehaviour
         }
 
         paceNodes.RemoveAt(paceIndex);
-    }
-
-    private void UpdateNode(PaceSpawnerNode node)
-    {
-        int index = paceSpawnerNodes.IndexOf(node);
-
-        if(index < 0)
-        {
-            paceSpawnerNodes.Add(node);
-            paceSpawnerNodes.SortByCreation();
-        }
-        else
-        {
-            paceSpawnerNodes[index] = node;
-        }
     }
 
     public PaceSpawnerNode GetRandomPaceSpawnerNode()
@@ -560,24 +582,9 @@ public class TreeManager : MonoBehaviour
     }
     #endregion
     
-    private void UpdateNode(PointerInputNode node)
+    private void InitializePointers()
     {
-        if(pointerInputNodes == null)
-        {
-            pointerInputNodes = new List<BaseNode>();
-        }
-
-        int index = pointerInputNodes.IndexOf(node);
-
-        if(index < 0)
-        {
-            pointerInputNodes.Add(node);
-            pointerInputNodes.SortByCreation();
-        }
-        else
-        {
-            pointerInputNodes[index] = node;
-        }
+        pointerInputNodes = new List<BaseNode>();
     }
 
     public bool GetPointerValue(string pointerName)
@@ -635,5 +642,46 @@ public class TreeManager : MonoBehaviour
 
         nodeEditor.specifiedCanvasRect = nodeEditor.specifiedRootRect;
         nodeEditor.specifiedCanvasRect.y = 0;
+    }
+
+    private void InsertOrUpdateNode(ref List<BaseNode> nodeArray, ref BaseNode node)
+    {
+        int index = -1;
+
+        for(int i = 0; i < nodeArray.Count; i++)
+        {
+            if(nodeArray[i].creationId == node.creationId)
+            {
+                index = i;
+                break;
+            }
+        }
+
+        if(index < 0)
+        {
+            nodeArray.Add(node);
+            nodeArray.SortByCreation();
+        }
+        else
+        {
+            nodeArray[index] = node;
+        }
+    }
+
+    bool isPausedAux = true;
+    void OnApplicationFocus(bool focusStatus)
+    {
+        nodeEditor.enabled = focusStatus;
+
+        if(focusStatus)
+        {
+            RefreshAssetBrowser();
+            GameManager.instance.SetPause(isPausedAux);
+        }
+        else
+        {
+            isPausedAux = GameManager.instance.isPaused;
+            GameManager.instance.SetPause(true);
+        }
     }
 }

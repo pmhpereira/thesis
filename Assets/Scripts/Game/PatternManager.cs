@@ -456,7 +456,7 @@ public class PatternManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha0) || Input.GetKeyDown(KeyCode.Keypad0)) SpawnPace();
     }
 
-    void SaveSnapshot(int slot)
+    public void SaveSnapshot(int slot)
     {
         string data = "";
         data += "Weights";
@@ -487,10 +487,13 @@ public class PatternManager : MonoBehaviour
         }
         file.Close();
 
-        Debug.Log("Saved snapshot " + slot);
+        if(slot != 0)
+        {
+            Debug.Log("Saved snapshot " + slot);
+        }
     }
 
-    void LoadSnapshot(int slot)
+    public void LoadSnapshot(int slot)
     {
         string filePath = snapshotsPath + "/" + snapshotsFilePrefix + slot + ".txt";
         if(!File.Exists(filePath))
@@ -550,7 +553,10 @@ public class PatternManager : MonoBehaviour
             }
         }
 
-        Debug.Log("Loaded snapshot " + slot);
+        if(slot != 0)
+        {
+            Debug.Log("Loaded snapshot " + slot);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)

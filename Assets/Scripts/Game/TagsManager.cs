@@ -74,25 +74,7 @@ public class TagsManager : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        ProcessInput();
-    }
-
-    void ProcessInput()
-    {
-        if (Input.GetKeyDown(KeyCode.F1)) SaveSnapshot(1);
-        else if (Input.GetKeyDown(KeyCode.F2)) SaveSnapshot(2);
-        else if (Input.GetKeyDown(KeyCode.F3)) SaveSnapshot(3);
-        else if (Input.GetKeyDown(KeyCode.F4)) SaveSnapshot(4);
-
-        if (Input.GetKeyDown(KeyCode.F5)) LoadSnapshot(1);
-        else if (Input.GetKeyDown(KeyCode.F6)) LoadSnapshot(2);
-        else if (Input.GetKeyDown(KeyCode.F7)) LoadSnapshot(3);
-        else if (Input.GetKeyDown(KeyCode.F8)) LoadSnapshot(4);
-    }
-
-    void SaveSnapshot(int slot)
+    public void SaveSnapshot(int slot)
     {
         string data = "";
         data += "Weights";
@@ -128,10 +110,13 @@ public class TagsManager : MonoBehaviour
         }
         file.Close();
 
-        Debug.Log("Saved snapshot " + slot);
+        if(slot != 0)
+        {
+            Debug.Log("Saved snapshot " + slot);
+        }
     }
 
-    void LoadSnapshot(int slot)
+    public void LoadSnapshot(int slot)
     {
         string filePath = snapshotsPath + "/" + snapshotsFilePrefix + slot + ".txt";
         if(!File.Exists(filePath))
@@ -191,7 +176,10 @@ public class TagsManager : MonoBehaviour
             }
         }
 
-        Debug.Log("Loaded snapshot " + slot);
+        if(slot != 0)
+        {
+            Debug.Log("Loaded snapshot " + slot);
+        }
     }
 
     public string PlayerStateToTag(PlayerState state)

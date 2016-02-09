@@ -27,6 +27,7 @@ public class BoolNode : BaseNode
         node.rect = new Rect(pos.x, pos.y, 50, 20);
         node.name = "Bool";
         node.CreateOutput("", "Bool");
+        node.value = true;
 
         return node;
     }

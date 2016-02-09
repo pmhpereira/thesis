@@ -85,7 +85,7 @@ public class PaceManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.F8)) LoadSnapshot(4);
     }
 
-    void SaveSnapshot(int slot)
+    public void SaveSnapshot(int slot)
     {
         string data = "";
         data += "Weights";
@@ -122,10 +122,13 @@ public class PaceManager : MonoBehaviour
         }
         file.Close();
 
-        Debug.Log("Saved snapshot " + slot);
+        if(slot != 0)
+        {
+            Debug.Log("Saved snapshot " + slot);
+        }
     }
 
-    void LoadSnapshot(int slot)
+    public void LoadSnapshot(int slot)
     {
         string filePath = snapshotsPath + "/" + snapshotsFilePrefix + slot + ".txt";
         if(!File.Exists(filePath))
@@ -170,7 +173,10 @@ public class PaceManager : MonoBehaviour
                 }
                 else if (parameters[0] == "Pace")
                 {
-                    paceName = parameters[1];
+                    if(parameters.Length > 1)
+                    {
+                        paceName = parameters[1];
+                    }
                 }
             }
             else if(indentationLevel == 1)
@@ -185,7 +191,10 @@ public class PaceManager : MonoBehaviour
             }
         }
 
-        Debug.Log("Loaded snapshot " + slot);
+        if(slot != 0)
+        {
+            Debug.Log("Loaded snapshot " + slot);
+        }
     }
 }
 
