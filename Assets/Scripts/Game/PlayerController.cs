@@ -155,19 +155,19 @@ public class PlayerController : MonoBehaviour
 
         if (!isColliding && !isFalling)
         {
-            if (Input.GetButton("Fire1") && isIdling)
+            if (Input.GetKeyDown(KeyCode.UpArrow) && isIdling)
             {
                 SingleJump();
             }
-            else if (Input.GetButtonDown("Fire1") && currentConsecutiveJumps < maxConsecutiveJumps)
+            else if (Input.GetKeyDown(KeyCode.UpArrow) && currentConsecutiveJumps < maxConsecutiveJumps)
             {
                 MultipleJump();
             }
-            else if(Input.GetButton("Fire2") && !isJumping && !isDashing)
+            else if(Input.GetKeyDown(KeyCode.RightArrow) && !isJumping && !isDashing)
             {
                 DashSetup();
             }
-            else if(Input.GetButton("Fire3") && !isJumping && !isSliding)
+            else if(Input.GetKeyDown(KeyCode.DownArrow) && !isJumping && !isSliding)
             {
                 SlideSetup();
             }
