@@ -30,7 +30,6 @@ public class TreeManager : MonoBehaviour
     private RuntimeNodeEditor nodeEditor;
     private bool canvasStart;
 
-    public Button refreshButton;
     public Dropdown assetBrowser;
     public Button validateButton;
     
@@ -142,7 +141,6 @@ public class TreeManager : MonoBehaviour
             NodeEditor.RecalculateAll(nodeEditor.canvas);
         }
 
-        refreshButton.gameObject.SetActive(GameManager.instance.debugMode);
         assetBrowser.gameObject.SetActive(GameManager.instance.debugMode);
         validateButton.gameObject.SetActive(GameManager.instance.debugMode);
     }
