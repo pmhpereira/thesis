@@ -123,12 +123,9 @@ public class MasteryNode : BaseNode
 
     public override bool Calculate()
     {
-        if (Inputs[0].connection != null)
-        {
-            value = Inputs[0].GetValue<bool>();
-        }
-
+        value = Inputs[0].GetValue<bool>();
         value = value && CalculateMastery();
+
         Outputs[0].SetValue<bool>(value);
 
         return true;

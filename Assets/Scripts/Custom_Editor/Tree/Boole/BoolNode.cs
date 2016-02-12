@@ -15,6 +15,19 @@ public class BoolType : ITypeDeclaration
     }
 }
 
+public class BlockerType : ITypeDeclaration
+{
+    public string name { get { return "Blocker"; } }
+    public Color col { get { return Color.red; } }
+    public string InputKnob_TexPath { get { return "Textures/In_Knob.png"; } }
+    public string OutputKnob_TexPath { get { return "Textures/Out_Knob.png"; } }
+    public Type Type { get { return typeof(bool); } }
+    public Color GetColor(object value)
+    {
+        return (bool)value ? Color.green : Color.red;
+    }
+}
+
 [Node(false, "Boole Node/Input")]
 public class BoolNode : BaseNode
 {

@@ -26,6 +26,7 @@ public class PaceSpawnerNode : BaseNode
         node.name = "Pace Spawner";
 
         node.CreateInput("", "Bool");
+        node.CreateInput("", "Blocker");
         node.CreateOutput("", "Bool");
 
         return node;
@@ -73,7 +74,7 @@ public class PaceSpawnerNode : BaseNode
 
         if(pacesIndices.Count > 0)
         {
-            GUILayout.Label("#   Pace              sW       mW");
+            GUILayout.Label("      Pace              sW       mW");
         }
 
         #if UNITY_EDITOR
@@ -83,7 +84,7 @@ public class PaceSpawnerNode : BaseNode
             for (int i = 0; i < pacesIndices.Count; i++)
             {
                 GUILayout.BeginHorizontal();
-                if(GUILayout.Button("" + i, GUILayout.MaxWidth(25)))
+                if(GUILayout.Button("x", GUILayout.MaxWidth(25)))
                 {
                     pacesIndices.RemoveAt(i);
                     pacesSpawnWeights.RemoveAt(i);
@@ -119,7 +120,7 @@ public class PaceSpawnerNode : BaseNode
         {
             for(int i = 0; i < pacesIndices.Count; i++)
             {
-                GUILayout.Label(i.ToString().PadRight(4) + paceNames[pacesIndices[i]].PadRight(19) + pacesSpawnWeights[i].ToString().PadRight(11) + pacesMasteryWeights[i]);
+                GUILayout.Label("".PadRight(5) + paceNames[pacesIndices[i]].PadRight(19) + pacesSpawnWeights[i].ToString().PadRight(11) + pacesMasteryWeights[i]);
             }
         }
         #endif
@@ -138,10 +139,8 @@ public class PaceSpawnerNode : BaseNode
 
     public override bool Calculate()
     {
-        if (Inputs[0].connection != null)
-        {
-            value = Inputs[0].GetValue<bool>();
-        }
+        value = Inputs[0].GetValue<bool>();
+        value = value && !Inputs[1].GetValue<bool>();
 
         if(TreeManager.instance != null)
         {

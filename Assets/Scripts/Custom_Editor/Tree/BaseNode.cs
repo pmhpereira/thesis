@@ -14,6 +14,14 @@ public class BaseNode : Node
 
     private int lineWidth = 2;
 
+    public override bool AllowRecursion
+    {
+        get
+        {
+            return true;
+        }
+    }
+
     public static int GetNextId()
     {
         return ++id;

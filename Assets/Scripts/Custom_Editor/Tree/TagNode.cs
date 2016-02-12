@@ -18,12 +18,13 @@ public class TagNode : BaseNode
     {
         TagNode node = CreateInstance<TagNode>();
         node.creationId = GetNextId();
-        node.rect = new Rect(pos.x, pos.y, 175, 50);
+        node.rect = new Rect(pos.x, pos.y, 175, 70);
         node.name = "Mechanic";
 
         tagIndex = 0;
 
         node.CreateInput("", "Bool");
+        node.CreateInput("", "Blocker");
         node.CreateOutput("", "Bool");
 
         return node;
@@ -81,10 +82,8 @@ public class TagNode : BaseNode
 
     public override bool Calculate()
     {
-        if(Inputs[0].connection != null)
-        {
-            value = Inputs[0].GetValue<bool>();
-        }
+        value = Inputs[0].GetValue<bool>();
+        value = value && !Inputs[1].GetValue<bool>();
 
         Outputs[0].SetValue<bool>(value);
         

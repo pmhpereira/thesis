@@ -22,7 +22,6 @@ public class PaceNode : BaseNode
         PaceNode node = CreateInstance<PaceNode>();
         node.creationId = GetNextId();
         node.rect = new Rect(pos.x, pos.y, 150, 80);
-        node.name = "Pace";
 
         node.CreateInput("", "Bool");
         node.CreateOutput("", "Bool");
@@ -32,6 +31,9 @@ public class PaceNode : BaseNode
 
     protected override void DrawNode()
     {
+        this.name = "Pace";
+        this.CreateInput("", "Blocker");
+
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Pace;
 
@@ -90,10 +92,8 @@ public class PaceNode : BaseNode
 
     public override bool Calculate()
     {
-        if (Inputs[0].connection != null)
-        {
-            value = Inputs[0].GetValue<bool>();
-        }
+        value = Inputs[0].GetValue<bool>();
+        value = value && !Inputs[1].GetValue<bool>();
 
         if(TreeManager.instance != null)
         {

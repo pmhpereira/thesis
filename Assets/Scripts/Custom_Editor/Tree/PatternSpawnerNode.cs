@@ -26,6 +26,7 @@ public class PatternSpawnerNode : BaseNode
         node.name = "Challenge Spawner";
 
         node.CreateInput("", "Bool");
+        node.CreateInput("", "Blocker");
         node.CreateOutput("", "Bool");
 
         return node;
@@ -63,11 +64,10 @@ public class PatternSpawnerNode : BaseNode
         }
         GUILayout.EndVertical();
 
-
         GUILayout.BeginVertical();
         if(patternsIndices.Count > 0)
         {
-            GUILayout.Label("#   Pattern           sW       mW");
+            GUILayout.Label("     Pattern           sW       mW");
         }
         #if UNITY_EDITOR
         {
@@ -76,7 +76,7 @@ public class PatternSpawnerNode : BaseNode
             for(int i = 0; i < patternsIndices.Count; i++)
             {
                 GUILayout.BeginHorizontal();
-                if(GUILayout.Button("" + i, GUILayout.MaxWidth(25)))
+                if(GUILayout.Button("x", GUILayout.MaxWidth(25)))
                 {
                     patternsIndices.RemoveAt(i);
                     patternsSpawnWeights.RemoveAt(i);
@@ -112,7 +112,7 @@ public class PatternSpawnerNode : BaseNode
         {
             for(int i = 0; i < patternsIndices.Count; i++)
             {
-                GUILayout.Label(i.ToString().PadRight(4) + PatternManager.instance.patternsName[patternsIndices[i]].PadRight(19) + patternsSpawnWeights[i].ToString().PadRight(11) + patternsMasteryWeights[i]);
+                GUILayout.Label("".PadRight(4) + PatternManager.instance.patternsName[patternsIndices[i]].PadRight(19) + patternsSpawnWeights[i].ToString().PadRight(11) + patternsMasteryWeights[i]);
             }
         }
         #endif
@@ -131,10 +131,8 @@ public class PatternSpawnerNode : BaseNode
 
     public override bool Calculate()
     {
-        if (Inputs[0].connection != null)
-        {
-            value = Inputs[0].GetValue<bool>();
-        }
+        value = Inputs[0].GetValue<bool>();
+        value = value && !Inputs[1].GetValue<bool>();
 
         if(TreeManager.instance != null)
         {
