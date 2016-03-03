@@ -1,23 +1,34 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Parallax : MonoBehaviour
 {
     public float scrollSpeed;
     public float tileSizeX;
 
-    private Vector3 startPosition, startParentPosition;
+	private SpriteRenderer[] renderers;
+	private int currentIndex = 0;
+	private float currentDistance;
 
-    void Start ()
+	private PlayerController player;
+
+    void Awake ()
     {
-        startPosition = transform.localPosition;
-		startParentPosition = transform.parent.localPosition;
+		renderers = transform.GetComponentsInChildren<SpriteRenderer>();
+		player = FindObjectOfType<PlayerController>();
     }
 
     void Update ()
     {
-        float newPosition = Mathf.Repeat(Time.time * scrollSpeed, tileSizeX);
-        transform.localPosition = startPosition + Vector3.right * newPosition;
+		transform.position += Vector3.right * scrollSpeed * Time.deltaTime;
+		currentDistance += Mathf.Abs(scrollSpeed - player.moveSpeed) * Time.deltaTime;
 
-		transform.localPosition = new Vector3(transform.localPosition.x, -transform.parent.localPosition.y + startPosition.y, transform.localPosition.z);
+		if(currentDistance > tileSizeX)
+		{
+			currentDistance -= tileSizeX;
+
+			renderers[currentIndex].transform.localPosition += Vector3.right * tileSizeX * renderers.Length;
+			currentIndex = (currentIndex + 1) % renderers.Length;
+		}
     }
 }
