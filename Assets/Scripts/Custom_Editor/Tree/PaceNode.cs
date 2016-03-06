@@ -24,6 +24,8 @@ public class PaceNode : BaseNode
         node.rect = new Rect(pos.x, pos.y, 150, 80);
 
         node.CreateInput("", "Bool");
+        node.CreateInput("", "Blocker");
+
         node.CreateOutput("", "Bool");
 
         return node;
@@ -32,7 +34,6 @@ public class PaceNode : BaseNode
     protected override void DrawNode()
     {
         this.name = "Pace";
-        this.CreateInput("", "Blocker");
 
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Pace;
