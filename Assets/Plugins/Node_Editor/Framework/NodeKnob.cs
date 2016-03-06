@@ -56,7 +56,7 @@ namespace NodeEditorFramework
 					knobTexture = knobTextureInMemory;
 				else 
 				{
-					knobTexture = RTEditorGUI.RotateTextureAntiCW (knobTexture, rotationSteps);
+					knobTexture = RTEditorGUI.RotateTextureCCW (knobTexture, rotationSteps);
 					ResourceManager.AddTexture (texturePath, knobTexture, mods.ToArray ());
 				}
 			}
