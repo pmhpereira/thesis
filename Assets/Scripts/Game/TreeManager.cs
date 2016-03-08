@@ -94,7 +94,7 @@ public class TreeManager : MonoBehaviour
         if(assetBrowser.value == 0)
         {
             tags = null;
-            tagNodes = new List<BaseNode>(); ;
+            tagNodes = new List<BaseNode>();
             patterns = null;
             patternNodes = new List<BaseNode>();
             masteryNodes = null;
@@ -464,6 +464,11 @@ public class TreeManager : MonoBehaviour
         {
             paceNames[p] = ((PaceNode) paceNodes[p]).paceName;
         }
+
+		if(paceNames.Length == 0)
+		{
+			return false;
+		}
 
         for(int i = 0; i < node.pacesIndices.Count; i++)
         {
