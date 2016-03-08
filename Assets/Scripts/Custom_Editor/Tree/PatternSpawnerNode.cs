@@ -67,7 +67,7 @@ public class PatternSpawnerNode : BaseNode
         GUILayout.BeginVertical();
         if(patternsIndices.Count > 0)
         {
-            GUILayout.Label("     Pattern           sW       mW");
+            GUILayout.Label("     Challenge        sW       mW");
         }
         #if UNITY_EDITOR
         {
@@ -99,7 +99,7 @@ public class PatternSpawnerNode : BaseNode
                 GUILayout.EndHorizontal();
             }
 
-            if (GUILayout.Button("Add Pattern"))
+            if (GUILayout.Button("Add Challenge"))
             {
                 patternsIndices.Add(0);
                 patternsSpawnWeights.Add(1);
