@@ -83,20 +83,15 @@ public class TagNode : BaseNode
     public override bool Calculate()
     {
         value = Inputs[0].GetValue<bool>();
-        value = value && !Inputs[1].GetValue<bool>();
-
         Outputs[0].SetValue<bool>(value);
+
+        value = value && !Inputs[1].GetValue<bool>();
         
-        UpdateTreeManager();
-
-        return true;
-    }
-
-    void UpdateTreeManager()
-    {
-        if(Application.isPlaying)
+		if(TreeManager.instance != null)
         {
             TreeManager.instance.UpdateNode(this);
         }
+
+        return true;
     }
 }

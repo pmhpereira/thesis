@@ -132,14 +132,14 @@ public class PatternSpawnerNode : BaseNode
     public override bool Calculate()
     {
         value = Inputs[0].GetValue<bool>();
+        Outputs[0].SetValue<bool>(value);
+
         value = value && !Inputs[1].GetValue<bool>();
 
         if(TreeManager.instance != null)
         {
             TreeManager.instance.UpdateNode(this);
         }
-
-        Outputs[0].SetValue<bool>(value);
 
         return true;
     }

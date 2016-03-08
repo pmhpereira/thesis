@@ -83,20 +83,15 @@ public class PatternNode : BaseNode
     public override bool Calculate()
     {
         value = Inputs[0].GetValue<bool>();
-        value = value && !Inputs[1].GetValue<bool>();
-
         Outputs[0].SetValue<bool>(value);
 
-        UpdateTreeManager();
+        value = value && !Inputs[1].GetValue<bool>();
 
-        return true;
-    }
-
-    void UpdateTreeManager()
-    {
-        if (Application.isPlaying)
+		if(TreeManager.instance != null)
         {
             TreeManager.instance.UpdateNode(this);
         }
+
+        return true;
     }
 }
