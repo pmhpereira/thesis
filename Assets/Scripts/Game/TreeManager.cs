@@ -319,7 +319,15 @@ public class TreeManager : MonoBehaviour
         {
             if(patternSpawner.value)
             {
-                activePatternSpawners.Add(patternSpawner);
+				for (int i = 0; i < patternSpawner.patternsIndices.Count; i++)
+				{
+					string patternName = PatternManager.instance.patternsName[patternSpawner.patternsIndices[i]];
+					if(patterns[patternName])
+					{
+						activePatternSpawners.Add(patternSpawner);
+						break;
+					}
+				}
             }
         }
 
@@ -543,7 +551,14 @@ public class TreeManager : MonoBehaviour
         {
             if(paceSpawner.value)
             {
-                activePaceSpawners.Add(paceSpawner);
+				for (int i = 0; i < paceSpawner.pacesIndices.Count; i++)
+				{
+					if(paceNodes[paceSpawner.pacesIndices[i]].value)
+					{
+						activePaceSpawners.Add(paceSpawner);
+						break;
+					}
+				}
             }
         }
 
