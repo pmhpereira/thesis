@@ -83,6 +83,7 @@ public class MasteryNode : BaseNode
                 case PaceNode.ID:
                 case PatternSpawnerNode.ID:
                 case PaceSpawnerNode.ID:
+                case TagSpawnerNode.ID:
                     isConnected = true;
                     parentNode = (BaseNode) Inputs[0].connection.body;
                     break;

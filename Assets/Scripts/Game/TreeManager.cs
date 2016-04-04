@@ -424,6 +424,10 @@ public class TreeManager : MonoBehaviour
         {
             return IsMasteryResolved(masteryNode, (PaceSpawnerNode)node);
         }
+        else if(node is TagSpawnerNode)
+        {
+            return IsMasteryResolved(masteryNode, (TagSpawnerNode)node);
+        }
 
         throw new NotImplementedException();
     }
@@ -461,7 +465,7 @@ public class TreeManager : MonoBehaviour
 
         return MasteryComparison.Compare(MasteryComparison.values[masteryNode.masteryComparisonIndex], Mastery.values[masteryIndex], masteryNode.mastery);
     }
-
+	
     private bool IsMasteryResolved(MasteryNode masteryNode, PaceSpawnerNode node)
     {
         float sumWeights = 0;
@@ -485,6 +489,36 @@ public class TreeManager : MonoBehaviour
 
             sumMasteries += Mastery.values.IndexOf(mastery) * node.pacesMasteryWeights[i];
             sumWeights += node.pacesMasteryWeights[i];
+        }
+
+        int masteryIndex = (int) Mathf.Round(sumMasteries / sumWeights);
+
+        return MasteryComparison.Compare(MasteryComparison.values[masteryNode.masteryComparisonIndex], Mastery.values[masteryIndex], masteryNode.mastery);
+    }
+
+    private bool IsMasteryResolved(MasteryNode masteryNode, TagSpawnerNode node)
+    {
+        float sumWeights = 0;
+        float sumMasteries = 0;
+
+        string[] paceNames = new string[paceNodes.Count];
+        for(int p = 0; p < paceNodes.Count; p++)
+        {
+            paceNames[p] = ((PaceNode) paceNodes[p]).paceName;
+        }
+
+		if(paceNames.Length == 0)
+		{
+			return false;
+		}
+
+        for(int i = 0; i < node.tagsIndices.Count; i++)
+        {
+            string tagName = TagsManager.instance.tagsName[node.tagsIndices[i]];
+            string mastery = TagsManager.instance.tagsInfo[tagName].GetMastery();
+
+            sumMasteries += Mastery.values.IndexOf(mastery) * node.tagsMasteryWeights[i];
+            sumWeights += node.tagsMasteryWeights[i];
         }
 
         int masteryIndex = (int) Mathf.Round(sumMasteries / sumWeights);

@@ -20,6 +20,7 @@ public static class Constants
             public static readonly Color Timer = new Color(1f, 0f, 0f);
 
             public static readonly Color Tag = new Color(.75f, .25f, .75f);
+            public static readonly Color TagSpawner = new Color(.5f, .0f, .5f);
 
             public static readonly Color Pattern = new Color(.2f, .7f, .2f);
             public static readonly Color PatternSpawner = new Color(0f, .5f, 0f);
