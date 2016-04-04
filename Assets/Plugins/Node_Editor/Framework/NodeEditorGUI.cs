@@ -109,13 +109,15 @@ namespace NodeEditorFramework
 		/// </summary>
 		public static void DrawConnection (Vector2 startPos, Vector2 startDir, Vector2 endPos, Vector2 endDir, ConnectionDrawMethod drawMethod, Color col) 
 		{
-			if (drawMethod == ConnectionDrawMethod.Bezier) 
+			bool tooClose = Vector2.Distance(startPos, endPos) < 100;
+
+			if (!tooClose && drawMethod == ConnectionDrawMethod.Bezier) 
 			{
 				float dirFactor = 80;//Mathf.Pow ((startPos-endPos).magnitude, 0.3f) * 20;
 				//Debug.Log ("DirFactor is " + dirFactor + "with a bezier lenght of " + (startPos-endPos).magnitude);
 				RTEditorGUI.DrawBezier (startPos, endPos, startPos + startDir * dirFactor, endPos + endDir * dirFactor, col * Color.gray, null, 3);
 			}
-			else if (drawMethod == ConnectionDrawMethod.StraightLine)
+			else if (tooClose || drawMethod == ConnectionDrawMethod.StraightLine)
 				RTEditorGUI.DrawLine (startPos, endPos, col * Color.gray, null, 3);
 		}
 

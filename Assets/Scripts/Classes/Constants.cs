@@ -17,6 +17,7 @@ public static class Constants
 
             // Game nodes
             public static readonly Color Mastery = new Color(1f, 0f, 0f);
+            public static readonly Color Timer = new Color(1f, 0f, 0f);
 
             public static readonly Color Tag = new Color(.75f, .25f, .75f);
 

@@ -38,7 +38,7 @@ public class BoolNode : BaseNode
     {
         BoolNode node = CreateInstance<BoolNode>();
         node.rect = new Rect(pos.x, pos.y, 50, 20);
-        node.name = "Bool";
+        node.name = "Power";
         node.CreateOutput("", "Bool");
         node.value = true;
 
