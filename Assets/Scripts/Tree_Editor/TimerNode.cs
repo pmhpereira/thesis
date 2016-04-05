@@ -87,8 +87,11 @@ public class TimerNode : BaseNode
 		
 		if(value)
 		{
-			timer = auxTimer - (Time.realtimeSinceStartup - start);
-			timer = Mathf.Max(0, timer);
+			if(Time.timeScale > 0)
+			{
+				timer = auxTimer - (Time.realtimeSinceStartup - start);
+				timer = Mathf.Max(0, timer);
+			}
 		}
 
 		if(timer == 0)
