@@ -12,6 +12,7 @@ public class TimerNode : BaseNode
     public override string GetID { get { return ID; } }
 
 	public float timer;
+	public bool resetOnDisable;
 	private float auxTimer;
 	private float start;
 
@@ -19,7 +20,7 @@ public class TimerNode : BaseNode
     {
         TimerNode node = CreateInstance<TimerNode>();
         node.creationId = GetNextId();
-        node.rect = new Rect(pos.x, pos.y, 180, 50);
+        node.rect = new Rect(pos.x, pos.y, 180, 75);
         node.name = "Timer";
 
         node.CreateInput("", "Bool");
@@ -33,10 +34,10 @@ public class TimerNode : BaseNode
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Timer;
 
-        if(rect.width != 180)
+        if(rect.width != 180 || rect.height != 75)
         {
             rect.width = 180;
-            rect.height = 50;
+            rect.height = 75;
         }
 
         base.DrawOutlinedNode();
@@ -58,11 +59,15 @@ public class TimerNode : BaseNode
         }
         GUILayout.EndVertical();
 
+        GUILayout.BeginVertical();
         #if UNITY_EDITOR
-			timer = EditorGUILayout.FloatField("", timer, GUILayout.MaxWidth(rect.width - 20));
+			timer = EditorGUILayout.IntField("", Mathf.CeilToInt(timer), GUILayout.MaxWidth(rect.width - 20));
+			resetOnDisable = EditorGUILayout.Toggle("Reset on disable", resetOnDisable);
         #else
             GUILayout.Label(timer + "");
+            GUILayout.Label("Reset on disable: " + resetOnDisable);
         #endif
+        GUILayout.EndVertical();
 
         GUILayout.BeginVertical();
         for (int i = 0; i < Outputs.Count; i++)
@@ -84,6 +89,18 @@ public class TimerNode : BaseNode
 			start = Time.realtimeSinceStartup;
 			auxTimer = timer;
 		}
+		else if(!value)
+		{
+			if(resetOnDisable)
+			{
+				start = Time.realtimeSinceStartup;
+				timer = auxTimer;
+			}
+			else
+			{
+				start += timer - (auxTimer - (Time.realtimeSinceStartup - start));
+			}
+		}
 		
 		if(value)
 		{
@@ -91,6 +108,10 @@ public class TimerNode : BaseNode
 			{
 				timer = auxTimer - (Time.realtimeSinceStartup - start);
 				timer = Mathf.Max(0, timer);
+			}
+			else
+			{
+				start += timer - (auxTimer - (Time.realtimeSinceStartup - start));
 			}
 		}
 
