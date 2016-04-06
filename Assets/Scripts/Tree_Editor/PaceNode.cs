@@ -4,7 +4,7 @@ using NodeEditorFramework;
 using UnityEditor;
 #endif
 
-[Node(false, "Game Node/Pace")]
+[Node(false, "Game Node/Pace/Single")]
 public class PaceNode : BaseNode
 {
     public const string ID = "paceNode";
