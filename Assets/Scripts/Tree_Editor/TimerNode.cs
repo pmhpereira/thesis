@@ -11,10 +11,10 @@ public class TimerNode : BaseNode
     public const string ID = "timerNode";
     public override string GetID { get { return ID; } }
 
-	public float timer;
-	public bool resetOnDisable;
-	private float auxTimer;
-	private float start;
+	private float timer;
+	public bool resetOnDisable = true;
+	public float initialTimer;
+	private float timerStart;
 
     public override Node Create(Vector2 pos)
     {
@@ -64,7 +64,7 @@ public class TimerNode : BaseNode
 			timer = EditorGUILayout.IntField("", Mathf.CeilToInt(timer), GUILayout.MaxWidth(rect.width - 20));
 			resetOnDisable = EditorGUILayout.Toggle("Reset on disable", resetOnDisable);
         #else
-            GUILayout.Label(timer + "");
+	        GUILayout.Label(timer + "");
             GUILayout.Label("Reset on disable: " + resetOnDisable);
         #endif
         GUILayout.EndVertical();
@@ -80,49 +80,54 @@ public class TimerNode : BaseNode
         GUILayout.FlexibleSpace();
     }
 
+	
     public override bool Calculate()
     {
         value = Inputs[0].GetValue<bool>();
 
-		if(value && start == 0)
+		if(timerStart == 0)
 		{
-			start = Time.realtimeSinceStartup;
-			auxTimer = timer;
-		}
-		else if(!value)
-		{
-			if(resetOnDisable)
+			if(initialTimer > 0)
 			{
-				start = Time.realtimeSinceStartup;
-				timer = auxTimer;
+				timer = initialTimer;
 			}
 			else
 			{
-				start += timer - (auxTimer - (Time.realtimeSinceStartup - start));
+				initialTimer = timer;
 			}
 		}
-		
+
 		if(value)
 		{
+			if(timerStart == 0)
+			{
+				timerStart = Time.realtimeSinceStartup;
+			}
+
 			if(Time.timeScale > 0)
 			{
-				timer = auxTimer - (Time.realtimeSinceStartup - start);
+				timer = initialTimer - (Time.realtimeSinceStartup - timerStart);
 				timer = Mathf.Max(0, timer);
 			}
 			else
 			{
-				start += timer - (auxTimer - (Time.realtimeSinceStartup - start));
+				timerStart += timer - (initialTimer - (Time.realtimeSinceStartup - timerStart));
 			}
-		}
-
-		if(timer == 0)
-		{
-			Outputs[0].SetValue<bool>(value);
 		}
 		else
 		{
-			Outputs[0].SetValue<bool>(false);
+			if(resetOnDisable)
+			{
+				timer = initialTimer;
+				timerStart = 0;
+			}
+			else
+			{
+				timerStart += timer - (initialTimer - (Time.realtimeSinceStartup - timerStart));
+			}
 		}
+
+		Outputs[0].SetValue<bool>(timer == 0 && value);
 
         return true;
     }
