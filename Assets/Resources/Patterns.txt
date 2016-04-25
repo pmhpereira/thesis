@@ -36,6 +36,8 @@ Medium-Hole
         Position 2 6
     Ceiling
         Position 3 6
+    Ceiling
+        Position 4 6
     Hole
         Position 0 0
     Hole
@@ -44,6 +46,8 @@ Medium-Hole
         Position 2 0
     Hole
         Position 3 0
+    Hole
+        Position 4 0
 
 Thin-Wall
     Spacing 0 8
