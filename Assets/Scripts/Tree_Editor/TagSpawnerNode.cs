@@ -22,7 +22,7 @@ public class TagSpawnerNode : BaseNode
         TagSpawnerNode node = CreateInstance<TagSpawnerNode>();
         node.creationId = GetNextId();
         node.rect = new Rect(pos.x, pos.y, 210, rectDefaultHeight);
-        node.name = "Mechanics Average Mastery";
+        node.name = "Mechanic Average Mastery";
 
         node.CreateInput("", "Bool");
         node.CreateOutput("", "Bool");
