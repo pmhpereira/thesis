@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 
-[Node(false, "Boole Node/And")]
+[Node(false, "Boolean Node/And")]
 public class AndNode : BaseNode
 {
     public const string ID = "andNode";
