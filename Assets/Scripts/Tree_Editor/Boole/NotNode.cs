@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 
-[Node(false, "Boolean Node/Not")]
+[Node(false, "Boolean Node/Not", 3)]
 public class NotNode : BaseNode
 {
     public const string ID = "notNode";

@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
-using NodeEditorFramework;
 
 namespace NodeEditorFramework 
 {
@@ -17,6 +16,7 @@ namespace NodeEditorFramework
 		public static void FetchNodes() 
 		{
 			nodes = new Dictionary<Node, NodeData> ();
+			var newNodes = new List<Node> ();
 
 			List<Assembly> scriptAssemblies = AppDomain.CurrentDomain.GetAssemblies ().Where ((Assembly assembly) => assembly.FullName.Contains ("Assembly")).ToList ();
 			if (!scriptAssemblies.Contains (Assembly.GetExecutingAssembly ()))
@@ -32,9 +32,22 @@ namespace NodeEditorFramework
 						Node node = ScriptableObject.CreateInstance (type.Name) as Node; // Create a 'raw' instance (not setup using the appropriate Create function)
 						node = node.Create (Vector2.zero); // From that, call the appropriate Create Method to init the previously 'raw' instance
 						nodes.Add (node, new NodeData (attr == null? node.name : attr.contextText));
+
+						newNodes.Add(node);
 					}
 				}
 			}
+
+			newNodes = newNodes.OrderBy(x => (x.GetType().GetCustomAttributes (typeof (NodeAttribute), false)[0] as NodeAttribute).orderIndex).ToList();
+
+			var newDict = new Dictionary<Node, NodeData> ();
+
+			foreach(Node key in newNodes)
+			{
+				newDict[key] = nodes[key];
+			}
+			
+			nodes = newDict;
 		}
 
 		public static NodeData getNodeData (Node node)
@@ -66,11 +79,13 @@ namespace NodeEditorFramework
 	{
 		public bool hide { get; private set; }
 		public string contextText { get; private set; }
+		public int orderIndex { get; private set; }
 
-		public NodeAttribute (bool HideNode, string ReplacedContextText) 
+		public NodeAttribute (bool HideNode, string ReplacedContextText, int OrderIndex = 0) 
 		{
 			hide = HideNode;
 			contextText = ReplacedContextText;
+			orderIndex = OrderIndex;
 		}
 	}
 }

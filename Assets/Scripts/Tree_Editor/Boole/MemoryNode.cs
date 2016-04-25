@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 
-[Node(false, "Boolean Node/Memory")]
+[Node(false, "Boolean Node/Memory", 4)]
 public class MemoryNode : BaseNode
 {
     public const string ID = "memoryNode";

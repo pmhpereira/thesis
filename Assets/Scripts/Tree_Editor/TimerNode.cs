@@ -5,7 +5,7 @@ using NodeEditorFramework.Utilities;
 using UnityEditor;
 #endif
 
-[Node(false, "Game Node/Timer")]
+[Node(false, "Game Node/Timer", 1)]
 public class TimerNode : BaseNode
 {
     public const string ID = "timerNode";

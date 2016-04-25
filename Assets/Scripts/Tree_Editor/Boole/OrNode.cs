@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 
-[Node(false, "Boolean Node/Or")]
+[Node(false, "Boolean Node/Or", 2)]
 public class OrNode : BaseNode
 {
     public const string ID = "orNode";

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-[Node(false, "Game Node/Mechanic/Average Mastery")]
+[Node(false, "Game Node/Mechanic/Average Mastery", 2)]
 public class TagSpawnerNode : BaseNode
 {
     public const string ID = "tagSpawnerNode";

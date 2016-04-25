@@ -4,7 +4,7 @@ using NodeEditorFramework;
 using UnityEditor;
 #endif
 
-[Node(false, "Game Node/Pace/Single")]
+[Node(false, "Game Node/Pace/Single", 4)]
 public class PaceNode : BaseNode
 {
     public const string ID = "paceNode";
@@ -21,6 +21,7 @@ public class PaceNode : BaseNode
     {
         PaceNode node = CreateInstance<PaceNode>();
         node.creationId = GetNextId();
+		node.name = "Pace";
         node.rect = new Rect(pos.x, pos.y, 150, 80);
 
         node.CreateInput("", "Bool");
@@ -33,8 +34,6 @@ public class PaceNode : BaseNode
 
     protected override void DrawNode()
     {
-        this.name = "Pace";
-
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Pace;
 

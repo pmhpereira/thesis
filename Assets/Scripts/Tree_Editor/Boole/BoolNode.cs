@@ -28,7 +28,7 @@ public class BlockerType : ITypeDeclaration
     }
 }
 
-[Node(false, "Boolean Node/Power")]
+[Node(false, "Boolean Node/Power", 0)]
 public class BoolNode : BaseNode
 {
     public const string ID = "boolNode";

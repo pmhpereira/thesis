@@ -3,7 +3,7 @@ using NodeEditorFramework;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-[Node(false, "Game Node/Mechanic/Single")]
+[Node(false, "Game Node/Mechanic/Single", 2)]
 public class TagNode : BaseNode
 {
     public const string ID = "tagNode";

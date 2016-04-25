@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-[Node(false, "Game Node/Pace/Spawner")]
+[Node(false, "Game Node/Pace/Spawner", 4)]
 public class PaceSpawnerNode : BaseNode
 {
     public const string ID = "paceSpawnerNode";

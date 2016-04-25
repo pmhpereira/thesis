@@ -3,7 +3,7 @@ using NodeEditorFramework;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-[Node(false, "Game Node/Challenge/Single")]
+[Node(false, "Game Node/Challenge/Single", 3)]
 public class PatternNode : BaseNode
 {
     public const string ID = "patternNode";
