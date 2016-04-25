@@ -2,6 +2,7 @@
 using NodeEditorFramework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -82,7 +83,10 @@ public class TreeManager : MonoBehaviour
         assetBrowser.options.Add(new Dropdown.OptionData("<none>"));
         foreach (NodeCanvas obj in objects)
         {
-            assetBrowser.options.Add(new Dropdown.OptionData(obj.name));
+			if(File.Exists(Application.dataPath + rootPath.Split(new string[] { "Assets" }, StringSplitOptions.None)[1] + "/Resources/" + obj.name + ".asset"))
+			{
+				assetBrowser.options.Add(new Dropdown.OptionData(obj.name));
+			}
         }
 
         assetBrowser.value = 0;
