@@ -83,7 +83,7 @@ public class TreeManager : MonoBehaviour
         assetBrowser.options.Add(new Dropdown.OptionData("<none>"));
         foreach (NodeCanvas obj in objects)
         {
-			if(File.Exists(Application.dataPath + rootPath.Split(new string[] { "Assets" }, StringSplitOptions.None)[1] + "/Resources/" + obj.name + ".asset"))
+			if(File.Exists(Application.dataPath + rootPath.Split(new string[] { "Assets" }, StringSplitOptions.None)[1] + "/" + obj.name + ".asset"))
 			{
 				assetBrowser.options.Add(new Dropdown.OptionData(obj.name));
 			}
