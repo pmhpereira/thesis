@@ -90,7 +90,7 @@ namespace NodeEditorFramework.Utilities
 			// Sometimes, strange errors pop up (related to Mac?), which we try to catch and enable a compability Mode no supporting zooming in groups
 			try
 			{
-				topmostRectDelegate.Invoke ();
+				GetTopRectDelegate.Invoke();
 			}
 			catch (Exception e)
 			{

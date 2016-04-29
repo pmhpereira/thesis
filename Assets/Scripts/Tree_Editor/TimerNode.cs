@@ -62,8 +62,8 @@ public class TimerNode : BaseNode
 
 
 		GUILayout.BeginVertical();
-		GUILayout.BeginHorizontal();
 #if UNITY_EDITOR
+		GUILayout.BeginHorizontal();
 	    float oldLabelWidth = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth = 40;
 

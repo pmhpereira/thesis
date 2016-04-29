@@ -71,21 +71,20 @@ public class TreeManager : MonoBehaviour
 
     void InitializeAssetBrowser()
     {
-        string path = rootPath;
-        path = path.Split('.')[0];
-        path = path.Split(new string[] { "Resources/" }, StringSplitOptions.None)[1];
-        NodeCanvas[] objects = Resources.LoadAll<NodeCanvas> (path);
+        NodeCanvas[] objects = Resources.LoadAll<NodeCanvas> ("Saves");
 
         assetBrowser.options = new List<Dropdown.OptionData>();
 
         assetBrowser.options.Add(new Dropdown.OptionData("<none>"));
-        foreach (NodeCanvas obj in objects)
-        {
-			if(File.Exists(Application.dataPath + rootPath.Split(new string[] { "Assets" }, StringSplitOptions.None)[1] + "/" + obj.name + ".asset"))
+
+		foreach (NodeCanvas obj in objects)
+		{
+			if(!Application.isEditor 
+				|| File.Exists(Application.dataPath + rootPath.Split(new string[] { "Assets" }, StringSplitOptions.None)[1] + "/" + obj.name + ".asset"))
 			{
 				assetBrowser.options.Add(new Dropdown.OptionData(obj.name));
 			}
-        }
+		}
 
         assetBrowser.value = 0;
         OnValueChanged();
@@ -104,7 +103,6 @@ public class TreeManager : MonoBehaviour
 				}
 			}
 		}
-
     }
 
     public void OnValueChanged()
@@ -125,8 +123,16 @@ public class TreeManager : MonoBehaviour
                 GameManager.instance.SaveSnapshot(0);
             }
 
-            nodeEditor.canvasPath = rootPath + "/" + assetBrowser.options[assetBrowser.value].text + ".asset";
-            nodeEditor.Start();
+			if(Application.isEditor)
+			{
+				nodeEditor.canvasPath = rootPath + "/" + assetBrowser.options[assetBrowser.value].text + ".asset";
+			}
+			else
+			{
+				nodeEditor.canvasPath = "Saves/" + assetBrowser.options[assetBrowser.value].text;
+			}
+
+			nodeEditor.Start();
             nodeEditor.enabled = true;
 
             InitializeTags();
