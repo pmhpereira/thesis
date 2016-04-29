@@ -32,7 +32,7 @@ public class PaceNode : BaseNode
         return node;
     }
 
-    protected override void DrawNode()
+    protected internal override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Pace;
@@ -105,7 +105,7 @@ public class PaceNode : BaseNode
         return true;
     }
 
-    protected override void OnDelete()
+    protected internal override void OnDelete()
     {
         TreeManager.instance.RemoveNode(this);
     }

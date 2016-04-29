@@ -226,6 +226,8 @@ namespace NodeEditorFramework
 		/// </summary>
 		public void LoadNodeCanvas (string path) 
 		{
+			BaseNode.id = 0;
+
 			// Load the NodeCanvas
 			mainNodeCanvas = NodeEditor.LoadNodeCanvas (path);
 			if (mainNodeCanvas == null) 
@@ -249,6 +251,14 @@ namespace NodeEditorFramework
 			NodeEditor.RecalculateAll (mainNodeCanvas);
 			//SaveCache ();
 			Repaint ();
+
+			foreach(Node node in mainNodeCanvas.nodes)
+			{
+				if(node is BaseNode)
+				{
+					BaseNode.id = Mathf.Max(BaseNode.id, ((BaseNode) node).creationId);
+				}
+			}
 		}
 
 		/// <summary>
@@ -256,6 +266,8 @@ namespace NodeEditorFramework
 		/// </summary>
 		public void NewNodeCanvas () 
 		{
+			BaseNode.id = 0;
+
 			// New NodeCanvas
 			mainNodeCanvas = CreateInstance<NodeCanvas> ();
 			mainNodeCanvas.name = "New Canvas";

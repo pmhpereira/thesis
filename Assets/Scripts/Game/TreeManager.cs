@@ -1,6 +1,7 @@
 ﻿using BaseNodeExtensions;
 using NodeEditorFramework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -28,12 +29,10 @@ public class TreeManager : MonoBehaviour
     [HideInInspector]
     public List<BaseNode> pointerInputNodes;
 
-    private RuntimeNodeEditor nodeEditor;
+    public RuntimeNodeEditor nodeEditor;
     private bool canvasStart;
 
     public Dropdown assetBrowser;
-    public Button validateButton;
-    
     public int oldAssetValue;
 
     void Awake()
@@ -125,6 +124,8 @@ public class TreeManager : MonoBehaviour
             {
                 GameManager.instance.LoadSnapshot(0);
             }
+
+			ValidateCanvas();
         }
 
         canvasStart = false;
@@ -146,7 +147,6 @@ public class TreeManager : MonoBehaviour
         }
 
         assetBrowser.gameObject.SetActive(GameManager.instance.debugMode);
-        validateButton.gameObject.SetActive(GameManager.instance.debugMode);
     }
     
     public void ValidateCanvas()
@@ -156,46 +156,103 @@ public class TreeManager : MonoBehaviour
             return;
         }
 
+		Debug.Log("\n");
+		Debug.Log("======== Validating " + assetBrowser.captionText.text + " ========");
         bool invalid = false;
+		bool hasMechanicSingle = false;
+		bool hasPatternSingle = false;
+		bool hasPatternSpawner = false;
+		bool hasPaceSingle = false;
+		bool hasPaceSpawner = false;
 
-        if(paceSpawnerNodes.Count == 0)
-        {
-            Debug.Log("Missing: Game Node > Spawner > Pace");
-            invalid = true;
-        }
-        else if(paceNodes.Count == 0)
-        {
-            Debug.Log("Missing: Game Node > Pace");
-            invalid = true;
-        }
+		List<BaseNode> allNodes = new List<BaseNode>();
 
-        if(patternSpawnerNodes.Count == 0)
-        {
-            Debug.Log("Missing: Game Node > Spawner > Challenge");
-            invalid = true;
-        }
-        else if(patternNodes.Count == 0)
-        {
-            Debug.Log("Missing: Game Node > Challenge");
-            invalid = true;
-        }
+		foreach(BaseNode node in nodeEditor.canvas.nodes)
+		{
+			allNodes.Add(node);
+		}
+
+        allNodes.SortByCreation();
+
+		for(int i = 0; i < allNodes.Count; i++)
+		{
+			if(i < allNodes.Count - 1)
+			{
+				if(allNodes[i].creationId != 0 
+					&& allNodes[i].creationId == allNodes[i+1].creationId
+					&& allNodes[i].GetType() == allNodes[i+1].GetType())
+				{
+					Debug.LogError(
+						"The nodes at indices " + i + " and " + (i+1) + 
+						" have the same creationId " + allNodes[i].creationId + 
+						" and type " + allNodes[i].name
+					);
+
+					invalid = true;
+				}
+			}
+			
+			if(allNodes[i].value)
+			{
+				if(allNodes[i] is TagNode)
+				{
+					hasMechanicSingle = true;
+				}
+				else if(allNodes[i] is PatternNode)
+				{
+					hasPatternSingle = true;
+				}
+				else if(allNodes[i] is PatternSpawnerNode)
+				{
+					hasPatternSpawner = true;
+				}
+				else if(allNodes[i] is PaceNode)
+				{
+					hasPaceSingle = true;
+				}
+				else if(allNodes[i] is PaceSpawnerNode)
+				{
+					hasPaceSpawner = true;
+				}
+			}
+		}
         
-        if(patternNodes.Count == 0)
+        if(!hasMechanicSingle)
         {
-            Debug.Log("Missing: Game Node > Challenge");
+            Debug.Log("Missing: Game Node > Mechanic > Single");
             invalid = true;
         }
 
-        if(tagNodes.Count == 0)
+		if(!hasPatternSingle)
         {
-            Debug.Log("Missing: Game Node > Mechanic");
+            Debug.Log("Missing: Game Node > Challenge > Single");
+            invalid = true;
+        }
+
+        if(!hasPatternSpawner)
+        {
+            Debug.Log("Missing: Game Node > Challenge > Spawner ");
+            invalid = true;
+        }
+
+		if (!hasPaceSingle)
+        {
+            Debug.Log("Missing: Game Node > Pace > Single");
+            invalid = true;
+        }
+
+		if (!hasPaceSpawner)
+        {
+            Debug.Log("Missing: Game Node > Pace > Spawner ");
             invalid = true;
         }
 
         if(!invalid)
         {
-            Debug.Log("Everything looks fine.");
+            Debug.Log("The current canvas appears to be OK.");
         }
+
+		Debug.Log("======== End of validation ========");
     }
 
     public void UpdateNode(BaseNode node)
@@ -348,15 +405,17 @@ public class TreeManager : MonoBehaviour
         List<PatternNode> activePatternNodes = new List<PatternNode>();
         List<float> weights = new List<float>();
         float totalWeights = 0;
-
+		
+		PatternNode currentPatternNode = null;
+		float currentPatternWeight = 0;
         for(int i = 0; i < patternSpawner.patternsIndices.Count; i++)
         {
-            PatternNode currentPatternNode = null;
             foreach(PatternNode patternNode in patternNodes)
             {
                 if(patternNode.patternIndex == patternSpawner.patternsIndices[i])
                 {
                     currentPatternNode = patternNode;
+					currentPatternWeight = patternSpawner.patternsSpawnWeights[i];
                     break;
                 }
             }
@@ -364,8 +423,8 @@ public class TreeManager : MonoBehaviour
             if(currentPatternNode != null && currentPatternNode.value)
             {
                 activePatternNodes.Add(currentPatternNode);
-                weights.Add(patternSpawner.patternsSpawnWeights[i]);
-                totalWeights += patternSpawner.patternsSpawnWeights[i];
+                weights.Add(currentPatternWeight);
+                totalWeights += currentPatternWeight;
             }
         }
 

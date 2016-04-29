@@ -20,7 +20,7 @@ public class MemoryNode : BaseNode
         return node;
     }
 
-    protected override void DrawNode()
+    protected internal override void DrawNode()
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Memory;
