@@ -391,6 +391,12 @@ public class PlayerController : MonoBehaviour
             {
                 numCollisions--;
             }
+			else if (other.transform.parent.tag == "Hole")
+            {
+				transform.position = new Vector3(transform.position.x, 3, transform.position.z);
+				rigidbody.velocity = Vector3.zero;
+                isFalling = false;
+			}
         }
     }
 
