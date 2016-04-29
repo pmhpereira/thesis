@@ -45,7 +45,6 @@ public class TreeManager : MonoBehaviour
         instance = this;
 
         nodeEditor = GetComponent<RuntimeNodeEditor>();
-        nodeEditor.canvas = NodeEditor.curNodeCanvas;
         InitializeAssetBrowser();
     }
 
@@ -90,6 +89,22 @@ public class TreeManager : MonoBehaviour
 
         assetBrowser.value = 0;
         OnValueChanged();
+
+		if(nodeEditor.canvas != null)
+		{
+			for(int i = 1; i < assetBrowser.options.Count; i++)
+			{
+				Dropdown.OptionData option = assetBrowser.options[i];
+
+				if(option.text == nodeEditor.canvas.name)
+				{
+					assetBrowser.value = i;
+					OnValueChanged();
+					break;
+				}
+			}
+		}
+
     }
 
     public void OnValueChanged()

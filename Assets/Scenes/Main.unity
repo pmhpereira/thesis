@@ -2005,7 +2005,6 @@ MonoBehaviour:
   pointerInputNodes: []
   nodeEditor: {fileID: 0}
   assetBrowser: {fileID: 580749467}
-  validateButton: {fileID: 0}
   oldAssetValue: 0
 --- !u!114 &2076266485
 MonoBehaviour:
