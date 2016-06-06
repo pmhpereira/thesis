@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+	This class manages the state of a current challenge and 
+	records if an attempt on it was successful or not.
+*/
 using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -194,6 +197,7 @@ public class PatternController : MonoBehaviour
         text.text = "\n" + patternName + "\n" + patternScores;
     }
 
+	// Records all the player states while attempting to overcome this challenge
     void RecordPlayer()
     {
         PlayerState[] currentPlayerStates = PlayerController.instance.ResolveState();

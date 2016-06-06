@@ -1,7 +1,11 @@
-﻿using BaseNodeExtensions;
+﻿/*
+	This class is the bridge between the Node_Editor and the game.
+	It is used to set and query the mechanics/challenges/paces that can be used.
+*/
+
+using BaseNodeExtensions;
 using NodeEditorFramework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -69,6 +73,7 @@ public class TreeManager : MonoBehaviour
         OnValueChanged();
     }
 
+	// Loads all canvas files into the dropdown
     void InitializeAssetBrowser()
     {
         NodeCanvas[] objects = Resources.LoadAll<NodeCanvas> ("Saves");
@@ -394,6 +399,7 @@ public class TreeManager : MonoBehaviour
         }
     }
 
+	// Picks a random PatternSpawner node from all the enabled ones
     public PatternSpawnerNode GetRandomPatternSpawnerNode()
     {
         List<PatternSpawnerNode> activePatternSpawners = new List<PatternSpawnerNode>();
@@ -421,6 +427,7 @@ public class TreeManager : MonoBehaviour
         return activePatternSpawners[UnityEngine.Random.Range(0, activePatternSpawners.Count)];
     }
 
+	// Picks a random enabled Pattern node from the specified PatternSpawnerNode
     public PatternNode GetRandomPatternNode(PatternSpawnerNode patternSpawner)
     {
         List<PatternNode> activePatternNodes = new List<PatternNode>();
@@ -531,6 +538,7 @@ public class TreeManager : MonoBehaviour
         return MasteryComparison.Compare(MasteryComparison.values[masteryNode.masteryComparisonIndex], PaceManager.instance.pacesInfo[node.paceName].GetMastery(), masteryNode.mastery);
     }
 
+	// Compares a mastery against the weighted average mastery of the different specified patterns in the PatternSpawner node
     private bool IsMasteryResolved(MasteryNode masteryNode, PatternSpawnerNode node)
     {
         float sumWeights = 0;
@@ -550,6 +558,7 @@ public class TreeManager : MonoBehaviour
         return MasteryComparison.Compare(MasteryComparison.values[masteryNode.masteryComparisonIndex], Mastery.values[masteryIndex], masteryNode.mastery);
     }
 	
+	// Compares a mastery against the weighted average mastery of the different specified paces in the PaceSpawner node
     private bool IsMasteryResolved(MasteryNode masteryNode, PaceSpawnerNode node)
     {
         float sumWeights = 0;
@@ -579,7 +588,8 @@ public class TreeManager : MonoBehaviour
 
         return MasteryComparison.Compare(MasteryComparison.values[masteryNode.masteryComparisonIndex], Mastery.values[masteryIndex], masteryNode.mastery);
     }
-
+		
+	// Compares a mastery against the weighted average mastery of the different mechanics in the MechanicAverageMastery node
     private bool IsMasteryResolved(MasteryNode masteryNode, TagSpawnerNode node)
     {
         float sumWeights = 0;
@@ -662,6 +672,7 @@ public class TreeManager : MonoBehaviour
         paceNodes.RemoveAt(paceIndex);
     }
 
+	// Picks a random PaceSpawner node from all the enabled ones
     public PaceSpawnerNode GetRandomPaceSpawnerNode()
     {
         List<PaceSpawnerNode> activePaceSpawners = new List<PaceSpawnerNode>();
@@ -688,6 +699,8 @@ public class TreeManager : MonoBehaviour
         return activePaceSpawners[UnityEngine.Random.Range(0, activePaceSpawners.Count)];
     }
 
+	
+	// Picks a random active Pace node from all the entries specified in the PaceSpawner
     public PaceNode GetRandomPaceNode(PaceSpawnerNode paceSpawner)
     {
         List<PaceNode> activePaceNodes = new List<PaceNode>();

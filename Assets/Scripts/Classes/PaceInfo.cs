@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+	This class manages the window of attempts and mastery for each Pace
+*/
+
 using System.Collections.Generic;
 using UnityEngine;
 

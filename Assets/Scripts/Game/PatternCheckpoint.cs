@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PatternCheckpoint : MonoBehaviour
 {
@@ -10,6 +9,7 @@ public class PatternCheckpoint : MonoBehaviour
         patternController = GetComponentInParent<PatternController>();
     }
 
+	// When the player enters the green (start) checkpoint
     public void OnTriggerEnter2D(Collider2D other)
     {
         if(other.transform.tag == "Player" 
@@ -21,6 +21,7 @@ public class PatternCheckpoint : MonoBehaviour
         }
     }
 
+	// When the player exits the red (end) checkpoint
     public void OnTriggerExit2D(Collider2D other)
     {
         if (other.transform.tag == "Player" 

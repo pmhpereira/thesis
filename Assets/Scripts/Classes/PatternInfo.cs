@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+	This class manages the window of attempts and mastery for each Pattern
+*/
+using System;
 using System.Collections.Generic;
 
 public class PatternInfo
@@ -50,14 +53,6 @@ public class PatternInfo
     {
         return Mastery.FromAttempts(GetScore(), attempts.Count);
     }
-
-    /* UNUSED * /
-    public void AddAttempt(bool success, PlayerState[] playerStates)
-    {
-        int tagIndex = ResolveTagIndex(playerStates);
-        AddAttempt(success, tagIndex);
-    }
-    /**/
 
     public void AddAttempt(bool success)
     {

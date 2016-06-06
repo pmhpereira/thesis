@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+	This class is responsible for the level generation of the game.
+*/
+
+using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;

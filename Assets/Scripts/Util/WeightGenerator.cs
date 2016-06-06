@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+	This class is used to generate the respective weights 
+	when the user presses the %, Lin, Qua or Log buttons.
+*/
+
 using UnityEngine;
 
 public static class WeightGenerator

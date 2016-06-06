@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿/*
+	This class is used to manage the state of the player and
+	to update the world wheneve the player executes an action.
+*/
+
+using UnityEngine;
 using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
@@ -400,6 +405,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+	// Returns an array of the current state of the player and actions being executed
     public PlayerState[] ResolveState()
     {
         List<PlayerState> states = new List<PlayerState>();

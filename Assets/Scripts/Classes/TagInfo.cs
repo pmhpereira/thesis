@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+	This class manages the window of attempts and mastery for each Mechanic
+*/
+
 using System.Collections.Generic;
 
 public class TagInfo

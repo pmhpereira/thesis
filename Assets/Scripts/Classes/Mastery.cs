@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿/*
+	This class calculates and compares the different values of mastery
+*/
+
+using System.Collections.Generic;
 
 public class MasteryComparison
 {

@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿/*
+	This class controls different visibility settings for the game camera
+*/
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

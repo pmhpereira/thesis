@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+	This class is used to save and load the different patterns from a file
+*/
+
+using UnityEngine;
 using System.Collections.Generic;
 using System;
 #if UNITY_EDITOR

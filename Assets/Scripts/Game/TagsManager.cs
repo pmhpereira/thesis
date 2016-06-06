@@ -74,6 +74,7 @@ public class TagsManager : MonoBehaviour
         }
     }
 
+	// Saves the masteries of each mechanic to a file
     public void SaveSnapshot(int slot)
     {
         string data = "";
@@ -116,6 +117,7 @@ public class TagsManager : MonoBehaviour
         }
     }
 
+	// Loads the masteries for all the mechanics from a file
     public void LoadSnapshot(int slot)
     {
         string filePath = snapshotsPath + "/" + snapshotsFilePrefix + slot + ".txt";

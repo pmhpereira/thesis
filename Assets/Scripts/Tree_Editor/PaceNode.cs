@@ -22,7 +22,7 @@ public class PaceNode : BaseNode
         PaceNode node = CreateInstance<PaceNode>();
         node.creationId = GetNextId();
 		node.name = "Pace";
-        node.rect = new Rect(pos.x, pos.y, 150, 80);
+        node.rect = new Rect(pos.x, pos.y, 170, 80);
 
         node.CreateInput("", "Bool");
         node.CreateInput("", "Blocker");
@@ -36,6 +36,12 @@ public class PaceNode : BaseNode
     {
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = Constants.Colors.Nodes.Pace;
+		
+        if(rect.width != 170)
+        {
+            rect.width = 170;
+            rect.height = 80;
+        }
 
         base.DrawOutlinedNode();
 
