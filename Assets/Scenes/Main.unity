@@ -1970,8 +1970,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 058701fb26fe9874f8dffda7e66a0fe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasPath: Assets/Resources/Node_Editor/Resources/Saves/andre8.asset
-  canvas: {fileID: 11400000, guid: 5ee50638222eee54da549a3a0d4b4501, type: 2}
+  canvasPath: 
+  canvas: {fileID: 0}
   screenSize: 0
   specifiedRootRect:
     serializedVersion: 2
@@ -2045,7 +2045,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frameRate: 60
-  debugMode: 0
+  debugMode: 1
   isPaused: 1
 --- !u!1 &2142559714
 GameObject:

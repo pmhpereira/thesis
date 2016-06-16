@@ -1,3 +1,5 @@
+This project was last tested with Unity 5.3.5f1.
+
 The version of Node_Editor used is available at https://github.com/Baste-RainGames/Node_Editor/tree/7abc6350ddecf047dafef410f097a6377c88e038.
 
 A couple of tweaks were implemented in order to support additional functionality and are not available in the original repository:

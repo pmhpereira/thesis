@@ -483,6 +483,8 @@ public class PatternManager : MonoBehaviour
         }
         data += "\n";
 
+		Directory.CreateDirectory(snapshotsPath);
+
         string filePath = snapshotsPath + "/" + snapshotsFilePrefix + slot + ".txt";
         FileStream file = File.Open(filePath, FileMode.Create);
         foreach (byte b in Encoding.ASCII.GetBytes(data))
